@@ -1,0 +1,136 @@
+{
+  "fetched_at": "2026-07-23",
+  "source": "Hand-curated seed for the Lokalt prototype. Body names are the City of Helsinki's official Finnish/Swedish names. Chairs are the 2025–2029 term deputy mayors (apulaispormestari) and mayor (pormestari), who are published office-holders whose firstname.lastname@hel.fi addresses the city publishes. 'topics_sv' / 'topics_fi' are plain-language examples WE added to help routing — they are not official remit text. Every body also carries the city registry (kirjaamo) as an always-correct contact route. Source URLs point to paatokset.hel.fi and should be re-verified when the live data-fetch phase (Phase 1) replaces this seed.",
+  "disclaimer_sv": "Detta är ett oberoende verktyg, inte en officiell tjänst från Helsingfors stad. Kontrollera alltid uppgifterna via källänken.",
+  "disclaimer_fi": "Tämä on riippumaton työkalu, ei Helsingin kaupungin virallinen palvelu. Tarkista tiedot aina lähdelinkistä.",
+  "bodies": [
+    {
+      "id": "kaupunkiymparistolautakunta",
+      "name_sv": "Stadsmiljönämnden",
+      "name_fi": "Kaupunkiympäristölautakunta",
+      "remit_sv": "Ansvarar för stadens byggda miljö och trafik: gator och deras underhåll, cykel- och gångvägar, parkering, trafikarrangemang, stadsplanering och detaljplaner, byggnadstillsyn, parker och grönområden samt miljöfrågor.",
+      "remit_fi": "Vastaa kaupungin rakennetusta ympäristöstä ja liikenteestä: kadut ja niiden kunnossapito, pyörä- ja jalankulkuväylät, pysäköinti, liikennejärjestelyt, kaupunkisuunnittelu ja asemakaavat, rakennusvalvonta, puistot ja viheralueet sekä ympäristöasiat.",
+      "topics_sv": ["cykelväg trasig eller saknas", "gropar och dåligt gatuunderhåll", "snöröjning och halkbekämpning", "parkering och parkeringsplatser", "gatubelysning", "trafikljus och övergångsställen", "hastighetsbegränsningar och farthinder", "parker, lekplatser och grönområden", "träd som fälls", "detaljplan och byggande i närområdet", "buller och luftkvalitet"],
+      "topics_fi": ["rikkinäinen tai puuttuva pyörätie", "kuopat ja katujen kunnossapito", "lumenauraus ja liukkaudentorjunta", "pysäköinti ja pysäköintipaikat", "katuvalaistus", "liikennevalot ja suojatiet", "nopeusrajoitukset ja hidasteet", "puistot, leikkipaikat ja viheralueet", "puiden kaataminen", "asemakaava ja lähialueen rakentaminen", "melu ja ilmanlaatu"],
+      "source_url_fi": "https://paatokset.hel.fi/fi/paattajat/kaupunkiymparistolautakunta",
+      "source_url_sv": "https://paatokset.hel.fi/sv/beslutsfattare/stadsmiljonamnden",
+      "registry_email": "helsinki.kirjaamo@hel.fi",
+      "members": [
+        {
+          "name": "Johanna Laisaari",
+          "role_sv": "ordförande (biträdande borgmästare, stadsmiljösektorn)",
+          "role_fi": "puheenjohtaja (apulaispormestari, kaupunkiympäristö)",
+          "party": "SDP",
+          "email": "johanna.laisaari@hel.fi",
+          "phone": null,
+          "source_url": "https://paatokset.hel.fi/fi/paattajat/kaupunkiymparistolautakunta"
+        }
+      ]
+    },
+    {
+      "id": "kasvatus-ja-koulutuslautakunta",
+      "name_sv": "Fostrans- och utbildningsnämnden",
+      "name_fi": "Kasvatus- ja koulutuslautakunta",
+      "remit_sv": "Ansvarar för småbarnspedagogik (dagvård), förskola, grundskola, gymnasier och yrkesutbildning i staden, inklusive skolmat, skolskjuts, elevantagning och skolnätet.",
+      "remit_fi": "Vastaa varhaiskasvatuksesta (päivähoito), esiopetuksesta, peruskoulusta, lukioista ja ammatillisesta koulutuksesta, mukaan lukien kouluruoka, koulukuljetukset, oppilasvalinnat ja kouluverkko.",
+      "topics_sv": ["skolmaten i mitt barns skola", "dagvård och dagisplats", "förskola", "grundskola och undervisning", "gymnasium och yrkesutbildning", "skolskjuts", "klasstorlek och elevantal", "skolans lokaler och inomhusluft", "morgon- och eftermiddagsverksamhet"],
+      "topics_fi": ["kouluruoka lapseni koulussa", "varhaiskasvatus ja päivähoitopaikka", "esiopetus", "peruskoulu ja opetus", "lukio ja ammatillinen koulutus", "koulukuljetus", "luokkakoko ja oppilasmäärä", "koulun tilat ja sisäilma", "aamu- ja iltapäivätoiminta"],
+      "source_url_fi": "https://paatokset.hel.fi/fi/paattajat/kasvatus-ja-koulutuslautakunta",
+      "source_url_sv": "https://paatokset.hel.fi/sv/beslutsfattare/fostrans-och-utbildningsnamnden",
+      "registry_email": "helsinki.kirjaamo@hel.fi",
+      "members": [
+        {
+          "name": "Reetta Vanhanen",
+          "role_sv": "ordförande (biträdande borgmästare, fostran och utbildning)",
+          "role_fi": "puheenjohtaja (apulaispormestari, kasvatus ja koulutus)",
+          "party": "Gröna / Vihreät",
+          "email": "reetta.vanhanen@hel.fi",
+          "phone": null,
+          "source_url": "https://paatokset.hel.fi/fi/paattajat/kasvatus-ja-koulutuslautakunta"
+        }
+      ]
+    },
+    {
+      "id": "kulttuuri-ja-vapaa-aikalautakunta",
+      "name_sv": "Kultur- och fritidsnämnden",
+      "name_fi": "Kulttuuri- ja vapaa-aikalautakunta",
+      "remit_sv": "Ansvarar för kultur, bibliotek, idrott och motion, ungdomsarbete samt friluftsliv: bibliotek, idrottsplatser, simhallar, ungdomsgårdar, kulturhus, evenemang och motionsområden.",
+      "remit_fi": "Vastaa kulttuurista, kirjastoista, liikunnasta, nuorisotyöstä ja ulkoilusta: kirjastot, liikuntapaikat, uimahallit, nuorisotalot, kulttuuritalot, tapahtumat ja ulkoilualueet.",
+      "topics_sv": ["bibliotek och öppettider", "idrottsplatser och motionsområden", "simhall", "konstgräsplan och bollplan", "ungdomsgård", "kultur och evenemang", "friluftsområden och motionsspår", "skridskobana och skidspår"],
+      "topics_fi": ["kirjasto ja aukioloajat", "liikuntapaikat", "uimahalli", "tekonurmi ja pallokenttä", "nuorisotalo", "kulttuuri ja tapahtumat", "ulkoilualueet ja kuntoradat", "luistelurata ja latu"],
+      "source_url_fi": "https://paatokset.hel.fi/fi/paattajat/kulttuuri-ja-vapaa-aikalautakunta",
+      "source_url_sv": "https://paatokset.hel.fi/sv/beslutsfattare/kultur-och-fritidsnamnden",
+      "registry_email": "helsinki.kirjaamo@hel.fi",
+      "members": [
+        {
+          "name": "Paavo Arhinmäki",
+          "role_sv": "ordförande (biträdande borgmästare, kultur och fritid)",
+          "role_fi": "puheenjohtaja (apulaispormestari, kulttuuri ja vapaa-aika)",
+          "party": "Vänsterförbundet / Vasemmistoliitto",
+          "email": "paavo.arhinmaki@hel.fi",
+          "phone": null,
+          "source_url": "https://paatokset.hel.fi/fi/paattajat/kulttuuri-ja-vapaa-aikalautakunta"
+        }
+      ]
+    },
+    {
+      "id": "sosiaali-terveys-ja-pelastuslautakunta",
+      "name_sv": "Social-, hälsovårds- och räddningsnämnden",
+      "name_fi": "Sosiaali-, terveys- ja pelastuslautakunta",
+      "remit_sv": "Ansvarar för social- och hälsovårdstjänster samt räddningsväsendet: hälsostationer, äldreomsorg, barnskydd, socialservice, mun- och tandvård, mentalvård och räddningstjänst.",
+      "remit_fi": "Vastaa sosiaali- ja terveyspalveluista sekä pelastustoimesta: terveysasemat, vanhustenhuolto, lastensuojelu, sosiaalipalvelut, suun terveydenhuolto, mielenterveyspalvelut ja pelastustoimi.",
+      "topics_sv": ["hälsostation och läkartid", "äldreomsorg och hemvård", "socialservice och utkomststöd", "barnskydd", "tandvård", "mentalvård och missbrukarvård", "rådgivning (barn- och mödrarådgivning)", "räddningsväsende och brandsäkerhet"],
+      "topics_fi": ["terveysasema ja lääkäriaika", "vanhustenhuolto ja kotihoito", "sosiaalipalvelut ja toimeentulotuki", "lastensuojelu", "hammashoito", "mielenterveys- ja päihdepalvelut", "neuvola", "pelastustoimi ja paloturvallisuus"],
+      "source_url_fi": "https://paatokset.hel.fi/fi/paattajat/sosiaali-terveys-ja-pelastuslautakunta",
+      "source_url_sv": "https://paatokset.hel.fi/sv/beslutsfattare/social-halsovards-och-raddningsnamnden",
+      "registry_email": "helsinki.kirjaamo@hel.fi",
+      "members": [
+        {
+          "name": "Maarit Vierunen",
+          "role_sv": "ordförande (biträdande borgmästare, social-, hälsovårds- och räddningssektorn)",
+          "role_fi": "puheenjohtaja (apulaispormestari, sosiaali-, terveys- ja pelastustoimi)",
+          "party": "Samlingspartiet / Kokoomus",
+          "email": "maarit.vierunen@hel.fi",
+          "phone": null,
+          "source_url": "https://paatokset.hel.fi/fi/paattajat/sosiaali-terveys-ja-pelastuslautakunta"
+        }
+      ]
+    },
+    {
+      "id": "kaupunginhallitus",
+      "name_sv": "Stadsstyrelsen",
+      "name_fi": "Kaupunginhallitus",
+      "remit_sv": "Leder stadens förvaltning och ekonomi, bereder ärenden till fullmäktige och ansvarar för övergripande frågor som berör hela staden: budget, markpolitik, strategi, personal och ägarstyrning.",
+      "remit_fi": "Johtaa kaupungin hallintoa ja taloutta, valmistelee asiat valtuustolle ja vastaa koko kaupunkia koskevista kokonaisuuksista: talousarvio, maapolitiikka, strategia, henkilöstö ja omistajaohjaus.",
+      "topics_sv": ["stadens budget och ekonomi", "övergripande strategi", "markpolitik och stora projekt", "ärenden som berör hela staden och inte hör till en enskild nämnd"],
+      "topics_fi": ["kaupungin talousarvio ja talous", "kokonaisstrategia", "maapolitiikka ja suuret hankkeet", "koko kaupunkia koskevat asiat, jotka eivät kuulu yksittäiselle lautakunnalle"],
+      "source_url_fi": "https://paatokset.hel.fi/fi/paattajat/kaupunginhallitus",
+      "source_url_sv": "https://paatokset.hel.fi/sv/beslutsfattare/stadsstyrelsen",
+      "registry_email": "helsinki.kirjaamo@hel.fi",
+      "members": [
+        {
+          "name": "Daniel Sazonov",
+          "role_sv": "ordförande (borgmästare)",
+          "role_fi": "puheenjohtaja (pormestari)",
+          "party": "Samlingspartiet / Kokoomus",
+          "email": "daniel.sazonov@hel.fi",
+          "phone": null,
+          "source_url": "https://paatokset.hel.fi/fi/paattajat/kaupunginhallitus"
+        }
+      ]
+    },
+    {
+      "id": "kaupunginvaltuusto",
+      "name_sv": "Stadsfullmäktige",
+      "name_fi": "Kaupunginvaltuusto",
+      "remit_sv": "Stadens högsta beslutande organ. Beslutar om stadens strategi, budget och de största principiella frågorna. Ledamöterna väljs i kommunalvalet.",
+      "remit_fi": "Kaupungin ylin päättävä toimielin. Päättää kaupungin strategiasta, talousarviosta ja suurimmista periaatteellisista kysymyksistä. Valtuutetut valitaan kuntavaaleissa.",
+      "topics_sv": ["stadens strategi och stora principbeslut", "godkännande av budgeten", "frågor som fullmäktige beslutar om på högsta nivå"],
+      "topics_fi": ["kaupungin strategia ja suuret periaatepäätökset", "talousarvion hyväksyminen", "asiat, joista valtuusto päättää ylimmällä tasolla"],
+      "source_url_fi": "https://paatokset.hel.fi/fi/paattajat/kaupunginvaltuusto",
+      "source_url_sv": "https://paatokset.hel.fi/sv/beslutsfattare/stadsfullmaktige",
+      "registry_email": "helsinki.kirjaamo@hel.fi",
+      "members": []
+    }
+  ]
+}
