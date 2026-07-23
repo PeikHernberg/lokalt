@@ -69,7 +69,7 @@ const sv: Strings = {
   error: "Något gick fel. Försök igen om en stund.",
   aboutLink: "Om tjänsten",
   langLabel: "Språk",
-  emptyState: "Skriv en fråga till vänster för att se möjliga organ här.",
+  emptyState: "Skriv en fråga i rutan för att se vilket organ som kunde hjälpa dig.",
 };
 
 const fi: Strings = {
@@ -105,7 +105,7 @@ const fi: Strings = {
   error: "Jokin meni pieleen. Yritä hetken kuluttua uudelleen.",
   aboutLink: "Tietoa palvelusta",
   langLabel: "Kieli",
-  emptyState: "Kirjoita kysymys vasemmalle nähdäksesi mahdolliset toimielimet tässä.",
+  emptyState: "Kirjoita kysymys ruutuun nähdäksesi, mikä toimielin voisi auttaa sinua.",
 };
 
 export function strings(lang: Lang): Strings {
