@@ -33,6 +33,7 @@ export interface Strings {
   error: string;
   aboutLink: string;
   langLabel: string;
+  emptyState: string;
 }
 
 const sv: Strings = {
@@ -68,6 +69,7 @@ const sv: Strings = {
   error: "Något gick fel. Försök igen om en stund.",
   aboutLink: "Om tjänsten",
   langLabel: "Språk",
+  emptyState: "Skriv en fråga till vänster för att se möjliga organ här.",
 };
 
 const fi: Strings = {
@@ -103,6 +105,7 @@ const fi: Strings = {
   error: "Jokin meni pieleen. Yritä hetken kuluttua uudelleen.",
   aboutLink: "Tietoa palvelusta",
   langLabel: "Kieli",
+  emptyState: "Kirjoita kysymys vasemmalle nähdäksesi mahdolliset toimielimet tässä.",
 };
 
 export function strings(lang: Lang): Strings {
