@@ -18,7 +18,7 @@ Hard rules:
 - Structure: (1) who I am and roughly where I live, (2) the concrete problem, (3) what I am asking you to do, (4) a brief thank you.
 - Leave obvious blanks in square brackets where the resident must add specifics, e.g. [din adress] / [osoitteesi], [gatans namn] / [kadun nimi]. Do not invent an address, a street, or personal details.
 - Do NOT sign the email with a real name — end with a neutral placeholder like "[Ditt namn]" / "[Nimesi]".
-- NEVER mention "Lokalt", this tool, or that the email was drafted by anyone but the resident.
+- NEVER mention "Helppo", this tool, or that the email was drafted by anyone but the resident.
 
 Return ONLY valid JSON, no prose and no markdown fences, in exactly this shape:
 { "subject": "...", "body": "..." }`;

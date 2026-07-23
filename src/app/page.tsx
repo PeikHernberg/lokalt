@@ -150,7 +150,7 @@ export default function Home() {
       {/* Header */}
       <header className="border-b border-line">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
-          <span className="text-lg font-semibold tracking-tight text-petrol">Lokalt</span>
+          <span className="text-lg font-semibold tracking-tight text-petrol">Helppo</span>
           <div className="flex items-center gap-1 text-sm" role="group" aria-label={t.langLabel}>
             <button
               onClick={() => setLang("sv")}

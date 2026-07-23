@@ -1,8 +1,8 @@
-# Lokalt
+# Helppo
 
 A small civic tool for Helsinki residents. You type a real-world problem in your
 own words — _"cykelvägen utanför mitt hus är trasig"_, _"skolmaten i min dotters
-skola"_ — and Lokalt answers three questions:
+skola"_ — and Helppo answers three questions:
 
 1. **Which body decides this?** (which lautakunta / nämnd)
 2. **Who to contact** — the chair (a published office-holder) and the city
@@ -10,7 +10,7 @@ skola"_ — and Lokalt answers three questions:
 3. **What to write** — a short, polite draft email you edit and send from your
    own mail app.
 
-Lokalt never sends email. It builds a `mailto:` link that opens your own mail
+Helppo never sends email. It builds a `mailto:` link that opens your own mail
 client with everything pre-filled. No accounts, no login, no tracking, no
 cookies.
 
@@ -81,7 +81,7 @@ npm run dev
 
 Then open **http://localhost:3000** in your browser.
 
-That's it. Type a problem, pick a body, and Lokalt drafts the email.
+That's it. Type a problem, pick a body, and Helppo drafts the email.
 
 ---
 

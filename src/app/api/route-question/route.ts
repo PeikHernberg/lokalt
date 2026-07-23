@@ -19,7 +19,7 @@ interface RoutingResult {
   national: boolean;
 }
 
-const SYSTEM = `You are the routing engine for "Lokalt", a tool that helps Helsinki residents find which municipal body decides on an everyday problem.
+const SYSTEM = `You are the routing engine for "Helppo", a tool that helps Helsinki residents find which municipal body decides on an everyday problem.
 
 You are given the resident's question and the FULL list of available bodies (with id, name, remit and example topics). Follow these rules strictly:
 

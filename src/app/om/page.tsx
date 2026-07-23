@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Om tjänsten — Lokalt",
+  title: "Om tjänsten — Helppo",
 };
 
 export default function OmPage() {
@@ -16,7 +16,7 @@ export default function OmPage() {
 
       <section className="mt-6 space-y-3 text-[15px] leading-relaxed">
         <p>
-          <strong>Lokalt</strong> är ett oberoende, ideellt verktyg. Det är{" "}
+          <strong>Helppo</strong> är ett oberoende, ideellt verktyg. Det är{" "}
           <strong>inte</strong> en officiell tjänst från Helsingfors stad och
           drivs inte av staden.
         </p>
@@ -58,7 +58,7 @@ export default function OmPage() {
       <h2 className="text-xl font-semibold text-petrol">Tietoa palvelusta</h2>
       <section className="mt-4 space-y-3 text-[15px] leading-relaxed">
         <p>
-          <strong>Lokalt</strong> on riippumaton, ei-kaupallinen työkalu. Se{" "}
+          <strong>Helppo</strong> on riippumaton, ei-kaupallinen työkalu. Se{" "}
           <strong>ei ole</strong> Helsingin kaupungin virallinen palvelu.
         </p>
         <p>
