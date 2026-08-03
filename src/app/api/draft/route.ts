@@ -4,12 +4,14 @@ import type { Lang } from "@/lib/bodies";
 
 export const runtime = "nodejs";
 
+type DraftMode = "policy" | "agenda";
+
 interface DraftResult {
   subject: string;
   body: string;
 }
 
-const SYSTEM = `You write a short, polite, factual draft email for a Helsinki resident to send to a municipal decision-maker. You write in the FIRST PERSON as the resident.
+const SYSTEM_POLICY = `You write a short, polite, factual draft email for a Helsinki resident to send to a municipal decision-maker. You write in the FIRST PERSON as the resident.
 
 Hard rules:
 - Language: write ENTIRELY in the requested language (Swedish or Finnish).
@@ -23,12 +25,28 @@ Hard rules:
 Return ONLY valid JSON, no prose and no markdown fences, in exactly this shape:
 { "subject": "...", "body": "..." }`;
 
+const SYSTEM_AGENDA = `You write a short, factual starting text for a Helsinki resident who wants to raise a brand-new idea the city has not considered yet — e.g. for a citizens' initiative, an OmaStadi participatory-budgeting proposal, or a note to a city councillor. You write in the FIRST PERSON as the resident. There is no fixed recipient — the resident will paste this text wherever they end up submitting it.
+
+Hard rules:
+- Language: write ENTIRELY in the requested language (Swedish or Finnish).
+- Length: under 150 words. Short, clear proposals get read; long ones do not.
+- Tone: factual and constructive. No outrage, no demands, no flattery, no threats.
+- Structure: (1) the idea or proposal in one or two sentences, (2) why it would help, in concrete terms, (3) a brief, neutral closing sentence.
+- Do NOT address it "Dear ..." or name any recipient — it has none yet.
+- Leave obvious blanks in square brackets where the resident must add specifics, e.g. [din adress] / [osoitteesi], [gatans namn] / [kadun nimi]. Do not invent an address, a street, or personal details.
+- Do NOT sign with a real name — end with a neutral placeholder like "[Ditt namn]" / "[Nimesi]", if a closing is needed at all.
+- NEVER mention "Lokalt", this tool, or that the text was drafted by anyone but the resident.
+
+Return ONLY valid JSON, no prose and no markdown fences, in exactly this shape:
+{ "subject": "...", "body": "..." }`;
+
 export async function POST(req: NextRequest) {
   let question = "";
   let lang: Lang = "sv";
   let bodyName = "";
   let recipientName = "";
   let recipientRole = "";
+  let mode: DraftMode = "policy";
   try {
     const b = await req.json();
     question = String(b.question ?? "").trim();
@@ -36,20 +54,34 @@ export async function POST(req: NextRequest) {
     bodyName = String(b.bodyName ?? "").trim();
     recipientName = String(b.recipientName ?? "").trim();
     recipientRole = String(b.recipientRole ?? "").trim();
+    mode = b.mode === "agenda" ? "agenda" : "policy";
   } catch {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
 
-  if (!question || !bodyName) {
+  if (!question) {
+    return NextResponse.json({ error: "bad_request" }, { status: 400 });
+  }
+  if (mode === "policy" && !bodyName) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
 
-  const recipientLine = recipientName
-    ? `Recipient: ${recipientName}${recipientRole ? ` (${recipientRole})` : ""}, at the body "${bodyName}".`
-    : `Recipient: the city registry, addressed to the body "${bodyName}".`;
+  const userContent =
+    mode === "agenda"
+      ? `Language to write in: ${lang}
 
-  const userContent = `Language to write in: ${lang}
-${recipientLine}
+The resident described their idea in their own words:
+"""
+${question}
+"""
+
+Write the subject and body of the starting text.`
+      : `Language to write in: ${lang}
+${
+  recipientName
+    ? `Recipient: ${recipientName}${recipientRole ? ` (${recipientRole})` : ""}, at the body "${bodyName}".`
+    : `Recipient: the city registry, addressed to the body "${bodyName}".`
+}
 
 The resident described their problem in their own words:
 """
@@ -64,7 +96,7 @@ Write the subject and body of the email.`;
       model: MODEL,
       max_tokens: 1024,
       thinking: { type: "disabled" },
-      system: SYSTEM,
+      system: mode === "agenda" ? SYSTEM_AGENDA : SYSTEM_POLICY,
       messages: [{ role: "user", content: userContent }],
     });
 

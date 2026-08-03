@@ -1,45 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getClient, MODEL, firstText, parseJsonLoose } from "@/lib/anthropic";
+import { CLASSIFY_SYSTEM } from "@/lib/classify-prompt";
 import { bodiesForPrompt, type Lang } from "@/lib/bodies";
 
 export const runtime = "nodejs";
 
-interface Match {
-  body_id: string;
-  confidence: "high" | "medium" | "low";
-  reason_sv: string;
-  reason_fi: string;
+export type Track = "operational" | "policy" | "statutory" | "agenda";
+
+interface ClassifyResult {
+  track: Track;
+  body_id: string | null;
+  confidence: "high" | "low";
+  sensitive: boolean;
 }
 
-interface RoutingResult {
-  matches: Match[];
-  unclear: boolean;
-  clarifying_question_sv: string | null;
-  clarifying_question_fi: string | null;
-  national: boolean;
-}
-
-const SYSTEM = `You are the routing engine for "Lokalt", a tool that helps Helsinki residents find which municipal body decides on an everyday problem.
-
-You are given the resident's question and the FULL list of available bodies (with id, name, remit and example topics). Follow these rules strictly:
-
-- Choose only from the supplied list. NEVER invent a body or an id that is not in the list.
-- Return at most three matches, best first.
-- If the question is too vague to route confidently (e.g. just "the school" / "skolan"), set "unclear": true and supply one short clarifying question (in both Swedish and Finnish). In that case return an empty "matches" array.
-- If the question is clearly about a NATIONAL matter, not a municipal one (e.g. taxes, immigration law, national healthcare legislation, courts, police criminal matters), set "national": true and return an empty "matches" array. This is a legitimate, useful answer.
-- confidence is "high", "medium" or "low". If confidence is not high, prefer returning 2–3 candidates so the user can choose.
-- reason_sv and reason_fi are ONE short plain-language sentence each, explaining why this body is responsible, written for an ordinary resident.
-
-Return ONLY valid JSON, no prose and no markdown fences, in exactly this shape:
-{
-  "matches": [
-    { "body_id": "...", "confidence": "high|medium|low", "reason_sv": "...", "reason_fi": "..." }
-  ],
-  "unclear": false,
-  "clarifying_question_sv": null,
-  "clarifying_question_fi": null,
-  "national": false
-}`;
+const VALID_TRACKS: Track[] = ["operational", "policy", "statutory", "agenda"];
 
 export async function POST(req: NextRequest) {
   let question: string;
@@ -56,31 +31,44 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "empty_question" }, { status: 400 });
   }
 
-  const userContent = `Resident's question (language: ${lang}):
+  const userContent = `Resident's text (language: ${lang}):
 """
 ${question}
 """
 
-Available bodies:
+Available bodies (reference only — use only if track is "policy"):
 ${bodiesForPrompt(lang)}`;
 
   try {
     const client = getClient();
     const message = await client.messages.create({
       model: MODEL,
-      max_tokens: 1024,
+      max_tokens: 512,
       thinking: { type: "disabled" },
-      system: SYSTEM,
+      system: CLASSIFY_SYSTEM,
       messages: [{ role: "user", content: userContent }],
     });
 
-    const result = parseJsonLoose<RoutingResult>(firstText(message));
+    const result = parseJsonLoose<ClassifyResult>(firstText(message));
 
-    // Defensive: drop any match whose body_id is not one we actually know.
-    // The model must never surface an id we can't look up in our own data.
-    const { BODIES } = await import("@/lib/bodies");
-    const knownIds = new Set(BODIES.map((b) => b.id));
-    result.matches = (result.matches ?? []).filter((m) => knownIds.has(m.body_id)).slice(0, 3);
+    if (!VALID_TRACKS.includes(result.track)) {
+      throw new Error("model returned an unknown track");
+    }
+
+    // Defensive: body_id must be null unless track is "policy", and must be
+    // a real, known id. The model must never surface an id we can't look up.
+    if (result.track !== "policy") {
+      result.body_id = null;
+    } else if (result.body_id) {
+      const { BODIES } = await import("@/lib/bodies");
+      const knownIds = new Set(BODIES.map((b) => b.id));
+      if (!knownIds.has(result.body_id)) {
+        result.body_id = null;
+      }
+    }
+
+    result.confidence = result.confidence === "high" ? "high" : "low";
+    result.sensitive = result.sensitive === true;
 
     return NextResponse.json(result);
   } catch (err) {

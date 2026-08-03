@@ -14,19 +14,13 @@ import {
 } from "@/lib/bodies";
 import { strings } from "@/lib/i18n";
 
-interface Match {
-  body_id: string;
-  confidence: "high" | "medium" | "low";
-  reason_sv: string;
-  reason_fi: string;
-}
+type Track = "operational" | "policy" | "statutory" | "agenda";
 
-interface RoutingResult {
-  matches: Match[];
-  unclear: boolean;
-  clarifying_question_sv: string | null;
-  clarifying_question_fi: string | null;
-  national: boolean;
+interface ClassifyResult {
+  track: Track;
+  body_id: string | null;
+  confidence: "high" | "low";
+  sensitive: boolean;
 }
 
 interface Recipient {
@@ -39,8 +33,13 @@ interface Recipient {
 interface Draft {
   subject: string;
   body: string;
-  recipient: Recipient;
+  // null for the "agenda" track, which has no fixed recipient.
+  recipient: Recipient | null;
 }
+
+const FELANMALAN_URL = "https://palautteet.hel.fi/";
+const OMASTADI_URL = "https://omastadi.hel.fi/";
+const KUNTALAISALOITE_URL = "https://www.kuntalaisaloite.fi/";
 
 function mailtoHref(email: string, subject: string, body: string): string {
   return `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(
@@ -54,7 +53,7 @@ export default function Home() {
 
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
-  const [routing, setRouting] = useState<RoutingResult | null>(null);
+  const [classification, setClassification] = useState<ClassifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [drafting, setDrafting] = useState(false);
@@ -66,7 +65,7 @@ export default function Home() {
     if (!question.trim()) return;
     setLoading(true);
     setError(null);
-    setRouting(null);
+    setClassification(null);
     setDraft(null);
     try {
       const res = await fetch("/api/route-question", {
@@ -75,7 +74,7 @@ export default function Home() {
         body: JSON.stringify({ question, lang }),
       });
       if (!res.ok) throw new Error("request failed");
-      setRouting((await res.json()) as RoutingResult);
+      setClassification((await res.json()) as ClassifyResult);
     } catch {
       setError(t.error);
     } finally {
@@ -95,6 +94,7 @@ export default function Home() {
         body: JSON.stringify({
           question,
           lang,
+          mode: "policy",
           bodyName: bodyName(body, lang),
           recipientName: recipient.name,
           recipientRole: recipient.role,
@@ -103,15 +103,40 @@ export default function Home() {
       if (!res.ok) throw new Error("request failed");
       const data = (await res.json()) as { subject: string; body: string };
       setDraft({ subject: data.subject, body: data.body, recipient });
-      // Bring the draft into view on mobile.
-      setTimeout(() => {
-        document.getElementById("draft")?.scrollIntoView({ behavior: "smooth" });
-      }, 50);
+      scrollToDraft();
     } catch {
       setError(t.error);
     } finally {
       setDrafting(false);
     }
+  }
+
+  async function handleAgendaDraft() {
+    setDrafting(true);
+    setError(null);
+    setDraft(null);
+    setCopied(false);
+    try {
+      const res = await fetch("/api/draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question, lang, mode: "agenda" }),
+      });
+      if (!res.ok) throw new Error("request failed");
+      const data = (await res.json()) as { subject: string; body: string };
+      setDraft({ subject: data.subject, body: data.body, recipient: null });
+      scrollToDraft();
+    } catch {
+      setError(t.error);
+    } finally {
+      setDrafting(false);
+    }
+  }
+
+  function scrollToDraft() {
+    setTimeout(() => {
+      document.getElementById("draft")?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
   }
 
   function handleCopy() {
@@ -123,19 +148,22 @@ export default function Home() {
     });
   }
 
-  const confidenceLabel = (c: Match["confidence"]) =>
-    c === "high" ? t.confidenceHigh : c === "medium" ? t.confidenceMedium : t.confidenceLow;
+  function startOver() {
+    setDraft(null);
+    setClassification(null);
+    setQuestion("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
-  const confidenceClass = (c: Match["confidence"]) =>
-    c === "high"
-      ? "bg-petrol text-white"
-      : c === "medium"
-        ? "bg-amber-100 text-amber-900"
-        : "bg-neutral-200 text-neutral-700";
-
-  const hasMatches = routing && routing.matches.length > 0;
-  const uncertain =
-    routing && (routing.unclear || routing.matches.some((m) => m.confidence !== "high") || routing.matches.length > 1);
+  // The statutory branch also covers any track flagged "sensitive" —
+  // personal/health/social-care content must never reach a named
+  // office-holder, regardless of which track it was classified into.
+  const showStatutory =
+    classification && (classification.track === "statutory" || classification.sensitive);
+  const showOperational = classification && !showStatutory && classification.track === "operational";
+  const showPolicy = classification && !showStatutory && classification.track === "policy";
+  const showAgenda = classification && !showStatutory && classification.track === "agenda";
+  const policyBody = showPolicy && classification.body_id ? getBody(classification.body_id) : undefined;
 
   return (
     <div className="min-h-screen">
@@ -193,52 +221,98 @@ export default function Home() {
         )}
 
         {/* 2. RESULT */}
-        {routing && (
+        {classification && (
           <section className="mt-10">
-            {/* National matter */}
-            {routing.national && (
-              <div className="rounded-lg border border-line bg-white px-4 py-4 text-[15px]">
-                {t.nationalNote}
+            {/* statutory — and anything flagged sensitive, regardless of track */}
+            {showStatutory && (
+              <div className="rounded-xl border border-line bg-white p-5">
+                <h2 className="text-base font-semibold text-petrol">{t.statutoryHeading}</h2>
+                <p className="mt-2 text-[15px] text-neutral-700">{t.statutoryExplain}</p>
               </div>
             )}
 
-            {/* Too vague — clarifying question */}
-            {routing.unclear && !hasMatches && (
-              <div className="rounded-lg border border-line bg-white px-4 py-4">
-                <h2 className="font-medium">{t.clarifyHeading}</h2>
-                <p className="mt-1 text-[15px] text-neutral-700">
-                  {lang === "sv" ? routing.clarifying_question_sv : routing.clarifying_question_fi}
-                </p>
+            {/* operational — feedback service, no committee involved */}
+            {showOperational && (
+              <div className="rounded-xl border border-line bg-white p-5">
+                <h2 className="text-base font-semibold text-petrol">{t.operationalHeading}</h2>
+                <p className="mt-2 text-[15px] text-neutral-700">{t.operationalExplain}</p>
+                <a
+                  href={FELANMALAN_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-block rounded-lg bg-petrol px-5 py-3 font-medium text-white transition hover:bg-petrol-dark"
+                >
+                  {t.operationalButton}
+                </a>
+                {classification.confidence === "low" && (
+                  <p className="mt-4 border-t border-line pt-4 text-sm text-neutral-600">
+                    {t.operationalLowConfidenceNote}
+                  </p>
+                )}
               </div>
             )}
 
-            {hasMatches && (
+            {/* policy — a single committee/body, same card as before */}
+            {showPolicy && (
               <>
                 <h2 className="text-lg font-medium">{t.resultHeading}</h2>
-                {uncertain && (
-                  <p className="mt-1 text-sm text-neutral-600">{t.uncertainNote}</p>
+                {classification.confidence === "low" && (
+                  <p className="mt-1 text-sm text-neutral-600">{t.policyLowConfidenceNote}</p>
                 )}
-                <div className="mt-4 space-y-4">
-                  {routing.matches.map((m) => {
-                    const body = getBody(m.body_id);
-                    if (!body) return null;
-                    const reason = lang === "sv" ? m.reason_sv : m.reason_fi;
-                    return (
-                      <BodyCard
-                        key={m.body_id}
-                        body={body}
-                        reason={reason}
-                        confidence={confidenceLabel(m.confidence)}
-                        confidenceClass={confidenceClass(m.confidence)}
-                        lang={lang}
-                        t={t}
-                        onWrite={handleWrite}
-                        drafting={drafting}
-                      />
-                    );
-                  })}
-                </div>
+                {policyBody ? (
+                  <div className="mt-4">
+                    <BodyCard
+                      body={policyBody}
+                      lang={lang}
+                      t={t}
+                      onWrite={handleWrite}
+                      drafting={drafting}
+                    />
+                  </div>
+                ) : (
+                  <p className="mt-4 rounded-lg border border-line bg-white px-4 py-4 text-[15px] text-neutral-700">
+                    {t.policyLowConfidenceNote}
+                  </p>
+                )}
               </>
+            )}
+
+            {/* agenda — a new idea, not yet on the city's agenda */}
+            {showAgenda && (
+              <div className="rounded-xl border border-line bg-white p-5">
+                <h2 className="text-base font-semibold text-petrol">{t.agendaHeading}</h2>
+                <p className="mt-2 text-[15px] text-neutral-700">{t.agendaExplain}</p>
+                <ul className="mt-3 space-y-2 text-[15px]">
+                  <li>
+                    <a
+                      href={OMASTADI_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-petrol underline underline-offset-2"
+                    >
+                      {t.agendaOmaStadi}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href={KUNTALAISALOITE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-petrol underline underline-offset-2"
+                    >
+                      {t.agendaInitiative}
+                    </a>
+                  </li>
+                  <li className="text-neutral-700">{t.agendaCouncillor}</li>
+                </ul>
+                <button
+                  onClick={handleAgendaDraft}
+                  disabled={drafting}
+                  className="mt-4 rounded-lg bg-petrol px-5 py-3 font-medium text-white transition hover:bg-petrol-dark disabled:opacity-50"
+                >
+                  {drafting ? t.drafting : t.agendaDraftButton}
+                </button>
+              </div>
             )}
           </section>
         )}
@@ -246,17 +320,23 @@ export default function Home() {
         {/* 3. DRAFT */}
         {draft && (
           <section id="draft" className="mt-12 scroll-mt-6">
-            <h2 className="text-lg font-medium">{t.draftHeading}</h2>
-            <p className="mt-1 text-sm text-neutral-600">{t.draftIntro}</p>
+            <h2 className="text-lg font-medium">
+              {draft.recipient ? t.draftHeading : t.agendaDraftHeading}
+            </h2>
+            <p className="mt-1 text-sm text-neutral-600">
+              {draft.recipient ? t.draftIntro : t.agendaDraftIntro}
+            </p>
 
             <div className="mt-4 rounded-lg border border-line bg-white p-4">
-              <p className="text-sm text-neutral-600">
-                {t.recipientLabel}:{" "}
-                <span className="font-medium text-ink">
-                  {draft.recipient.name ? `${draft.recipient.name} — ` : ""}
-                  {draft.recipient.email}
-                </span>
-              </p>
+              {draft.recipient && (
+                <p className="text-sm text-neutral-600">
+                  {t.recipientLabel}:{" "}
+                  <span className="font-medium text-ink">
+                    {draft.recipient.name ? `${draft.recipient.name} — ` : ""}
+                    {draft.recipient.email}
+                  </span>
+                </p>
+              )}
 
               <label className="mt-4 block text-sm font-medium">{t.subjectLabel}</label>
               <input
@@ -274,12 +354,14 @@ export default function Home() {
               />
 
               <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-                <a
-                  href={mailtoHref(draft.recipient.email, draft.subject, draft.body)}
-                  className="rounded-lg bg-petrol px-5 py-3 text-center font-medium text-white transition hover:bg-petrol-dark"
-                >
-                  {t.openMail}
-                </a>
+                {draft.recipient && (
+                  <a
+                    href={mailtoHref(draft.recipient.email, draft.subject, draft.body)}
+                    className="rounded-lg bg-petrol px-5 py-3 text-center font-medium text-white transition hover:bg-petrol-dark"
+                  >
+                    {t.openMail}
+                  </a>
+                )}
                 <button
                   onClick={handleCopy}
                   className="rounded-lg border border-line px-5 py-3 font-medium text-ink transition hover:bg-neutral-50"
@@ -290,12 +372,7 @@ export default function Home() {
             </div>
 
             <button
-              onClick={() => {
-                setDraft(null);
-                setRouting(null);
-                setQuestion("");
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
+              onClick={startOver}
               className="mt-6 text-sm text-petrol underline underline-offset-4"
             >
               {t.startOver}
@@ -323,18 +400,12 @@ export default function Home() {
 
 function BodyCard({
   body,
-  reason,
-  confidence,
-  confidenceClass,
   lang,
   t,
   onWrite,
   drafting,
 }: {
   body: Body;
-  reason: string;
-  confidence: string;
-  confidenceClass: string;
   lang: Lang;
   t: ReturnType<typeof strings>;
   onWrite: (body: Body, recipient: Recipient) => void;
@@ -342,17 +413,8 @@ function BodyCard({
 }) {
   return (
     <article className="rounded-xl border border-line bg-white p-5">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-base font-semibold text-petrol">{bodyName(body, lang)}</h3>
-        <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${confidenceClass}`}>
-          {confidence}
-        </span>
-      </div>
-
-      <p className="mt-2 text-[15px] text-neutral-700">
-        <span className="font-medium">{t.whyLabel}: </span>
-        {reason}
-      </p>
+      <h3 className="text-base font-semibold text-petrol">{bodyName(body, lang)}</h3>
+      <p className="mt-2 text-[15px] text-neutral-700">{bodyRemit(body, lang)}</p>
 
       {/* Named members (chair) */}
       {body.members.map((member: Member, i) => (
