@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function OmPage() {
   return (
     <main className="mx-auto max-w-2xl px-5 py-12">
-      <Link href="/" className="text-sm text-petrol underline underline-offset-4">
+      <Link href="/app" className="text-sm text-petrol underline underline-offset-4">
         ← Tillbaka
       </Link>
 
