@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     question = String(body.question ?? "").trim();
-    lang = body.lang === "fi" ? "fi" : "sv";
+    lang = body.lang === "fi" ? "fi" : body.lang === "en" ? "en" : "sv";
   } catch {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }

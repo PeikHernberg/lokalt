@@ -1,0 +1,16 @@
+{
+  "name": "Lokalt",
+  "short_name": "Lokalt",
+  "description": "Beskriv problemet. Lokalt hittar rätt väg framåt i Helsingfors.",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#f7f6f3",
+  "theme_color": "#4c6c95",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

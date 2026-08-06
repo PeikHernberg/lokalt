@@ -186,6 +186,13 @@ export default function Home() {
             >
               FI
             </button>
+            <button
+              onClick={() => setLang("en")}
+              className={`rounded px-2 py-1 ${lang === "en" ? "bg-petrol text-white" : "text-neutral-600"}`}
+              aria-pressed={lang === "en"}
+            >
+              EN
+            </button>
           </div>
         </div>
       </header>
@@ -387,11 +394,7 @@ export default function Home() {
           <Link href="/om" className="text-petrol underline underline-offset-4">
             {t.aboutLink}
           </Link>
-          <p className="mt-2 text-xs leading-relaxed text-neutral-500">
-            {lang === "sv"
-              ? "Oberoende verktyg, inte en officiell tjänst från Helsingfors stad. AI:n kan ha fel — kontrollera alltid källänken."
-              : "Riippumaton työkalu, ei Helsingin kaupungin virallinen palvelu. Tekoäly voi erehtyä — tarkista aina lähdelinkki."}
-          </p>
+          <p className="mt-2 text-xs leading-relaxed text-neutral-500">{t.footerDisclaimer}</p>
         </div>
       </footer>
     </div>

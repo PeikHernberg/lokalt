@@ -33,6 +33,7 @@ export interface Strings {
   error: string;
   aboutLink: string;
   langLabel: string;
+  footerDisclaimer: string;
 
   // Operational track
   operationalHeading: string;
@@ -91,6 +92,8 @@ const sv: Strings = {
   error: "Något gick fel. Försök igen om en stund.",
   aboutLink: "Om tjänsten",
   langLabel: "Språk",
+  footerDisclaimer:
+    "Oberoende verktyg, inte en officiell tjänst från Helsingfors stad. AI:n kan ha fel — kontrollera alltid källänken.",
 
   operationalHeading: "Det här är ett praktiskt fel, inte ett beslut",
   operationalExplain:
@@ -151,6 +154,8 @@ const fi: Strings = {
   error: "Jokin meni pieleen. Yritä hetken kuluttua uudelleen.",
   aboutLink: "Tietoa palvelusta",
   langLabel: "Kieli",
+  footerDisclaimer:
+    "Riippumaton työkalu, ei Helsingin kaupungin virallinen palvelu. Tekoäly voi erehtyä — tarkista aina lähdelinkki.",
 
   operationalHeading: "Tämä on käytännön vika, ei päätös",
   operationalExplain:
@@ -178,6 +183,68 @@ const fi: Strings = {
     "Muokkaa vapaasti. Täytä [ ]-kohdat. Liitä teksti sitten sinne, minne haluat sen jättää.",
 };
 
+const en: Strings = {
+  tagline: "Describe an everyday problem. We'll show you who in Helsinki decides on it and help you write an email.",
+  askHeading: "What's your question about?",
+  askPlaceholder: "E.g. \"the bike path outside my house is broken\" or \"school meals at my daughter's school\"",
+  askButton: "Find the right body",
+  thinking: "Finding the right body …",
+  drafting: "Writing a draft …",
+  resultHeading: "Responsible body",
+  whyLabel: "Why",
+  confidenceHigh: "Confident",
+  confidenceMedium: "Fairly confident",
+  confidenceLow: "Uncertain",
+  uncertainNote: "We're not entirely sure. Here are the most likely bodies — pick whichever fits best.",
+  nationalNote: "This looks like a national matter, not a municipal one. The City of Helsinki likely doesn't decide on this.",
+  clarifyHeading: "One quick follow-up question",
+  chairBadge: "Chair",
+  registryLabel: "City registry (kirjaamo)",
+  registryHint: "Address your matter to the body above. The registry forwards it, and it becomes an official document.",
+  source: "Source: paatokset.hel.fi",
+  noEmail: "No personal email published. Use the registry below.",
+  writeButton: "Write an email to this recipient",
+  draftHeading: "Your draft",
+  draftIntro: "Edit freely. Fill in anything shown in [ ]. Then open it in your email app.",
+  subjectLabel: "Subject",
+  bodyLabel: "Message",
+  recipientLabel: "Recipient",
+  openMail: "Open in email app",
+  copy: "Copy text",
+  copied: "Copied!",
+  startOver: "Start over",
+  error: "Something went wrong. Please try again shortly.",
+  aboutLink: "About the service",
+  langLabel: "Language",
+  footerDisclaimer:
+    "Independent tool, not an official service of the City of Helsinki. The AI can be wrong — always check the source link.",
+
+  operationalHeading: "This is a practical fault, not a decision",
+  operationalExplain:
+    "Things like this — broken bike paths, dead streetlights, graffiti, snow — get fixed through the city's fault-report service, not a committee.",
+  operationalButton: "Report it at palautteet.hel.fi",
+  operationalLowConfidenceNote:
+    "If instead you want the city to decide something differently — build something new, change a rule, fund something — that's a different path. Describe what you want the city to decide, and we'll find the right committee.",
+
+  policyLowConfidenceNote:
+    "We're not entirely sure this is the right body. Feel free to describe what you want the city to decide if something looks off.",
+
+  statutoryHeading: "This matter has a statutory process",
+  statutoryExplain:
+    "This concerns a decision already made, or your own care, treatment, or how you were treated — matters like this are handled through a statutory process with deadlines (e.g. a request for rectification, a patient ombudsman, or a social ombudsman), not by a politician or committee.",
+
+  agendaHeading: "A new idea for the city",
+  agendaExplain:
+    "This looks like an entirely new matter the city isn't already considering. Here are some ways to take it forward:",
+  agendaOmaStadi: "OmaStadi — propose and vote on budget items in your area (omastadi.hel.fi)",
+  agendaInitiative: "Residents' initiative — gather support for your idea (kuntalaisaloite.fi)",
+  agendaCouncillor: "Ask a city councillor to raise the matter in the city council",
+  agendaDraftButton: "Help me write a starting text",
+  agendaDraftHeading: "Your starting text",
+  agendaDraftIntro:
+    "Edit freely. Fill in anything shown in [ ]. Then paste the text wherever you want to submit it.",
+};
+
 export function strings(lang: Lang): Strings {
-  return lang === "sv" ? sv : fi;
+  return lang === "sv" ? sv : lang === "en" ? en : fi;
 }

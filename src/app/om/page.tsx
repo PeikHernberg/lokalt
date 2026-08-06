@@ -88,6 +88,45 @@ export default function OmPage() {
         </p>
         <p>Ei kirjautumista, ei tilejä, ei seurantaa, ei evästeitä.</p>
       </section>
+
+      <hr className="my-8 border-line" />
+
+      <h2 className="text-xl font-semibold text-petrol">About the service</h2>
+      <section className="mt-4 space-y-3 text-[15px] leading-relaxed">
+        <p>
+          <strong>Lokalt</strong> is an independent, non-commercial tool. It is{" "}
+          <strong>not</strong> an official service of the City of Helsinki and is not
+          run by the city.
+        </p>
+        <p>
+          All information about bodies and decision-makers comes from the city&apos;s
+          public decision pages at{" "}
+          <a
+            href="https://paatokset.hel.fi"
+            className="text-petrol underline underline-offset-4"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            paatokset.hel.fi
+          </a>
+          . Every card shows a source link so you can check the details yourself.
+        </p>
+        <p>
+          The tool uses an AI model to guess which body is responsible and to write a
+          draft email. <strong>The AI can be wrong.</strong> It only picks from bodies
+          we&apos;ve already gathered — it never invents a name or an email address — but
+          it can pick the wrong body. Always check the source link before sending
+          anything.
+        </p>
+        <p>
+          We never send emails on your behalf. The button opens your own email app with
+          the text filled in. You read it, edit it, and send it yourself.
+        </p>
+        <p>
+          No login, no accounts, no tracking, and no cookies. What you write is sent to
+          our server only to find the right body and create a draft.
+        </p>
+      </section>
     </main>
   );
 }
