@@ -46,7 +46,7 @@ const COPY: Record<Lang, Copy> = {
     heroLine1: "Beskriv problemet.",
     heroLine2: "Vi hittar rätt väg framåt.",
     heroParagraph:
-      "Lokalt läser vad du skriver och avgör vilken väg som passar: en snabb felanmälan, ett mejl till rätt nämnd, rätt instans för ett redan fattat beslut, eller rätt kanal för en ny idé.",
+      "Du ska inte behöva kunna stadens organisation för att bli hörd. Beskriv ditt ärende med egna ord, så visar Lokalt vart det hör hemma – felanmälan, rätt nämnd, rätt rättslig väg eller en kanal för nya idéer – och hjälper dig ta första steget.",
     free: "Gratis. Inget konto behövs.",
     s01Heading: "01 · Varför Lokalt finns",
     s01Paragraph:
@@ -100,7 +100,7 @@ const COPY: Record<Lang, Copy> = {
     heroLine1: "Kuvaile ongelma.",
     heroLine2: "Me löydämme oikean väylän eteenpäin.",
     heroParagraph:
-      "Lokalt lukee kirjoittamasi ja päättää, mikä väylä sopii: nopea palaute, sähköposti oikealle lautakunnalle, oikea taho jo tehdylle päätökselle tai oikea kanava uudelle idealle.",
+      "Sinun ei tarvitse tuntea kaupungin organisaatiota tullaksesi kuulluksi. Kuvaile asiasi omin sanoin, niin Lokalt näyttää, minne se kuuluu – palautepalveluun, oikealle lautakunnalle, oikealle oikeudelliselle väylälle tai uuden idean kanavaan – ja auttaa ottamaan ensimmäisen askeleen.",
     free: "Ilmainen. Ei tiliä tarvita.",
     s01Heading: "01 · Miksi Lokalt on olemassa",
     s01Paragraph:
@@ -154,7 +154,7 @@ const COPY: Record<Lang, Copy> = {
     heroLine1: "Describe the problem.",
     heroLine2: "We'll find the right way forward.",
     heroParagraph:
-      "Lokalt reads what you write and works out which path fits: a quick fault report, an email to the right committee, the right channel for a decision already made, or the right route for a new idea.",
+      "You shouldn't need to know how the city is organised to be heard. Describe your issue in your own words, and Lokalt shows where it belongs – the fault-report service, the right committee, the right legal route, or a channel for new ideas – and helps you take the first step.",
     free: "Free. No account needed.",
     s01Heading: "01 · Why Lokalt exists",
     s01Paragraph:
