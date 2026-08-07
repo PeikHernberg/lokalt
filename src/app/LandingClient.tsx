@@ -46,7 +46,7 @@ const COPY: Record<Lang, Copy> = {
     heroLine1: "Beskriv problemet.",
     heroLine2: "Vi hittar rätt väg framåt.",
     heroParagraph:
-      "Du ska inte behöva kunna stadens organisation för att bli hörd. Beskriv ditt ärende med egna ord, så visar Lokalt var det hör hemma – felanmälan, rätt nämnd, rätt rättslig väg eller en kanal för nya idéer – och hjälper dig ta första steget.",
+      "Du ska inte behöva kunna stadens organisation för att bli hörd. Beskriv ditt ärende med egna ord, så visar Lokalt var det hör hemma, till exempel felanmälan, rätt nämnd, rätt rättslig väg eller en kanal för nya idéer, och hjälper dig ta första steget.",
     free: "Gratis. Inget konto behövs.",
     s01Heading: "01 · Varför Lokalt finns",
     s01Paragraph:
@@ -100,7 +100,7 @@ const COPY: Record<Lang, Copy> = {
     heroLine1: "Kuvaile ongelma.",
     heroLine2: "Me löydämme oikean väylän eteenpäin.",
     heroParagraph:
-      "Sinun ei tarvitse tuntea kaupungin organisaatiota tullaksesi kuulluksi. Kuvaile asiasi omin sanoin, niin Lokalt näyttää, minne se kuuluu – palautepalveluun, oikealle lautakunnalle, oikealle oikeudelliselle väylälle tai uuden idean kanavaan – ja auttaa ottamaan ensimmäisen askeleen.",
+      "Sinun ei tarvitse tuntea kaupungin organisaatiota tullaksesi kuulluksi. Kuvaile asiasi omin sanoin, niin Lokalt näyttää, minne se kuuluu, esimerkiksi palautepalveluun, oikealle lautakunnalle, oikealle oikeudelliselle väylälle tai uuden idean kanavaan, ja auttaa ottamaan ensimmäisen askeleen.",
     free: "Ilmainen. Ei tiliä tarvita.",
     s01Heading: "01 · Miksi Lokalt on olemassa",
     s01Paragraph:
@@ -154,7 +154,7 @@ const COPY: Record<Lang, Copy> = {
     heroLine1: "Describe the problem.",
     heroLine2: "We'll find the right way forward.",
     heroParagraph:
-      "You shouldn't need to know how the city is organised to be heard. Describe your issue in your own words, and Lokalt shows where it belongs – the fault-report service, the right committee, the right legal route, or a channel for new ideas – and helps you take the first step.",
+      "You shouldn't need to know how the city is organised to be heard. Describe your issue in your own words, and Lokalt shows where it belongs, such as the fault-report service, the right committee, the right legal route, or a channel for new ideas, and helps you take the first step.",
     free: "Free. No account needed.",
     s01Heading: "01 · Why Lokalt exists",
     s01Paragraph:
