@@ -62,7 +62,7 @@ export interface Strings {
 const sv: Strings = {
   tagline: "Skriv ett problem i din vardag. Vi visar vem i Helsingfors som bestämmer om det och hjälper dig skriva ett mejl.",
   askHeading: "Vad gäller din fråga?",
-  askPlaceholder: "T.ex. \"cykelvägen utanför mitt hus är trasig\" eller \"skolmaten i min dotters skola\"",
+  askPlaceholder: "T.ex. \"biblioteket i min stadsdel borde ha öppet på söndagar\" eller \"skolmaten i min dotters skola borde bli bättre\"",
   askButton: "Hitta rätt organ",
   thinking: "Söker rätt organ …",
   drafting: "Skriver utkast …",
@@ -97,7 +97,7 @@ const sv: Strings = {
 
   operationalHeading: "Det här är ett praktiskt fel, inte ett beslut",
   operationalExplain:
-    "Sådant här — trasiga cykelvägar, döda lampor, klotter, snö — åtgärdas av stadens felanmälan, inte av en nämnd.",
+    "Sådant här — trasiga cykelvägar, trasig gatubelysning, klotter, snö — åtgärdas av stadens felanmälan, inte av en nämnd.",
   operationalButton: "Gör en felanmälan på palautteet.hel.fi",
   operationalLowConfidenceNote:
     "Om du istället vill att staden ska besluta annorlunda — bygga något nytt, ändra en regel, finansiera något — är det en annan väg. Beskriv i så fall vad du vill att staden ska besluta, så hittar vi rätt nämnd.",
@@ -107,7 +107,7 @@ const sv: Strings = {
 
   statutoryHeading: "Det här är ett ärende med lagstadgad process",
   statutoryExplain:
-    "Det här gäller ett beslut som redan fattats, eller din egen vård, omsorg eller bemötande — sådant hanteras av en lagstadgad process med tidsfrister (t.ex. oikaisuvaatimus, patientombudsman eller socialombudsman), inte av en politiker eller nämnd.",
+    "Det här gäller ett beslut som redan fattats, eller din egen vård, omsorg eller bemötande — sådant hanteras av en lagstadgad process med tidsfrister (t.ex. begäran om omprövning, dvs. oikaisuvaatimus, eller patientombud och socialombud), inte av en politiker eller nämnd.",
 
   agendaHeading: "En ny idé för staden",
   agendaExplain:
@@ -124,7 +124,7 @@ const sv: Strings = {
 const fi: Strings = {
   tagline: "Kirjoita arjen ongelma. Näytämme, kuka Helsingissä siitä päättää, ja autamme sinua kirjoittamaan sähköpostin.",
   askHeading: "Mitä asiasi koskee?",
-  askPlaceholder: "Esim. \"talon edessä oleva pyörätie on rikki\" tai \"tyttäreni koulun kouluruoka\"",
+  askPlaceholder: "Esim. \"kaupunginosani kirjaston pitäisi olla auki sunnuntaisin\" tai \"tyttäreni koulun kouluruokaa pitäisi parantaa\"",
   askButton: "Etsi oikea toimielin",
   thinking: "Etsitään oikeaa toimielintä …",
   drafting: "Kirjoitetaan luonnosta …",
@@ -169,7 +169,7 @@ const fi: Strings = {
 
   statutoryHeading: "Tämä on lakisääteinen prosessi",
   statutoryExplain:
-    "Tämä koskee jo tehtyä päätöstä tai omaa hoitoasi, huolenpitoasi tai kohteluasi — tällaiset asiat käsitellään lakisääteisessä prosessissa määräaikoineen (esim. oikaisuvaatimus, potilasasiamies tai sosiaaliasiamies), ei poliitikon tai lautakunnan kautta.",
+    "Tämä koskee jo tehtyä päätöstä tai omaa hoitoasi, huolenpitoasi tai kohteluasi — tällaiset asiat käsitellään lakisääteisessä prosessissa määräaikoineen (esim. oikaisuvaatimus, potilasasiavastaava tai sosiaaliasiavastaava), ei poliitikon tai lautakunnan kautta.",
 
   agendaHeading: "Uusi idea kaupungille",
   agendaExplain:
@@ -186,7 +186,7 @@ const fi: Strings = {
 const en: Strings = {
   tagline: "Describe an everyday problem. We'll show you who in Helsinki decides on it and help you write an email.",
   askHeading: "What's your question about?",
-  askPlaceholder: "E.g. \"the bike path outside my house is broken\" or \"school meals at my daughter's school\"",
+  askPlaceholder: "E.g. \"the library in my neighbourhood should be open on Sundays\" or \"school meals at my daughter's school should be better\"",
   askButton: "Find the right body",
   thinking: "Finding the right body …",
   drafting: "Writing a draft …",
@@ -231,7 +231,7 @@ const en: Strings = {
 
   statutoryHeading: "This matter has a statutory process",
   statutoryExplain:
-    "This concerns a decision already made, or your own care, treatment, or how you were treated — matters like this are handled through a statutory process with deadlines (e.g. a request for rectification, a patient ombudsman, or a social ombudsman), not by a politician or committee.",
+    "This concerns a decision already made, or your own care, treatment, or how you were treated — matters like this are handled through a statutory process with deadlines (e.g. a request for rectification, or a patient or social services ombudsperson), not by a politician or committee.",
 
   agendaHeading: "A new idea for the city",
   agendaExplain:

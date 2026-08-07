@@ -46,7 +46,7 @@ const COPY: Record<Lang, Copy> = {
     heroLine1: "Beskriv problemet.",
     heroLine2: "Vi hittar rätt väg framåt.",
     heroParagraph:
-      "Du ska inte behöva kunna stadens organisation för att bli hörd. Beskriv ditt ärende med egna ord, så visar Lokalt vart det hör hemma – felanmälan, rätt nämnd, rätt rättslig väg eller en kanal för nya idéer – och hjälper dig ta första steget.",
+      "Du ska inte behöva kunna stadens organisation för att bli hörd. Beskriv ditt ärende med egna ord, så visar Lokalt var det hör hemma – felanmälan, rätt nämnd, rätt rättslig väg eller en kanal för nya idéer – och hjälper dig ta första steget.",
     free: "Gratis. Inget konto behövs.",
     s01Heading: "01 · Varför Lokalt finns",
     s01Paragraph:
@@ -67,7 +67,7 @@ const COPY: Record<Lang, Copy> = {
       },
       {
         title: "Rättsligt & personligt",
-        desc: "Ett beslut redan fattat om dig, eller något om din egen vård, behandling eller ersättning. Förklaras som en process med överklagandetider, aldrig som ett mejl till en politiker.",
+        desc: "Ett beslut som redan har fattats om dig, eller något som gäller din egen vård, behandling eller ersättning. Förklaras som en process med överklagandetider, aldrig som ett mejl till en politiker.",
         tagLabel: "→ Rätt juridisk instans",
         tagClass: "tag tag-neutral",
       },
@@ -89,7 +89,7 @@ const COPY: Record<Lang, Copy> = {
       "Text som innehåller hälso- eller vårduppgifter flaggas automatiskt och går alltid den rättsliga vägen, även om frågan annars sett ut att höra hemma någon annanstans. Ditt ärende hamnar aldrig av misstag i ett mejl till en namngiven politiker.",
     ctaHeading: "Redo att beskriva ditt problem?",
     ctaParagraph:
-      "Gratis, inget konto. Nämnder och kontaktuppgifter hämtas direkt från paatokset.hel.fi. Jobbar du i staden? Vi visar gärna hur ärenden routas.",
+      "Gratis, inget konto. Nämnder och kontaktuppgifter hämtas direkt från paatokset.hel.fi. Jobbar du i staden? Vi visar gärna hur ärenden hittar rätt.",
     footerData: "Öppna data från paatokset.hel.fi",
     aboutLink: "Om tjänsten",
     langLabel: "Språk",
@@ -104,7 +104,7 @@ const COPY: Record<Lang, Copy> = {
     free: "Ilmainen. Ei tiliä tarvita.",
     s01Heading: "01 · Miksi Lokalt on olemassa",
     s01Paragraph:
-      "Moni asukas ei tiedä, kuka kaupungissa oikeasti vastaa hänen asiastaan, ja se päätyy usein väärälle taholle tai ei minnekään. Lokalt lukee kuvauksesi ja päättää, onko kyse ylläpitoasiasta, poliittisesta päätöksestä, jo tehdystä päätöksestä, joka koskee sinua, vai kokonaan uudesta ideasta, jotta asia löytää oikean paikan heti ensimmäisellä kerralla.",
+      "Moni asukas ei tiedä, kuka kaupungissa oikeasti vastaa hänen asiastaan, ja se päätyy usein väärälle taholle tai ei minnekään. Lokalt lukee kuvauksesi ja päättelee, onko kyse ylläpitoasiasta, poliittisesta päätöksestä, jo tehdystä päätöksestä, joka koskee sinua, vai kokonaan uudesta ideasta, jotta asia löytää oikean paikan heti ensimmäisellä kerralla.",
     s02Heading: "02 · Neljä väylää, yksi kysymys",
     tracks: [
       {
@@ -163,7 +163,7 @@ const COPY: Record<Lang, Copy> = {
     tracks: [
       {
         title: "Maintenance & upkeep",
-        desc: "Something is broken, dirty, or missing at a specific location — a broken bike path, dead streetlight, graffiti, or a pothole. This covers the vast majority of issues.",
+        desc: "Something is broken, dirty, or missing at a specific location — a broken streetlight, graffiti, or a pothole. This covers the vast majority of issues.",
         tagLabel: "→ Straight to the city's fault-report service, no email needed",
         tagClass: "tag tag-accent",
       },

@@ -77,7 +77,7 @@ export default function OmPage() {
         <p>
           Työkalu käyttää tekoälyä oikean toimielimen valintaan ja
           sähköpostiluonnoksen kirjoittamiseen. <strong>Tekoäly voi erehtyä.</strong>{" "}
-          Se valitsee vain hakemistamme toimielimistä — se ei koskaan keksi nimeä
+          Se valitsee vain ennalta kokoamistamme toimielimistä — se ei koskaan keksi nimeä
           tai sähköpostiosoitetta — mutta se voi valita väärän toimielimen.
           Tarkista aina lähdelinkki ennen lähettämistä.
         </p>
@@ -86,7 +86,11 @@ export default function OmPage() {
           sähköpostiohjelmasi valmiiksi täytetyllä tekstillä. Luet, muokkaat ja
           lähetät sen itse.
         </p>
-        <p>Ei kirjautumista, ei tilejä, ei seurantaa, ei evästeitä.</p>
+        <p>
+          Ei kirjautumista, ei tilejä, ei seurantaa, ei evästeitä. Kirjoittamasi
+          teksti lähetetään palvelimellemme vain oikean toimielimen löytämistä ja
+          luonnoksen laatimista varten.
+        </p>
       </section>
 
       <hr className="my-8 border-line" />

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Lokalt is a single front door for Helsinki residents who want to make their voice heard about something happening in their city. They describe their concern in their own words (Swedish or Finnish), and the app triages it: things that are broken get pointed to the city's existing fault-report channel, personal/legal matters get pointed to the right statutory channel, and brand-new ideas get pointed to citizen-initiative style channels. The product's real depth is reserved for the **policy** case — when the resident wants the city to decide something differently, Lokalt identifies which municipal body actually owns that decision, surfaces a real contact, and drafts a short email the resident sends themselves via a `mailto:` link. It never sends email, requires no accounts, and stores no user data. See [README.md](README.md) for the full product description and setup instructions.
+Lokalt is a single front door for Helsinki residents who want to make their voice heard about something happening in their city. They describe their concern in their own words (Swedish, Finnish, or English), and the app triages it: things that are broken get pointed to the city's existing fault-report channel, personal/legal matters get pointed to the right statutory channel, and brand-new ideas get pointed to citizen-initiative style channels. The product's real depth is reserved for the **policy** case — when the resident wants the city to decide something differently, Lokalt identifies which municipal body actually owns that decision, surfaces a real contact, and drafts a short email the resident sends themselves via a `mailto:` link. It never sends email, requires no accounts, and stores no user data. See [README.md](README.md) for the full product description and setup instructions.
 
 ## Commands
 
@@ -29,7 +29,7 @@ There is no test suite. Requires `ANTHROPIC_API_KEY` in `.env.local` (copy from 
 
 **Shared Claude client**: [src/lib/anthropic.ts](src/lib/anthropic.ts) exports a single `MODEL` constant, a lazily-constructed client that reads `ANTHROPIC_API_KEY` server-side only, and `parseJsonLoose()` since both routes require the model to return raw JSON (defensively strips stray ``` fences).
 
-**i18n**: no library — [src/lib/i18n.ts](src/lib/i18n.ts) is a flat dictionary of Swedish/Finnish strings; Swedish is the default language throughout.
+**i18n**: no library — [src/lib/i18n.ts](src/lib/i18n.ts) is a flat dictionary of Swedish/Finnish/English strings (`Lang` = `"sv" | "fi" | "en"`); Swedish is the default language throughout.
 
 **Routes**:
 - `src/app/page.tsx` — marketing landing page.
