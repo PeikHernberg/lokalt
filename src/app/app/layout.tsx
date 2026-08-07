@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Verktyget — Lokalt",
+  title: "Verktyget | Lokalt",
 };
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

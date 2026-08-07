@@ -339,7 +339,7 @@ export default function Home() {
                 <p className="text-sm text-neutral-600">
                   {t.recipientLabel}:{" "}
                   <span className="font-medium text-ink">
-                    {draft.recipient.name ? `${draft.recipient.name} — ` : ""}
+                    {draft.recipient.name ? `${draft.recipient.name}, ` : ""}
                     {draft.recipient.email}
                   </span>
                 </p>

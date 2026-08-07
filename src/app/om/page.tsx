@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Om tjänsten — Lokalt",
+  title: "Om tjänsten | Lokalt",
 };
 
 export default function OmPage() {
@@ -38,7 +38,7 @@ export default function OmPage() {
           Verktyget använder en AI-modell för att gissa vilket organ som är
           ansvarigt och för att skriva ett utkast till mejl.{" "}
           <strong>AI:n kan ha fel.</strong> Den väljer bara bland organ vi redan
-          har hämtat — den hittar aldrig på ett namn eller en e-postadress — men
+          har hämtat, den hittar aldrig på ett namn eller en e-postadress, men
           den kan välja fel organ. Kontrollera alltid källänken innan du skickar
           något.
         </p>
@@ -77,8 +77,8 @@ export default function OmPage() {
         <p>
           Työkalu käyttää tekoälyä oikean toimielimen valintaan ja
           sähköpostiluonnoksen kirjoittamiseen. <strong>Tekoäly voi erehtyä.</strong>{" "}
-          Se valitsee vain ennalta kokoamistamme toimielimistä — se ei koskaan keksi nimeä
-          tai sähköpostiosoitetta — mutta se voi valita väärän toimielimen.
+          Se valitsee vain ennalta kokoamistamme toimielimistä, se ei koskaan keksi nimeä
+          tai sähköpostiosoitetta, mutta se voi valita väärän toimielimen.
           Tarkista aina lähdelinkki ennen lähettämistä.
         </p>
         <p>
@@ -118,7 +118,7 @@ export default function OmPage() {
         <p>
           The tool uses an AI model to guess which body is responsible and to write a
           draft email. <strong>The AI can be wrong.</strong> It only picks from bodies
-          we&apos;ve already gathered — it never invents a name or an email address — but
+          we&apos;ve already gathered, it never invents a name or an email address, but
           it can pick the wrong body. Always check the source link before sending
           anything.
         </p>

@@ -121,7 +121,7 @@ const COPY: Record<Lang, Copy> = {
       },
       {
         title: "Oikeudellinen ja henkilökohtainen",
-        desc: "Sinua koskeva jo tehty päätös, tai jokin omaan hoitoosi, kohteluusi tai korvaukseesi liittyvä asia. Selitetään prosessina, jossa on valitusaikoja — ei koskaan sähköpostina poliitikolle.",
+        desc: "Sinua koskeva jo tehty päätös, tai jokin omaan hoitoosi, kohteluusi tai korvaukseesi liittyvä asia. Selitetään prosessina, jossa on valitusaikoja, ei koskaan sähköpostina poliitikolle.",
         tagLabel: "→ Oikea oikeudellinen taho",
         tagClass: "tag tag-neutral",
       },
@@ -158,12 +158,12 @@ const COPY: Record<Lang, Copy> = {
     free: "Free. No account needed.",
     s01Heading: "01 · Why Lokalt exists",
     s01Paragraph:
-      "Many residents don't know who in the city is actually responsible for their issue, and it often ends up with the wrong body — or none at all. Lokalt reads your description and works out whether it's a maintenance issue, a political decision, a decision already made that concerns you, or a brand-new idea, so your matter lands in the right place the first time.",
+      "Many residents don't know who in the city is actually responsible for their issue, and it often ends up with the wrong body, or none at all. Lokalt reads your description and works out whether it's a maintenance issue, a political decision, a decision already made that concerns you, or a brand-new idea, so your matter lands in the right place the first time.",
     s02Heading: "02 · Four paths, one question",
     tracks: [
       {
         title: "Maintenance & upkeep",
-        desc: "Something is broken, dirty, or missing at a specific location — a broken streetlight, graffiti, or a pothole. This covers the vast majority of issues.",
+        desc: "Something is broken, dirty, or missing at a specific location, like a broken streetlight, graffiti, or a pothole. This covers the vast majority of issues.",
         tagLabel: "→ Straight to the city's fault-report service, no email needed",
         tagClass: "tag tag-accent",
       },
