@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { getClient, MODEL, firstText, parseJsonLoose } from "@/lib/anthropic";
 import { CLASSIFY_SYSTEM } from "@/lib/classify-prompt";
 import { bodiesForPrompt, type Lang } from "@/lib/bodies";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
+
+// Longest resident text we accept: enough for any real concern, small enough
+// that a scripted caller can't inflate token costs with megabyte payloads.
+const MAX_QUESTION_LENGTH = 2000;
 
 export type Track = "operational" | "policy" | "statutory" | "agenda";
 
@@ -17,6 +22,10 @@ interface ClassifyResult {
 const VALID_TRACKS: Track[] = ["operational", "policy", "statutory", "agenda"];
 
 export async function POST(req: NextRequest) {
+  if (!checkRateLimit(req)) {
+    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   let question: string;
   let lang: Lang;
   try {
@@ -29,6 +38,9 @@ export async function POST(req: NextRequest) {
 
   if (!question) {
     return NextResponse.json({ error: "empty_question" }, { status: 400 });
+  }
+  if (question.length > MAX_QUESTION_LENGTH) {
+    return NextResponse.json({ error: "question_too_long" }, { status: 400 });
   }
 
   const userContent = `Resident's text (language: ${lang}):

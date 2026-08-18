@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getClient, MODEL, firstText, parseJsonLoose } from "@/lib/anthropic";
 import type { Lang } from "@/lib/bodies";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 type DraftMode = "policy" | "agenda";
+
+// Longest resident text we accept: enough for any real concern, small enough
+// that a scripted caller can't inflate token costs with megabyte payloads.
+const MAX_QUESTION_LENGTH = 2000;
+// The recipient fields normally come from data/bodies.json via our own client;
+// the endpoint is public, so cap them to shrink the prompt-injection surface.
+const MAX_FIELD_LENGTH = 200;
 
 interface DraftResult {
   subject: string;
@@ -41,6 +49,10 @@ Return ONLY valid JSON, no prose and no markdown fences, in exactly this shape:
 { "subject": "...", "body": "..." }`;
 
 export async function POST(req: NextRequest) {
+  if (!checkRateLimit(req)) {
+    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   let question = "";
   let lang: Lang = "sv";
   let bodyName = "";
@@ -60,6 +72,16 @@ export async function POST(req: NextRequest) {
   }
 
   if (!question) {
+    return NextResponse.json({ error: "bad_request" }, { status: 400 });
+  }
+  if (question.length > MAX_QUESTION_LENGTH) {
+    return NextResponse.json({ error: "question_too_long" }, { status: 400 });
+  }
+  if (
+    bodyName.length > MAX_FIELD_LENGTH ||
+    recipientName.length > MAX_FIELD_LENGTH ||
+    recipientRole.length > MAX_FIELD_LENGTH
+  ) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
   if (mode === "policy" && !bodyName) {
@@ -101,7 +123,10 @@ Write the subject and body of the email.`;
     });
 
     const result = parseJsonLoose<DraftResult>(firstText(message));
-    return NextResponse.json(result);
+    if (typeof result.subject !== "string" || typeof result.body !== "string") {
+      throw new Error("model returned an unexpected shape");
+    }
+    return NextResponse.json({ subject: result.subject, body: result.body });
   } catch (err) {
     const missingKey = err instanceof Error && err.message.includes("ANTHROPIC_API_KEY");
     return NextResponse.json(

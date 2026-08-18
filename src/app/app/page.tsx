@@ -209,6 +209,7 @@ export default function Home() {
               id="q"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
+              maxLength={2000}
               placeholder={t.askPlaceholder}
               rows={3}
               className="mt-3 w-full resize-y rounded-lg border border-line bg-white px-4 py-3 text-base outline-none focus:border-petrol"
