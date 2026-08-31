@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import { Karla } from "next/font/google";
 import "./globals.css";
+
+const karla = Karla({
+  subsets: ["latin"],
+  variable: "--font-karla",
+});
 
 export const metadata: Metadata = {
   title: "Lokalt: hitta rätt beslutsfattare i Helsingfors",
@@ -18,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="sv">
+    <html lang="sv" className={karla.variable}>
       <body>{children}</body>
     </html>
   );
