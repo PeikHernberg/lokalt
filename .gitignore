@@ -19,3 +19,12 @@
 # typescript
 next-env.d.ts
 *.tsbuildinfo
+
+# local-only working files (business/program docs, notes)
+.Rhistory
+/_to_delete/
+/documents/
+/incubator/
+/kickoff/
+/Lokalt-business-model.md
+/lokalt-funding-frame.md
