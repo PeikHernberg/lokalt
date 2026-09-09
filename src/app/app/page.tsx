@@ -14,7 +14,7 @@ import {
 } from "@/lib/bodies";
 import { strings } from "@/lib/i18n";
 
-type Track = "operational" | "policy" | "statutory" | "agenda";
+type Track = "operational" | "policy" | "statutory" | "agenda" | "unclear";
 
 interface ClassifyResult {
   track: Track;
@@ -64,10 +64,20 @@ export default function Home() {
   async function handleAsk(e: React.FormEvent) {
     e.preventDefault();
     if (!question.trim()) return;
-    setLoading(true);
     setError(null);
-    setClassification(null);
     setDraft(null);
+
+    // A bare topic word ("spårvagn") is not a matter we can route. Catch it
+    // here rather than spending a model call on it, and let the model handle
+    // the longer-but-still-vague cases via the "unclear" track.
+    const wordCount = question.trim().split(/\s+/).length;
+    if (wordCount < 3) {
+      setClassification({ track: "unclear", body_id: null, confidence: "high", sensitive: false });
+      return;
+    }
+
+    setLoading(true);
+    setClassification(null);
     try {
       const res = await fetch("/api/route-question", {
         method: "POST",
@@ -161,6 +171,7 @@ export default function Home() {
   // office-holder, regardless of which track it was classified into.
   const showStatutory =
     classification && (classification.track === "statutory" || classification.sensitive);
+  const showUnclear = classification && !showStatutory && classification.track === "unclear";
   const showOperational = classification && !showStatutory && classification.track === "operational";
   const showPolicy = classification && !showStatutory && classification.track === "policy";
   const showAgenda = classification && !showStatutory && classification.track === "agenda";
@@ -236,6 +247,20 @@ export default function Home() {
               <div className="rounded-xl border border-line bg-white p-5">
                 <h2 className="text-base font-semibold text-petrol">{t.statutoryHeading}</h2>
                 <p className="mt-2 text-[15px] text-neutral-700">{t.statutoryExplain}</p>
+              </div>
+            )}
+
+            {/* unclear — a topic, not a matter yet. Ask for one more sentence. */}
+            {showUnclear && (
+              <div className="rounded-xl border border-line bg-white p-5">
+                <h2 className="text-base font-semibold text-petrol">{t.clarifyHeading}</h2>
+                <p className="mt-2 text-[15px] text-neutral-700">{t.unclearExplain}</p>
+                <p className="mt-4 text-sm font-medium text-neutral-700">{t.unclearExamplesLabel}</p>
+                <ul className="mt-2 space-y-1 text-[15px] text-neutral-700">
+                  {t.unclearExamples.map((example) => (
+                    <li key={example}>{example}</li>
+                  ))}
+                </ul>
               </div>
             )}
 

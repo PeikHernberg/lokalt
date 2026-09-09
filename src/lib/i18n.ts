@@ -15,6 +15,11 @@ export interface Strings {
   uncertainNote: string;
   nationalNote: string;
   clarifyHeading: string;
+
+  // Unclear track (the text names a topic but no situation)
+  unclearExplain: string;
+  unclearExamplesLabel: string;
+  unclearExamples: string[];
   chairBadge: string;
   registryLabel: string;
   registryHint: string;
@@ -76,6 +81,14 @@ const sv: Strings = {
   uncertainNote: "Vi är inte helt säkra. Här är de mest sannolika organen, välj det som passar bäst.",
   nationalNote: "Det här verkar vara en nationell fråga, inte en kommunal. Helsingfors stad beslutar troligen inte om detta.",
   clarifyHeading: "En kort fråga tillbaka",
+  unclearExplain:
+    "Vi vet ännu inte vad du vill ha hjälp med. Skriv en mening till om vad som är fel eller vad du tycker borde ändras, så hittar vi rätt väg.",
+  unclearExamplesLabel: "Så här kan du skriva:",
+  unclearExamples: [
+    "spårvagnen på min gata låter för mycket på natten",
+    "spårvagnshållplatsen vid mitt hem har ingen väderskydd",
+    "spårvagnslinje 6 borde gå oftare på kvällarna",
+  ],
   chairBadge: "Ordförande",
   registryLabel: "Stadens registratur (kirjaamo)",
   registryHint: "Adressera ditt ärende till organet ovan. Registraturen vidarebefordrar det och det blir en officiell handling.",
@@ -141,6 +154,14 @@ const fi: Strings = {
   uncertainNote: "Emme ole aivan varmoja. Tässä todennäköisimmät toimielimet, valitse sopivin.",
   nationalNote: "Tämä vaikuttaa valtakunnalliselta asialta, ei kunnalliselta. Helsingin kaupunki ei todennäköisesti päätä tästä.",
   clarifyHeading: "Lyhyt tarkentava kysymys",
+  unclearExplain:
+    "Emme vielä tiedä, mihin haluat apua. Kirjoita vielä yksi lause siitä, mikä on vialla tai mitä mielestäsi pitäisi muuttaa, niin löydämme oikean reitin.",
+  unclearExamplesLabel: "Voit kirjoittaa esimerkiksi näin:",
+  unclearExamples: [
+    "raitiovaunu meluaa kadullani öisin liikaa",
+    "kotini lähellä olevalla raitiovaunupysäkillä ei ole katosta",
+    "raitiovaunulinjan 6 pitäisi kulkea useammin iltaisin",
+  ],
   chairBadge: "Puheenjohtaja",
   registryLabel: "Kaupungin kirjaamo",
   registryHint: "Osoita asiasi yllä olevalle toimielimelle. Kirjaamo välittää sen eteenpäin ja siitä tulee virallinen asiakirja.",
@@ -206,6 +227,14 @@ const en: Strings = {
   uncertainNote: "We're not entirely sure. Here are the most likely bodies, pick whichever fits best.",
   nationalNote: "This looks like a national matter, not a municipal one. The City of Helsinki likely doesn't decide on this.",
   clarifyHeading: "One quick follow-up question",
+  unclearExplain:
+    "We don't yet know what you need help with. Add one more sentence about what is wrong, or what you think should change, and we'll find the right route.",
+  unclearExamplesLabel: "You could write something like:",
+  unclearExamples: [
+    "the tram on my street is too noisy at night",
+    "the tram stop near my home has no shelter",
+    "tram line 6 should run more often in the evenings",
+  ],
   chairBadge: "Chair",
   registryLabel: "City registry (kirjaamo)",
   registryHint: "Address your matter to the body above. The registry forwards it, and it becomes an official document.",

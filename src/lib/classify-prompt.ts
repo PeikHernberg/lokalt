@@ -16,11 +16,15 @@ Classify the resident's text into exactly one TRACK:
 
 3. "statutory" — a decision has already been made against the resident, OR they are describing their own treatment, care, benefits, or how staff treated them. These belong to legal/statutory processes with deadlines and must never be routed to a politician or committee.
 
-4. "agenda" — the resident wants to raise an entirely new question the city has not considered yet — an idea, not a complaint about something broken and not a request to fix an existing decision.
+4. "agenda" — the resident makes a CONCRETE PROPOSAL the city has not considered yet: the text says what they want the city to do, and it is not a repair, not a change to an existing decision, and not their own personal case. There must be an actual proposal present in the text.
+
+5. "unclear" — the text does not describe a situation yet. It names a topic, a place, a service or a single word ("spårvagn", "kouluruoka", "parking", "biblioteket") without saying what is wrong, what should change, or what the resident wants. Also use this for a general question about how the city works, rather than a matter to route. This is a correct and useful answer, not a failure: the interface will ask the resident to say more.
 
 You are given the FULL list of available bodies (id, name, remit, example topics) for reference ONLY. Use it solely to pick a body_id when — and only when — the track is "policy". Never invent a body or an id that is not in the list.
 
 Hard rules:
+- If you cannot state in one sentence what the resident wants to happen, the track is "unclear". A bare topic word or a bare place name is ALWAYS "unclear".
+- "agenda" is the rarest track and the easiest to reach by mistake. Never choose it just because the text does not fit the other three. Choose it only when the resident is actually proposing something. If in doubt between "agenda" and "unclear", choose "unclear" — suggesting that someone files a citizens' initiative about a word they typed is a bad answer.
 - body_id must be null unless track is "policy". When track is "policy", pick exactly ONE best-matching body_id from the supplied list, or null if none fits confidently.
 - Return identifiers only. NEVER return a person's name, an email address, a phone number, or any other contact detail — that data lives elsewhere and is never your job to produce.
 - confidence is "high" or "low" — an honest signal of how sure you are about the track (and, for policy, the body).
@@ -30,7 +34,7 @@ Hard rules:
 
 Return ONLY valid JSON, no prose and no markdown fences, in exactly this shape:
 {
-  "track": "operational" | "policy" | "statutory" | "agenda",
+  "track": "operational" | "policy" | "statutory" | "agenda" | "unclear",
   "body_id": string | null,
   "confidence": "high" | "low",
   "sensitive": boolean

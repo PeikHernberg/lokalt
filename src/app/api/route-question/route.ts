@@ -5,7 +5,7 @@ import { bodiesForPrompt, type Lang } from "@/lib/bodies";
 
 export const runtime = "nodejs";
 
-export type Track = "operational" | "policy" | "statutory" | "agenda";
+export type Track = "operational" | "policy" | "statutory" | "agenda" | "unclear";
 
 interface ClassifyResult {
   track: Track;
@@ -14,7 +14,7 @@ interface ClassifyResult {
   sensitive: boolean;
 }
 
-const VALID_TRACKS: Track[] = ["operational", "policy", "statutory", "agenda"];
+const VALID_TRACKS: Track[] = ["operational", "policy", "statutory", "agenda", "unclear"];
 
 export async function POST(req: NextRequest) {
   let question: string;
