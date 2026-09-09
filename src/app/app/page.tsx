@@ -38,6 +38,7 @@ interface Draft {
 }
 
 const FELANMALAN_URL = "https://palautteet.hel.fi/";
+const FELANMALAN_SEARCH_URL = "https://palautteet.hel.fi/hae-palautteita";
 const OMASTADI_URL = "https://omastadi.hel.fi/";
 const KUNTALAISALOITE_URL = "https://www.kuntalaisaloite.fi/";
 
@@ -243,14 +244,25 @@ export default function Home() {
               <div className="rounded-xl border border-line bg-white p-5">
                 <h2 className="text-base font-semibold text-petrol">{t.operationalHeading}</h2>
                 <p className="mt-2 text-[15px] text-neutral-700">{t.operationalExplain}</p>
-                <a
-                  href={FELANMALAN_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-block rounded-lg bg-petrol px-5 py-3 font-medium text-white transition hover:bg-petrol-dark"
-                >
-                  {t.operationalButton}
-                </a>
+                <p className="mt-3 text-[15px] text-neutral-700">{t.operationalCheckExisting}</p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <a
+                    href={FELANMALAN_SEARCH_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block rounded-lg border border-petrol px-5 py-3 font-medium text-petrol transition hover:bg-petrol/5"
+                  >
+                    {t.operationalCheckExistingButton}
+                  </a>
+                  <a
+                    href={FELANMALAN_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block rounded-lg bg-petrol px-5 py-3 font-medium text-white transition hover:bg-petrol-dark"
+                  >
+                    {t.operationalButton}
+                  </a>
+                </div>
                 {classification.confidence === "low" && (
                   <p className="mt-4 border-t border-line pt-4 text-sm text-neutral-600">
                     {t.operationalLowConfidenceNote}

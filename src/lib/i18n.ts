@@ -39,6 +39,8 @@ export interface Strings {
   operationalHeading: string;
   operationalExplain: string;
   operationalButton: string;
+  operationalCheckExisting: string;
+  operationalCheckExistingButton: string;
   operationalLowConfidenceNote: string;
 
   // Policy track (uncertain wording reused from result heading above)
@@ -99,6 +101,9 @@ const sv: Strings = {
   operationalExplain:
     "Sådant här, till exempel trasiga cykelvägar, trasig gatubelysning, klotter eller snö, åtgärdas av stadens felanmälan, inte av en nämnd.",
   operationalButton: "Gör en felanmälan på palautteet.hel.fi",
+  operationalCheckExisting:
+    "Kolla gärna först om någon redan anmält samma sak, då slipper du göra en dubblettanmälan.",
+  operationalCheckExistingButton: "Sök bland befintliga felanmälningar",
   operationalLowConfidenceNote:
     "Om du istället vill att staden ska besluta annorlunda, till exempel bygga något nytt, ändra en regel eller finansiera något, är det en annan väg. Beskriv i så fall vad du vill att staden ska besluta, så hittar vi rätt nämnd.",
 
@@ -161,6 +166,9 @@ const fi: Strings = {
   operationalExplain:
     "Tällaiset asiat, esimerkiksi rikkinäiset pyörätiet, sammuneet valot, graffitit tai lumi, korjataan kaupungin palautepalvelun kautta, ei lautakunnassa.",
   operationalButton: "Tee palaute osoitteessa palautteet.hel.fi",
+  operationalCheckExisting:
+    "Katso ensin, onko joku jo ilmoittanut samasta asiasta, näin vältät päällekkäisen ilmoituksen.",
+  operationalCheckExistingButton: "Hae aiempia palautteita",
   operationalLowConfidenceNote:
     "Jos haluat sen sijaan, että kaupunki päättää jostain toisin, esimerkiksi rakentaa uutta, muuttaa sääntöä tai rahoittaa jotain, kyse on eri polusta. Kuvaile silloin, mitä haluat kaupungin päättävän, niin löydämme oikean lautakunnan.",
 
@@ -223,6 +231,9 @@ const en: Strings = {
   operationalExplain:
     "Things like this, such as broken bike paths, dead streetlights, graffiti, or snow, get fixed through the city's fault-report service, not a committee.",
   operationalButton: "Report it at palautteet.hel.fi",
+  operationalCheckExisting:
+    "It's worth checking first whether someone has already reported the same thing, that way you avoid filing a duplicate.",
+  operationalCheckExistingButton: "Search existing fault reports",
   operationalLowConfidenceNote:
     "If instead you want the city to decide something differently, such as building something new, changing a rule, or funding something, that's a different path. Describe what you want the city to decide, and we'll find the right committee.",
 
