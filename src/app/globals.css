@@ -95,3 +95,9 @@ body {
   background: color-mix(in srgb, var(--color-ink) 8%, transparent);
   color: var(--color-ink);
 }
+.tag-badge {
+  background: color-mix(in srgb, var(--color-petrol) 10%, transparent);
+  color: var(--color-petrol);
+  border-radius: 4px;
+  font-weight: 500;
+}

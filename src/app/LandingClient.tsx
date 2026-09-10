@@ -10,28 +10,45 @@ type Lang = "sv" | "fi" | "en";
 interface Track {
   title: string;
   desc: string;
-  tagLabel: string;
+  tag: string;
   tagClass: string;
 }
 
+interface Limit {
+  title: string;
+  desc: string;
+}
+
 interface Copy {
-  fourPaths: string;
-  ctaLabel: string;
+  navPaths: string;
+  cta: string;
   heroLine1: string;
   heroLine2: string;
   heroParagraph: string;
   free: string;
+  notOfficial: string;
   s01Heading: string;
-  s01Paragraph: string;
+  step1Title: string;
+  step1Example: string;
+  step1Note: string;
+  step2Title: string;
+  step2Tag: string;
+  step2Body: string;
+  step2ChairLine: string;
+  step2ChairBadge: string;
+  source: string;
+  step3Title: string;
+  subjectLabel: string;
+  subject: string;
+  draftBody: string;
+  step3Note: string;
   s02Heading: string;
-  tracks: Track[];
+  s02Lead: string;
+  s02Body: string;
   s03Heading: string;
-  s03Paragraph: string;
-  screenshotAria: string;
-  screenshotSample: string;
-  screenshotTag: string;
+  tracks: Track[];
   s04Heading: string;
-  s04Paragraph: string;
+  limits: Limit[];
   ctaHeading: string;
   ctaParagraph: string;
   footerData: string;
@@ -41,163 +58,250 @@ interface Copy {
 
 const COPY: Record<Lang, Copy> = {
   sv: {
-    fourPaths: "Fyra vägar",
-    ctaLabel: "Prova Lokalt",
-    heroLine1: "Beskriv problemet.",
-    heroLine2: "Vi hittar rätt väg framåt.",
+    navPaths: "Fyra vägar",
+    cta: "Tryck här",
+    heroLine1: "Du behöver inte veta hur staden fungerar.",
+    heroLine2: "Det räcker att du vet vad som är fel.",
     heroParagraph:
-      "Du ska inte behöva kunna stadens organisation för att bli hörd. Beskriv ditt ärende med egna ord, så visar Lokalt var det hör hemma, till exempel felanmälan, rätt nämnd, rätt rättslig väg eller en kanal för nya idéer, och hjälper dig ta första steget.",
+      "Skriv med dina egna ord. Du får veta vem i Helsingfors som bestämmer om just din fråga, och ett färdigt utkast som du ändrar och skickar själv. Du behåller kontrollen hela vägen.",
     free: "Gratis. Inget konto behövs.",
-    s01Heading: "01 · Varför Lokalt finns",
-    s01Paragraph:
-      "Många invånare vet inte vem i staden som faktiskt ansvarar för deras fråga, och den hamnar ofta hos fel instans, eller ingen alls. Lokalt läser vad du beskriver och avgör om det är en driftfråga, ett politiskt beslut, ett redan fattat beslut som rör dig, eller en helt ny idé, så att ärendet hamnar rätt första gången.",
-    s02Heading: "02 · Fyra vägar, en fråga",
+    notOfficial: "Oberoende verktyg, inte en officiell tjänst från Helsingfors stad.",
+    s01Heading: "01 · Tre steg, och du är framme",
+    step1Title: "Du skriver",
+    step1Example: "Biblioteket i min stadsdel borde ha öppet på söndagar.",
+    step1Note: "Inga formulär, inga rubriker att välja. Din egen mening räcker.",
+    step2Title: "Du får veta vem som bestämmer",
+    step2Tag: "→ Beslut & politik",
+    step2Body: "Kultur- och fritidsnämnden",
+    step2ChairLine: "Nämndens ordförande",
+    step2ChairBadge: "Ordförande",
+    source: "Källa: paatokset.hel.fi",
+    step3Title: "Du skickar, med egna ord",
+    subjectLabel: "Ämne",
+    subject: "Söndagsöppet på biblioteket i [stadsdel]",
+    draftBody:
+      "Hej, jag bor i [stadsdel] och använder biblioteket ofta. Jag önskar att nämnden ser över söndagsöppet …",
+    step3Note: "Utkastet är ditt. Ändra allt du vill innan det öppnas i din e-post.",
+    s02Heading: "02 · Varför du behöver Lokalt",
+    s02Lead:
+      "Du märker något i din vardag. Du vet inte vem som ansvarar. Frågan hamnar hos fel instans, eller ingen alls.",
+    s02Body:
+      "Lokalt läser vad du beskriver och avgör om det är en driftfråga, ett politiskt beslut, ett redan fattat beslut som rör dig, eller en helt ny idé. Du behöver inte kunna skillnaden. Din fråga hamnar rätt första gången.",
+    s03Heading: "03 · Fyra vägar, en fråga",
     tracks: [
       {
         title: "Drift & underhåll",
         desc: "Något är trasigt, smutsigt eller saknas på en plats, till exempel en trasig gatubelysning, klotter eller ett hål i vägen. Det här är de allra flesta ärenden.",
-        tagLabel: "→ Direkt till stadens felanmälan, inget mejl behövs",
+        tag: "→ Direkt till stadens felanmälan, inget mejl behövs",
         tagClass: "tag tag-accent",
       },
       {
         title: "Beslut & politik",
         desc: "Du vill att staden ska besluta annorlunda: bygga, satsa pengar eller ändra en regel. Det enda spåret som fortfarande går via en nämnd.",
-        tagLabel: "→ Mejl till rätt nämnd, med AI-utkast",
+        tag: "→ Mejl till rätt nämnd, med AI-utkast",
         tagClass: "tag tag-outline",
       },
       {
         title: "Rättsligt & personligt",
         desc: "Ett beslut som redan har fattats om dig, eller något som gäller din egen vård, behandling eller ersättning. Förklaras som en process med överklagandetider, aldrig som ett mejl till en politiker.",
-        tagLabel: "→ Rätt juridisk instans",
+        tag: "→ Rätt juridisk instans",
         tagClass: "tag tag-neutral",
       },
       {
         title: "Ny idé",
         desc: "Ett helt nytt förslag som staden inte tagit ställning till än. Passar bättre i ett deltagandespår än i ett mejl till en nämnd.",
-        tagLabel: "→ OmaStadi eller invånarinitiativ, med utkast",
+        tag: "→ OmaStadi eller invånarinitiativ, med utkast",
         tagClass: "tag tag-outline",
       },
     ],
-    s03Heading: "03 · Så ser det ut",
-    s03Paragraph:
-      "Skriv några meningar om vad som är fel. Lokalt visar direkt vilken väg som passar, och varför, innan du skickar något.",
-    screenshotAria: "Skärmdump: fråga och AI-bedömning i Lokalt",
-    screenshotSample: "Gatlyktan utanför Mannerheimvägen 12 har varit trasig i tre veckor.",
-    screenshotTag: "→ Drift & underhåll",
-    s04Heading: "04 · Din integritet är inbyggd, inte ett tillval",
-    s04Paragraph:
-      "Text som innehåller hälso- eller vårduppgifter flaggas automatiskt och går alltid den rättsliga vägen, även om frågan annars sett ut att höra hemma någon annanstans. Ditt ärende hamnar aldrig av misstag i ett mejl till en namngiven politiker.",
-    ctaHeading: "Redo att beskriva ditt problem?",
+    s04Heading: "04 · Vad Lokalt inte gör",
+    limits: [
+      {
+        title: "Vi skickar inga mejl åt dig",
+        desc: "Knappen öppnar ditt eget e-postprogram med texten ifylld. Du läser, redigerar och skickar själv.",
+      },
+      {
+        title: "AI:n kan ha fel",
+        desc: "Varje svar har en källänk till paatokset.hel.fi. Kontrollera den innan du skickar.",
+      },
+      {
+        title: "Din vård är aldrig ett mejl till en politiker",
+        desc: "Text med hälso- eller vårduppgifter flaggas automatiskt och går alltid den lagstadgade vägen.",
+      },
+      {
+        title: "Inget konto, ingen spårning",
+        desc: "Lokalt är ett oberoende verktyg, inte en officiell tjänst från Helsingfors stad.",
+      },
+    ],
+    ctaHeading: "Du vet redan vad som är fel.",
     ctaParagraph:
-      "Gratis, inget konto. Nämnder och kontaktuppgifter hämtas direkt från paatokset.hel.fi. Jobbar du i staden? Vi visar gärna hur ärenden hittar rätt.",
+      "Resten hjälper vi dig med. Gratis, inget konto. Nämnder och kontaktuppgifter hämtas direkt från paatokset.hel.fi.",
     footerData: "Öppna data från paatokset.hel.fi",
     aboutLink: "Om tjänsten",
     langLabel: "Språk",
   },
   fi: {
-    fourPaths: "Neljä väylää",
-    ctaLabel: "Kokeile Lokaltia",
-    heroLine1: "Kuvaile ongelma.",
-    heroLine2: "Me löydämme oikean väylän eteenpäin.",
+    navPaths: "Neljä väylää",
+    cta: "Paina tästä",
+    heroLine1: "Sinun ei tarvitse tietää, miten kaupunki toimii.",
+    heroLine2: "Riittää, että tiedät mikä on vialla.",
     heroParagraph:
-      "Sinun ei tarvitse tuntea kaupungin organisaatiota tullaksesi kuulluksi. Kuvaile asiasi omin sanoin, niin Lokalt näyttää, minne se kuuluu, esimerkiksi palautepalveluun, oikealle lautakunnalle, oikealle oikeudelliselle väylälle tai uuden idean kanavaan, ja auttaa ottamaan ensimmäisen askeleen.",
+      "Kirjoita omin sanoin. Saat tietää, kuka Helsingissä päättää juuri sinun asiastasi, ja valmiin luonnoksen, jota muokkaat ja lähetät itse. Sinä pidät ohjat koko ajan.",
     free: "Ilmainen. Ei tiliä tarvita.",
-    s01Heading: "01 · Miksi Lokalt on olemassa",
-    s01Paragraph:
-      "Moni asukas ei tiedä, kuka kaupungissa oikeasti vastaa hänen asiastaan, ja se päätyy usein väärälle taholle tai ei minnekään. Lokalt lukee kuvauksesi ja päättelee, onko kyse ylläpitoasiasta, poliittisesta päätöksestä, jo tehdystä päätöksestä, joka koskee sinua, vai kokonaan uudesta ideasta, jotta asia löytää oikean paikan heti ensimmäisellä kerralla.",
-    s02Heading: "02 · Neljä väylää, yksi kysymys",
+    notOfficial: "Riippumaton työkalu, ei Helsingin kaupungin virallinen palvelu.",
+    s01Heading: "01 · Kolme askelta, ja olet valmis",
+    step1Title: "Sinä kirjoitat",
+    step1Example: "Kaupunginosani kirjaston pitäisi olla auki sunnuntaisin.",
+    step1Note: "Ei lomakkeita, ei valittavia otsikoita. Oma lauseesi riittää.",
+    step2Title: "Saat tietää, kuka päättää",
+    step2Tag: "→ Päätökset ja politiikka",
+    step2Body: "Kulttuuri- ja vapaa-aikalautakunta",
+    step2ChairLine: "Lautakunnan puheenjohtaja",
+    step2ChairBadge: "Puheenjohtaja",
+    source: "Lähde: paatokset.hel.fi",
+    step3Title: "Sinä lähetät, omin sanoin",
+    subjectLabel: "Aihe",
+    subject: "Kirjaston sunnuntaiaukiolo [kaupunginosassa]",
+    draftBody:
+      "Hei, asun [kaupunginosassa] ja käytän kirjastoa usein. Toivoisin, että lautakunta tarkastelisi sunnuntaiaukioloa …",
+    step3Note: "Luonnos on sinun. Muokkaa sitä vapaasti, ennen kuin se avautuu sähköpostissasi.",
+    s02Heading: "02 · Miksi tarvitset Lokaltia",
+    s02Lead:
+      "Huomaat jotain arjessasi. Et tiedä, kuka siitä vastaa. Asia päätyy väärälle taholle tai ei minnekään.",
+    s02Body:
+      "Lokalt lukee kuvauksesi ja päättelee, onko kyse ylläpitoasiasta, poliittisesta päätöksestä, jo tehdystä päätöksestä vai kokonaan uudesta ideasta. Sinun ei tarvitse tietää eroa. Asiasi löytää oikean paikan heti ensimmäisellä kerralla.",
+    s03Heading: "03 · Neljä väylää, yksi kysymys",
     tracks: [
       {
         title: "Ylläpito ja huolto",
         desc: "Jokin on rikki, likainen tai puuttuu tietystä paikasta, esimerkiksi rikkinäinen katuvalo, graffiti tai kuoppa tiessä. Tämä on suurin osa asioista.",
-        tagLabel: "→ Suoraan kaupungin palautepalveluun, ei sähköpostia tarvita",
+        tag: "→ Suoraan kaupungin palautepalveluun, ei sähköpostia tarvita",
         tagClass: "tag tag-accent",
       },
       {
         title: "Päätökset ja politiikka",
         desc: "Haluat kaupungin päättävän toisin: rakentaa, käyttää rahaa tai muuttaa sääntöä. Ainoa väylä, joka kulkee edelleen lautakunnan kautta.",
-        tagLabel: "→ Sähköposti oikealle lautakunnalle, tekoälyn laatimalla luonnoksella",
+        tag: "→ Sähköposti oikealle lautakunnalle, tekoälyn laatimalla luonnoksella",
         tagClass: "tag tag-outline",
       },
       {
         title: "Oikeudellinen ja henkilökohtainen",
         desc: "Sinua koskeva jo tehty päätös, tai jokin omaan hoitoosi, kohteluusi tai korvaukseesi liittyvä asia. Selitetään prosessina, jossa on valitusaikoja, ei koskaan sähköpostina poliitikolle.",
-        tagLabel: "→ Oikea oikeudellinen taho",
+        tag: "→ Oikea oikeudellinen taho",
         tagClass: "tag tag-neutral",
       },
       {
         title: "Uusi idea",
         desc: "Kokonaan uusi ehdotus, johon kaupunki ei ole vielä ottanut kantaa. Sopii paremmin osallistumisväylään kuin sähköpostiin lautakunnalle.",
-        tagLabel: "→ OmaStadi tai kuntalaisaloite, luonnoksen kanssa",
+        tag: "→ OmaStadi tai kuntalaisaloite, luonnoksen kanssa",
         tagClass: "tag tag-outline",
       },
     ],
-    s03Heading: "03 · Miltä se näyttää",
-    s03Paragraph:
-      "Kirjoita muutama lause siitä, mikä on vialla. Lokalt näyttää heti, mikä väylä sopii ja miksi, ennen kuin lähetät mitään.",
-    screenshotAria: "Kuvakaappaus: kysymys ja tekoälyn arvio Lokaltissa",
-    screenshotSample: "Katuvalo Mannerheimintien 12 edessä on ollut rikki kolme viikkoa.",
-    screenshotTag: "→ Ylläpito ja huolto",
-    s04Heading: "04 · Yksityisyytesi on sisäänrakennettu, ei valinnainen",
-    s04Paragraph:
-      "Teksti, joka sisältää terveys- tai hoitotietoja, merkitään automaattisesti ja ohjataan aina oikeudelliselle väylälle, vaikka asia muuten vaikuttaisi kuuluvan jonnekin muualle. Asiasi ei koskaan päädy vahingossa sähköpostiin nimetylle poliitikolle.",
-    ctaHeading: "Valmis kuvailemaan ongelmasi?",
+    s04Heading: "04 · Mitä Lokalt ei tee",
+    limits: [
+      {
+        title: "Emme lähetä sähköposteja puolestasi",
+        desc: "Painike avaa oman sähköpostiohjelmasi valmiiksi täytetyllä tekstillä. Sinä luet, muokkaat ja lähetät itse.",
+      },
+      {
+        title: "Tekoäly voi erehtyä",
+        desc: "Joka vastauksessa on lähdelinkki osoitteeseen paatokset.hel.fi. Tarkista se ennen lähettämistä.",
+      },
+      {
+        title: "Hoitoasi ei koskaan lähetetä poliitikolle",
+        desc: "Terveys- tai hoitotietoja sisältävä teksti merkitään automaattisesti ja ohjataan aina lakisääteiselle väylälle.",
+      },
+      {
+        title: "Ei tiliä, ei seurantaa",
+        desc: "Lokalt on riippumaton työkalu, ei Helsingin kaupungin virallinen palvelu.",
+      },
+    ],
+    ctaHeading: "Tiedät jo, mikä on vialla.",
     ctaParagraph:
-      "Ilmainen, ei tiliä. Lautakunnat ja yhteystiedot haetaan suoraan osoitteesta paatokset.hel.fi. Työskenteletkö kaupungilla? Näytämme mielellämme, miten asiat reititetään.",
+      "Autamme lopun kanssa. Ilmainen, ei tiliä. Lautakunnat ja yhteystiedot haetaan suoraan osoitteesta paatokset.hel.fi.",
     footerData: "Avointa dataa osoitteesta paatokset.hel.fi",
     aboutLink: "Tietoa palvelusta",
     langLabel: "Kieli",
   },
   en: {
-    fourPaths: "Four paths",
-    ctaLabel: "Try Lokalt",
-    heroLine1: "Describe the problem.",
-    heroLine2: "We'll find the right way forward.",
+    navPaths: "Four paths",
+    cta: "Tap here",
+    heroLine1: "You don't need to know how the city works.",
+    heroLine2: "It's enough that you know what's wrong.",
     heroParagraph:
-      "You shouldn't need to know how the city is organised to be heard. Describe your issue in your own words, and Lokalt shows where it belongs, such as the fault-report service, the right committee, the right legal route, or a channel for new ideas, and helps you take the first step.",
+      "Write it in your own words. You'll find out who in Helsinki decides on your issue, and get a ready draft that you edit and send yourself. You stay in control the whole way.",
     free: "Free. No account needed.",
-    s01Heading: "01 · Why Lokalt exists",
-    s01Paragraph:
-      "Many residents don't know who in the city is actually responsible for their issue, and it often ends up with the wrong body, or none at all. Lokalt reads your description and works out whether it's a maintenance issue, a political decision, a decision already made that concerns you, or a brand-new idea, so your matter lands in the right place the first time.",
-    s02Heading: "02 · Four paths, one question",
+    notOfficial: "Independent tool, not an official service of the City of Helsinki.",
+    s01Heading: "01 · Three steps, and you're there",
+    step1Title: "You write",
+    step1Example: "The library in my neighbourhood should be open on Sundays.",
+    step1Note: "No forms, no categories to pick from. Your own sentence is enough.",
+    step2Title: "You find out who decides",
+    step2Tag: "→ Decisions & policy",
+    step2Body: "Culture and Leisure Committee",
+    step2ChairLine: "Committee chair",
+    step2ChairBadge: "Chair",
+    source: "Source: paatokset.hel.fi",
+    step3Title: "You send it, in your own words",
+    subjectLabel: "Subject",
+    subject: "Sunday opening hours at the library in [neighbourhood]",
+    draftBody:
+      "Hello, I live in [neighbourhood] and use the library often. I'd like the committee to look at Sunday opening hours …",
+    step3Note: "The draft is yours. Change anything you like before it opens in your email app.",
+    s02Heading: "02 · Why you need Lokalt",
+    s02Lead:
+      "You notice something in your everyday life. You don't know who is responsible. The issue ends up with the wrong body, or none at all.",
+    s02Body:
+      "Lokalt reads your description and works out whether it's a maintenance issue, a political decision, a decision already made about you, or a brand-new idea. You don't need to know the difference. Your issue lands in the right place the first time.",
+    s03Heading: "03 · Four paths, one question",
     tracks: [
       {
         title: "Maintenance & upkeep",
         desc: "Something is broken, dirty, or missing at a specific location, like a broken streetlight, graffiti, or a pothole. This covers the vast majority of issues.",
-        tagLabel: "→ Straight to the city's fault-report service, no email needed",
+        tag: "→ Straight to the city's fault-report service, no email needed",
         tagClass: "tag tag-accent",
       },
       {
         title: "Decisions & policy",
         desc: "You want the city to decide differently: build something, spend money, or change a rule. The only path that still goes through a committee.",
-        tagLabel: "→ Email to the right committee, with an AI draft",
+        tag: "→ Email to the right committee, with an AI draft",
         tagClass: "tag tag-outline",
       },
       {
         title: "Legal & personal",
         desc: "A decision already made about you, or something about your own care, treatment, or compensation. Explained as a process with appeal deadlines, never as an email to a politician.",
-        tagLabel: "→ The right legal channel",
+        tag: "→ The right legal channel",
         tagClass: "tag tag-neutral",
       },
       {
         title: "New idea",
         desc: "A brand-new proposal the city hasn't yet considered. Fits better in a participation channel than an email to a committee.",
-        tagLabel: "→ OmaStadi or a residents' initiative, with a draft",
+        tag: "→ OmaStadi or a residents' initiative, with a draft",
         tagClass: "tag tag-outline",
       },
     ],
-    s03Heading: "03 · What it looks like",
-    s03Paragraph:
-      "Write a few sentences about what's wrong. Lokalt shows you right away which path fits, and why, before you send anything.",
-    screenshotAria: "Screenshot: question and AI assessment in Lokalt",
-    screenshotSample: "The streetlight outside Mannerheimintie 12 has been broken for three weeks.",
-    screenshotTag: "→ Maintenance & upkeep",
-    s04Heading: "04 · Your privacy is built in, not a setting",
-    s04Paragraph:
-      "Text containing health or care information is flagged automatically and always goes through the legal path, even if the matter would otherwise look like it belongs elsewhere. Your matter never ends up by mistake in an email to a named politician.",
-    ctaHeading: "Ready to describe your problem?",
+    s04Heading: "04 · What Lokalt doesn't do",
+    limits: [
+      {
+        title: "We don't send emails for you",
+        desc: "The button opens your own email app with the text filled in. You read it, edit it, and send it yourself.",
+      },
+      {
+        title: "The AI can be wrong",
+        desc: "Every answer carries a source link to paatokset.hel.fi. Check it before you send.",
+      },
+      {
+        title: "Your care is never an email to a politician",
+        desc: "Text containing health or care information is flagged automatically and always goes the statutory route.",
+      },
+      {
+        title: "No account, no tracking",
+        desc: "Lokalt is an independent tool, not an official service of the City of Helsinki.",
+      },
+    ],
+    ctaHeading: "You already know what's wrong.",
     ctaParagraph:
-      "Free, no account. Committees and contact details are fetched directly from paatokset.hel.fi. Work for the city? We're happy to show how issues get routed.",
+      "We'll help with the rest. Free, no account. Committees and contact details come straight from paatokset.hel.fi.",
     footerData: "Open data from paatokset.hel.fi",
     aboutLink: "About the service",
     langLabel: "Language",
@@ -242,57 +346,112 @@ export default function LandingClient() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-line px-6 py-5 sm:px-10">
+      <header className="flex items-center justify-between gap-6 border-b border-line px-6 py-5 sm:px-10">
         <Image src={logo} alt="Lokalt" priority className="h-7 w-auto" />
-        <div className="flex items-center gap-6">
-          <a href="#tracks" className="hidden text-sm text-ink/80 hover:text-petrol sm:inline">
-            {c.fourPaths}
+        <div className="flex items-center gap-5">
+          <a href="#vagar" className="hidden text-sm text-ink/80 hover:text-petrol sm:inline">
+            {c.navPaths}
           </a>
           <div className="flex items-center gap-1 text-sm" role="group" aria-label={c.langLabel}>
             {(["sv", "fi", "en"] as Lang[]).map((l) => (
               <button
                 key={l}
+                type="button"
                 onClick={() => setLang(l)}
-                className={`rounded px-2 py-1 ${lang === l ? "bg-petrol text-white" : "text-ink/60"}`}
+                className={`rounded px-2 py-1 font-medium transition ${
+                  lang === l ? "bg-petrol text-white" : "text-ink/55"
+                }`}
                 aria-pressed={lang === l}
               >
                 {l.toUpperCase()}
               </button>
             ))}
           </div>
-          <PrimaryButton href="/app" className="px-5 py-2.5 text-sm">
-            {c.ctaLabel}
+          <PrimaryButton href="/app" className="px-4 py-2 text-sm">
+            {c.cta}
           </PrimaryButton>
         </div>
       </header>
 
       <main className="mx-auto max-w-5xl px-6 sm:px-10">
         {/* Hero */}
-        <section className="pt-16 pb-14 sm:pt-20 sm:pb-16">
-          <h1 className="max-w-2xl text-4xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-6xl">
+        <section className="flex flex-col gap-7 pt-16 pb-14 sm:pt-20 sm:pb-16">
+          <h1 className="max-w-3xl text-[34px] font-semibold leading-[1.08] tracking-tight text-balance sm:text-6xl">
             {c.heroLine1}
             <br />
-            {c.heroLine2}
+            <span className="text-petrol">{c.heroLine2}</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink/75">{c.heroParagraph}</p>
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <PrimaryButton href="/app" className="px-7 py-3.5 text-base">
-              {c.ctaLabel}
+          <p className="max-w-xl text-lg leading-relaxed text-ink/75">{c.heroParagraph}</p>
+          <div className="flex flex-wrap items-center gap-4">
+            <PrimaryButton href="/app" className="px-9 py-4 text-base">
+              {c.cta}
             </PrimaryButton>
             <span className="text-sm text-ink/55">{c.free}</span>
           </div>
+          <p className="max-w-lg text-xs tracking-wide text-ink/55">{c.notOfficial}</p>
         </section>
 
-        {/* 01 · Why */}
-        <section className="pb-14">
+        {/* 01 · Three steps */}
+        <section className="pb-16">
           <p className="text-[13px] font-semibold uppercase tracking-wider text-petrol">{c.s01Heading}</p>
           <hr className="my-3 border-line" />
-          <p className="max-w-3xl text-base leading-relaxed text-ink/80">{c.s01Paragraph}</p>
+          <div className="grid gap-5 sm:grid-cols-3">
+            <div className="flex flex-col gap-3 rounded-lg border border-line bg-white p-5">
+              <div className="flex items-baseline gap-2">
+                <span className="text-xs font-semibold tracking-wider text-ink/55">01</span>
+                <span className="text-lg font-semibold">{c.step1Title}</span>
+              </div>
+              <div className="rounded-md border border-line bg-paper px-3.5 py-3 text-sm leading-relaxed text-ink/75">
+                {c.step1Example}
+              </div>
+              <p className="text-sm leading-relaxed text-ink/55">{c.step1Note}</p>
+            </div>
+
+            <div className="flex flex-col gap-3 rounded-lg border border-line bg-white p-5">
+              <div className="flex items-baseline gap-2">
+                <span className="text-xs font-semibold tracking-wider text-ink/55">02</span>
+                <span className="text-lg font-semibold">{c.step2Title}</span>
+              </div>
+              <div className="flex flex-col gap-2 rounded-md border border-line px-3.5 py-3">
+                <span className="tag tag-accent w-fit">{c.step2Tag}</span>
+                <div className="text-[15px] font-semibold">{c.step2Body}</div>
+                <div className="flex items-center gap-2 text-sm text-ink/75">
+                  <span>{c.step2ChairLine}</span>
+                  <span className="tag tag-badge">{c.step2ChairBadge}</span>
+                </div>
+                <span className="text-xs text-ink/55">{c.source}</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 rounded-lg border border-line bg-white p-5">
+              <div className="flex items-baseline gap-2">
+                <span className="text-xs font-semibold tracking-wider text-ink/55">03</span>
+                <span className="text-lg font-semibold">{c.step3Title}</span>
+              </div>
+              <div className="flex flex-col gap-2 rounded-md border border-line px-3.5 py-3">
+                <span className="text-xs tracking-wide text-ink/55">{c.subjectLabel}</span>
+                <div className="text-sm font-medium">{c.subject}</div>
+                <div className="my-0.5 h-px bg-line" />
+                <p className="text-sm leading-relaxed text-ink/75">{c.draftBody}</p>
+              </div>
+              <p className="text-sm leading-relaxed text-ink/55">{c.step3Note}</p>
+            </div>
+          </div>
         </section>
 
-        {/* 02 · Four tracks */}
-        <section id="tracks" className="scroll-mt-6 pb-16">
+        {/* 02 · Why */}
+        <section className="pb-16">
           <p className="text-[13px] font-semibold uppercase tracking-wider text-petrol">{c.s02Heading}</p>
+          <hr className="my-3 border-line" />
+          <div className="grid items-start gap-8 sm:grid-cols-2">
+            <p className="text-balance text-xl font-medium leading-snug sm:text-2xl">{c.s02Lead}</p>
+            <p className="text-base leading-relaxed text-ink/75">{c.s02Body}</p>
+          </div>
+        </section>
+
+        {/* 03 · Four tracks */}
+        <section id="vagar" className="scroll-mt-4 pb-16">
+          <p className="text-[13px] font-semibold uppercase tracking-wider text-petrol">{c.s03Heading}</p>
           <hr className="my-3 border-line" />
           <div className="mt-3 grid gap-5 sm:grid-cols-2">
             {c.tracks.map((track) => (
@@ -300,56 +459,34 @@ export default function LandingClient() {
                 <Corners />
                 <div className="text-lg font-semibold text-ink">{track.title}</div>
                 <p className="flex-1 text-sm leading-relaxed text-ink/75">{track.desc}</p>
-                <span className={track.tagClass}>{track.tagLabel}</span>
+                <span className={track.tagClass}>{track.tag}</span>
               </div>
             ))}
           </div>
         </section>
 
-        {/* 03 · Screenshot */}
-        <section className="grid gap-10 pb-16 sm:grid-cols-12 sm:items-center">
-          <div className="sm:col-span-7">
-            <p className="text-[13px] font-semibold uppercase tracking-wider text-petrol">{c.s03Heading}</p>
-            <hr className="my-3 border-line" />
-            <p className="text-base leading-relaxed text-ink/80">{c.s03Paragraph}</p>
-          </div>
-          <div className="sm:col-span-5">
-            <div
-              className="blueprint flex flex-col gap-3 rounded-md border border-line bg-white p-5"
-              role="img"
-              aria-label={c.screenshotAria}
-            >
-              <Corners />
-              <div className="rounded-md border border-line bg-paper px-3 py-2.5 text-[13px] leading-relaxed text-ink/70">
-                {c.screenshotSample}
-              </div>
-              <div className="flex flex-col gap-2 rounded-md border border-line p-3">
-                <span className="tag tag-accent w-fit">{c.screenshotTag}</span>
-                <div className="h-2 w-4/5 rounded-full bg-line" />
-                <div className="h-2 w-3/5 rounded-full bg-line" />
-                <div className="mt-1 h-8 w-32 rounded-md bg-petrol/90" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 04 · Privacy */}
+        {/* 04 · What Lokalt doesn't do */}
         <section className="pb-16">
-          <div className="blueprint rounded-md border border-line p-6">
-            <Corners />
-            <div className="text-lg font-semibold text-ink">{c.s04Heading}</div>
-            <p className="mt-2 text-sm leading-relaxed text-ink/75">{c.s04Paragraph}</p>
+          <p className="text-[13px] font-semibold uppercase tracking-wider text-petrol">{c.s04Heading}</p>
+          <hr className="my-3 border-line" />
+          <div className="grid gap-6 sm:grid-cols-2">
+            {c.limits.map((limit) => (
+              <div key={limit.title} className="flex flex-col gap-1.5">
+                <div className="text-[15px] font-semibold">{limit.title}</div>
+                <p className="text-sm leading-relaxed text-ink/75">{limit.desc}</p>
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Bottom CTA */}
-        <section className="flex flex-wrap items-center justify-between gap-8 border-t border-line py-11">
+        <section className="flex flex-wrap items-center justify-between gap-8 border-t border-line py-12">
           <div>
             <h3 className="text-2xl font-semibold text-ink">{c.ctaHeading}</h3>
             <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink/75">{c.ctaParagraph}</p>
           </div>
           <PrimaryButton href="/app" className="whitespace-nowrap px-6 py-3.5 text-[15px]">
-            {c.ctaLabel}
+            {c.cta}
           </PrimaryButton>
         </section>
       </main>
