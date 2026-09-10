@@ -142,58 +142,58 @@ const COPY: Record<Lang, Copy> = {
   },
   fi: {
     navPaths: "Neljä väylää",
-    cta: "Paina tästä",
+    cta: "Aloita tästä",
     heroLine1: "Sinun ei tarvitse tietää, miten kaupunki toimii.",
-    heroLine2: "Riittää, että tiedät mikä on vialla.",
+    heroLine2: "Riittää, että tiedät, mitä haluat muuttaa.",
     heroParagraph:
-      "Kirjoita omin sanoin. Saat tietää, kuka Helsingissä päättää juuri sinun asiastasi, ja valmiin luonnoksen, jota muokkaat ja lähetät itse. Sinä pidät ohjat koko ajan.",
-    free: "Ilmainen. Ei tiliä tarvita.",
-    notOfficial: "Riippumaton työkalu, ei Helsingin kaupungin virallinen palvelu.",
-    s01Heading: "01 · Kolme askelta, ja olet valmis",
-    step1Title: "Sinä kirjoitat",
-    step1Example: "Kaupunginosani kirjaston pitäisi olla auki sunnuntaisin.",
-    step1Note: "Ei lomakkeita, ei valittavia otsikoita. Oma lauseesi riittää.",
-    step2Title: "Saat tietää, kuka päättää",
+      "Kerro asiasi omin sanoin. Me kerromme, kuka Helsingissä siitä päättää, ja kirjoitamme valmiin viestiluonnoksen. Sinä muokkaat ja lähetät sen itse omasta sähköpostistasi. Ohjat pysyvät koko ajan sinulla.",
+    free: "Ilmainen. Ei rekisteröitymistä.",
+    notOfficial: "Riippumaton palvelu. Ei Helsingin kaupungin virallinen kanava.",
+    s01Heading: "01 · Kolme askelta, ei sen enempää",
+    step1Title: "Kirjoita omin sanoin",
+    step1Example: "Kirjaston pitäis olla auki myös sunnuntaisin.",
+    step1Note: "Ei lomakkeita, ei valikoita. Yksi lause riittää.",
+    step2Title: "Näet, kuka päättää",
     step2Tag: "→ Päätökset ja politiikka",
     step2Body: "Kulttuuri- ja vapaa-aikalautakunta",
     step2ChairLine: "Lautakunnan puheenjohtaja",
-    step2ChairBadge: "Puheenjohtaja",
+    step2ChairBadge: "",
     source: "Lähde: paatokset.hel.fi",
-    step3Title: "Sinä lähetät, omin sanoin",
+    step3Title: "Lähetä omalla nimelläsi",
     subjectLabel: "Aihe",
-    subject: "Kirjaston sunnuntaiaukiolo [kaupunginosassa]",
+    subject: "Kirjaston aukioloajat [kaupunginosa]ssa",
     draftBody:
-      "Hei, asun [kaupunginosassa] ja käytän kirjastoa usein. Toivoisin, että lautakunta tarkastelisi sunnuntaiaukioloa …",
-    step3Note: "Luonnos on sinun. Muokkaa sitä vapaasti, ennen kuin se avautuu sähköpostissasi.",
-    s02Heading: "02 · Miksi tarvitset Lokaltia",
+      "Hei, asun [kaupunginosassa] ja käytän lähikirjastoa viikoittain. Toivoisin, että lautakunta harkitsisi sunnuntaiaukioloa…",
+    step3Note: "Luonnos avautuu omassa sähköpostiohjelmassasi. Muokkaa sitä vapaasti ennen kuin lähetät.",
+    s02Heading: "02 · Miksi Lokalt on olemassa",
     s02Lead:
-      "Huomaat jotain arjessasi. Et tiedä, kuka siitä vastaa. Asia päätyy väärälle taholle tai ei minnekään.",
+      "Huomaat arjessasi jotain, mikä pitäisi korjata. Et tiedä, kenelle asia kuuluu. Se päätyy väärään osoitteeseen tai ei minnekään.",
     s02Body:
-      "Lokalt lukee kuvauksesi ja päättelee, onko kyse ylläpitoasiasta, poliittisesta päätöksestä, jo tehdystä päätöksestä vai kokonaan uudesta ideasta. Sinun ei tarvitse tietää eroa. Asiasi löytää oikean paikan heti ensimmäisellä kerralla.",
+      "Lokalt lukee tekstisi ja tunnistaa, onko kyse huoltoasiasta, poliittisesta päätöksestä, jo tehdystä päätöksestä vai kokonaan uudesta ideasta. Sinun ei tarvitse tuntea eroa. Asiasi menee oikeaan osoitteeseen jo ensimmäisellä kerralla.",
     s03Heading: "03 · Neljä väylää, yksi kysymys",
     tracks: [
       {
-        title: "Ylläpito ja huolto",
-        desc: "Jokin on rikki, likainen tai puuttuu tietystä paikasta, esimerkiksi rikkinäinen katuvalo, graffiti tai kuoppa tiessä. Tämä on suurin osa asioista.",
-        tag: "→ Suoraan kaupungin palautepalveluun, ei sähköpostia tarvita",
+        title: "Korjaus ja kunnossapito",
+        desc: "Jokin on rikki, sotkuinen tai puuttuu tietystä paikasta: sammunut katuvalo, töhry seinässä tai kuoppa kadussa. Suurin osa asioista on tätä.",
+        tag: "→ Suoraan kaupungin palautepalveluun. Sähköpostia ei tarvita.",
         tagClass: "tag tag-accent",
       },
       {
         title: "Päätökset ja politiikka",
-        desc: "Haluat kaupungin päättävän toisin: rakentaa, käyttää rahaa tai muuttaa sääntöä. Ainoa väylä, joka kulkee edelleen lautakunnan kautta.",
-        tag: "→ Sähköposti oikealle lautakunnalle, tekoälyn laatimalla luonnoksella",
+        desc: "Haluat, että kaupunki päättää toisin: rakentaa jotain, kohdentaa rahaa uudelleen tai muuttaa sääntöä. Tämä on ainoa väylä, joka kulkee lautakunnan kautta.",
+        tag: "→ Sähköposti oikealle lautakunnalle, luonnos valmiina.",
         tagClass: "tag tag-outline",
       },
       {
         title: "Oikeudellinen ja henkilökohtainen",
-        desc: "Sinua koskeva jo tehty päätös, tai jokin omaan hoitoosi, kohteluusi tai korvaukseesi liittyvä asia. Selitetään prosessina, jossa on valitusaikoja, ei koskaan sähköpostina poliitikolle.",
-        tag: "→ Oikea oikeudellinen taho",
+        desc: "Sinua itseäsi koskeva päätös tai asia, joka liittyy omaan palveluusi, kohteluusi tai korvaukseesi. Näissä on määräaikoja ja oma muutoksenhakutiensä, joten selitämme prosessin vaihe vaiheelta. Poliitikolle näitä ei koskaan lähetetä.",
+        tag: "→ Oikea viranomainen tai muutoksenhakutie.",
         tagClass: "tag tag-neutral",
       },
       {
         title: "Uusi idea",
-        desc: "Kokonaan uusi ehdotus, johon kaupunki ei ole vielä ottanut kantaa. Sopii paremmin osallistumisväylään kuin sähköpostiin lautakunnalle.",
-        tag: "→ OmaStadi tai kuntalaisaloite, luonnoksen kanssa",
+        desc: "Kokonaan uusi ehdotus, johon kaupunki ei ole vielä ottanut kantaa. Tällainen etenee paremmin osallistumiskanavassa kuin sähköpostina lautakunnalle.",
+        tag: "→ OmaStadi tai kuntalaisaloite, luonnos mukana.",
         tagClass: "tag tag-outline",
       },
     ],
@@ -201,25 +201,25 @@ const COPY: Record<Lang, Copy> = {
     limits: [
       {
         title: "Emme lähetä sähköposteja puolestasi",
-        desc: "Painike avaa oman sähköpostiohjelmasi valmiiksi täytetyllä tekstillä. Sinä luet, muokkaat ja lähetät itse.",
+        desc: "Painike avaa sähköpostiohjelmasi, teksti valmiina. Sinä luet, muokkaat ja painat lähetä.",
       },
       {
         title: "Tekoäly voi erehtyä",
-        desc: "Joka vastauksessa on lähdelinkki osoitteeseen paatokset.hel.fi. Tarkista se ennen lähettämistä.",
+        desc: "Jokaisessa vastauksessa on linkki lähteeseen osoitteessa paatokset.hel.fi. Tarkista se ennen kuin lähetät.",
       },
       {
-        title: "Hoitoasi ei koskaan lähetetä poliitikolle",
-        desc: "Terveys- tai hoitotietoja sisältävä teksti merkitään automaattisesti ja ohjataan aina lakisääteiselle väylälle.",
+        title: "Terveysasiasi eivät päädy poliitikolle",
+        desc: "Jos teksti sisältää terveyteen tai hoitoon liittyviä tietoja, se tunnistetaan automaattisesti ja ohjataan aina viralliselle, lakisääteiselle väylälle.",
       },
       {
         title: "Ei tiliä, ei seurantaa",
-        desc: "Lokalt on riippumaton työkalu, ei Helsingin kaupungin virallinen palvelu.",
+        desc: "Emme pyydä tunnistautumista emmekä tallenna kirjoittamaasi. Lokalt on riippumaton työkalu, ei Helsingin kaupungin virallinen palvelu.",
       },
     ],
-    ctaHeading: "Tiedät jo, mikä on vialla.",
+    ctaHeading: "Tiedät jo, mitä pitäisi muuttaa.",
     ctaParagraph:
-      "Autamme lopun kanssa. Ilmainen, ei tiliä. Lautakunnat ja yhteystiedot haetaan suoraan osoitteesta paatokset.hel.fi.",
-    footerData: "Avointa dataa osoitteesta paatokset.hel.fi",
+      "Me hoidamme loput. Ilmainen, ei rekisteröitymistä. Lautakunnat ja yhteystiedot haetaan suoraan osoitteesta paatokset.hel.fi.",
+    footerData: "Avoin data: paatokset.hel.fi",
     aboutLink: "Tietoa palvelusta",
     langLabel: "Kieli",
   },
@@ -417,7 +417,7 @@ export default function LandingClient() {
                 <div className="text-[15px] font-semibold">{c.step2Body}</div>
                 <div className="flex items-center gap-2 text-sm text-ink/75">
                   <span>{c.step2ChairLine}</span>
-                  <span className="tag tag-badge">{c.step2ChairBadge}</span>
+                  {c.step2ChairBadge && <span className="tag tag-badge">{c.step2ChairBadge}</span>}
                 </div>
                 <span className="text-xs text-ink/55">{c.source}</span>
               </div>
