@@ -92,13 +92,18 @@ Write the subject and body of the email.`;
 
   try {
     const client = getClient();
-    const message = await client.messages.create({
-      model: MODEL,
-      max_tokens: 1024,
-      thinking: { type: "disabled" },
-      system: mode === "agenda" ? SYSTEM_AGENDA : SYSTEM_POLICY,
-      messages: [{ role: "user", content: userContent }],
-    });
+    const message = await client.messages.create(
+      {
+        model: MODEL,
+        max_tokens: 1024,
+        thinking: { type: "disabled" },
+        system: mode === "agenda" ? SYSTEM_AGENDA : SYSTEM_POLICY,
+        messages: [{ role: "user", content: userContent }],
+      },
+      // See route-question/route.ts: fail fast instead of leaving the
+      // resident on the "drafting" state for the SDK's default 10 minutes.
+      { timeout: 25_000 },
+    );
 
     const result = parseJsonLoose<DraftResult>(firstText(message));
     return NextResponse.json(result);

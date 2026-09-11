@@ -41,13 +41,20 @@ ${bodiesForPrompt(lang)}`;
 
   try {
     const client = getClient();
-    const message = await client.messages.create({
-      model: MODEL,
-      max_tokens: 512,
-      thinking: { type: "disabled" },
-      system: CLASSIFY_SYSTEM,
-      messages: [{ role: "user", content: userContent }],
-    });
+    const message = await client.messages.create(
+      {
+        model: MODEL,
+        max_tokens: 512,
+        thinking: { type: "disabled" },
+        system: CLASSIFY_SYSTEM,
+        messages: [{ role: "user", content: userContent }],
+      },
+      // Without this the SDK's default 10-minute timeout means a slow or
+      // hung upstream call leaves the resident staring at "Söker rätt organ …"
+      // for ages before anything gives up. Fail fast so the UI can show an
+      // error instead.
+      { timeout: 25_000 },
+    );
 
     const result = parseJsonLoose<ClassifyResult>(firstText(message));
 

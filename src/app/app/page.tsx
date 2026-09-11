@@ -37,6 +37,17 @@ interface Draft {
   recipient: Recipient | null;
 }
 
+// Bound how long we wait for the API routes before giving up — otherwise a
+// stalled request (proxy hang, upstream overload) leaves the resident
+// staring at "Söker rätt organ …" / "Skriver …" forever with no feedback.
+const REQUEST_TIMEOUT_MS = 30_000;
+
+function fetchWithTimeout(input: string, init: RequestInit): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  return fetch(input, { ...init, signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 const FELANMALAN_URL = "https://palautteet.hel.fi/";
 const FELANMALAN_SEARCH_URL = "https://palautteet.hel.fi/hae-palautteita";
 const OMASTADI_URL = "https://omastadi.hel.fi/";
@@ -79,7 +90,7 @@ export default function Home() {
     setLoading(true);
     setClassification(null);
     try {
-      const res = await fetch("/api/route-question", {
+      const res = await fetchWithTimeout("/api/route-question", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, lang }),
@@ -99,7 +110,7 @@ export default function Home() {
     setDraft(null);
     setCopied(false);
     try {
-      const res = await fetch("/api/draft", {
+      const res = await fetchWithTimeout("/api/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -128,7 +139,7 @@ export default function Home() {
     setDraft(null);
     setCopied(false);
     try {
-      const res = await fetch("/api/draft", {
+      const res = await fetchWithTimeout("/api/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, lang, mode: "agenda" }),
