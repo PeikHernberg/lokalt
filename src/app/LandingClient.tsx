@@ -200,7 +200,7 @@ const COPY: Record<Lang, Copy> = {
     heroParagraph:
       "Kerro asiasi omin sanoin. Me kerromme, kuka Helsingissä siitä päättää, ja kirjoitamme valmiin viestiluonnoksen. Sinä muokkaat ja lähetät sen itse omasta sähköpostistasi. Ohjat pysyvät koko ajan sinulla.",
     free: "Ilmainen. Ei rekisteröitymistä.",
-    notOfficial: "Riippumaton palvelu. Ei Helsingin kaupungin virallinen kanava.",
+    notOfficial: "Riippumaton, kehitysvaiheessa oleva palvelu. Ei Helsingin kaupungin virallinen kanava.",
     s01Heading: "01 · Kolme askelta, ei sen enempää",
     step1Title: "Kirjoita omin sanoin",
     step1Example: "Kirjaston pitäis olla auki myös sunnuntaisin.",
