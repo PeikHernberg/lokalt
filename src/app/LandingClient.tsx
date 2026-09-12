@@ -19,6 +19,11 @@ interface Limit {
   desc: string;
 }
 
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
 interface Copy {
   navPaths: string;
   cta: string;
@@ -54,6 +59,9 @@ interface Copy {
   footerData: string;
   aboutLink: string;
   langLabel: string;
+  faqHeading: string;
+  faqUpdated: string;
+  faq: FaqItem[];
 }
 
 const COPY: Record<Lang, Copy> = {
@@ -139,6 +147,50 @@ const COPY: Record<Lang, Copy> = {
     footerData: "Öppna data från paatokset.hel.fi",
     aboutLink: "Om tjänsten",
     langLabel: "Språk",
+    faqHeading: "Vanliga frågor",
+    faqUpdated: "Uppdaterad 12 september 2026",
+    faq: [
+      {
+        q: "Vad är Lokalt?",
+        a: "Lokalt är ett gratis verktyg som listar ut vem på Helsingfors stad som ansvarar för ett problem eller en idé, och skriver ett meddelandeutkast som du själv skickar. Du beskriver saken med egna ord, och Lokalt berättar vilken sektor, nämnd eller kontaktperson som är rätt, och skriver ett utkast som du kan redigera innan du skickar.",
+      },
+      {
+        q: "Hur fungerar Lokalt?",
+        a: "Du skriver vad som är fel i en mening eller två, så som du skulle förklara det för en kompis. Lokalt avgör om det handlar om en underhållsfråga, en politisk fråga, ett juridiskt eller personligt ärende eller en helt ny idé, och visar sedan vem som ansvarar och skriver ett utkast. Du läser det, redigerar om du vill, och skickar det själv från din egen e-post.",
+      },
+      {
+        q: "Vem kontaktar jag i Helsingfors om en trasig gatlykta, ett bullerklagomål, ett fallet träd eller en parkeringsbot?",
+        a: "Det beror på ärendet, och det är precis det problemet Lokalt löser. Trasiga gatlyktor, gropar i gatan, klotter och fallna träd går via stadens vanliga felanmälningstjänst. En parkeringsbot har en egen rättelseprocess och en tidsfrist. Ett bullerklagomål som gäller en granne eller ett bygge går till en annan del av staden än buller från trafiken. Beskriv vad som är fel på Lokalt, så får du veta exakt vart det hör, med ett färdigt utkast om det behövs.",
+      },
+      {
+        q: "Är Lokalt gratis att använda?",
+        a: "Ja. Det är gratis och du behöver inte skapa något konto.",
+      },
+      {
+        q: "Skickar Lokalt meddelandet åt mig?",
+        a: "Nej. Lokalt skriver utkastet och öppnar det i ditt eget e-postprogram. Du läser, redigerar och trycker på skicka själv. Lokalt skickar aldrig något i ditt namn.",
+      },
+      {
+        q: "Är Lokalt en officiell tjänst från Helsingfors stad?",
+        a: "Nej. Lokalt är ett oberoende verktyg, inte en officiell kanal för Helsingfors stad. Det använder stadens egna publicerade beslutsdata från paatokset.hel.fi för att hänvisa dig rätt.",
+      },
+      {
+        q: "Sparar Lokalt det jag skriver, eller följer det mig?",
+        a: "Nej. Det finns inget konto och inget av det du skriver sparas. När du stänger sidan är det borta.",
+      },
+      {
+        q: "På vilka språk fungerar Lokalt?",
+        a: "Finska, svenska och engelska, så att du kan beskriva ditt ärende på det språk du är mest bekväm med.",
+      },
+      {
+        q: "Kan Lokalt hjälpa med något personligt, till exempel en hälso- eller förmånsfråga?",
+        a: "Ja, men på ett annat sätt. Om det du skriver berör din egen hälsa, vård eller dina förmåner känner Lokalt igen det och hänvisar dig till rätt officiell, lagstadgad process i stället för att skriva ett mejl till en politiker eller en nämnd.",
+      },
+      {
+        q: "Hur exakt är Lokalt, och kan jag lita på svaret?",
+        a: "Lokalt använder AI för att matcha ditt ärende med rätt kontakt, och AI kan ha fel. Varje svar länkar till sin källa på paatokset.hel.fi, så du kan kontrollera det själv innan du skickar något.",
+      },
+    ],
   },
   fi: {
     navPaths: "Neljä väylää",
@@ -222,6 +274,50 @@ const COPY: Record<Lang, Copy> = {
     footerData: "Avoin data: paatokset.hel.fi",
     aboutLink: "Tietoa palvelusta",
     langLabel: "Kieli",
+    faqHeading: "Usein kysytyt kysymykset",
+    faqUpdated: "Päivitetty 12. syyskuuta 2026",
+    faq: [
+      {
+        q: "Mikä Lokalt on?",
+        a: "Lokalt on ilmainen työkalu, joka selvittää, kuka Helsingin kaupungilla vastaa ongelmastasi tai ideastasi, ja kirjoittaa valmiin viestiluonnoksen, jonka lähetät itse. Kerrot asiasi omin sanoin, ja Lokalt kertoo, mikä toimiala, lautakunta tai yhteyshenkilö on oikea, ja kirjoittaa luonnoksen, jota voit muokata ennen lähettämistä.",
+      },
+      {
+        q: "Miten Lokalt toimii?",
+        a: "Kirjoitat parilla lauseella, mikä on vialla, samaan tapaan kuin selittäisit asian kaverille. Lokalt tunnistaa, onko kyse kunnossapitoasiasta, poliittisesta kysymyksestä, oikeudellisesta tai henkilökohtaisesta asiasta vai kokonaan uudesta ideasta, ja näyttää sitten, kenelle asia kuuluu, sekä kirjoittaa viestiluonnoksen. Luet sen, muokkaat halutessasi ja lähetät sen itse omasta sähköpostistasi.",
+      },
+      {
+        q: "Keneen otan Helsingissä yhteyttä, jos katuvalo on sammunut, naapurista kuuluu melua, puu on kaatunut tai sain pysäköintivirhemaksun?",
+        a: "Se riippuu asiasta, ja juuri sen ongelman Lokalt ratkaisee. Sammuneet katuvalot, kuopat kadussa, töhryt ja kaatuneet puut menevät kaupungin tavalliseen palautepalveluun. Pysäköintivirhemaksulla on oma oikaisuvaatimusprosessinsa ja määräaikansa. Naapurin tai työmaan melua koskeva ilmoitus menee kaupungin eri osaan kuin liikenteen melu. Kerro Lokaltissa, mikä on vialla, niin saat tietää tarkalleen, minne asia kuuluu, ja valmiin viestiluonnoksen, jos sellaista tarvitaan.",
+      },
+      {
+        q: "Onko Lokalt ilmainen?",
+        a: "Kyllä. Se on ilmainen, eikä sinun tarvitse rekisteröityä.",
+      },
+      {
+        q: "Lähettääkö Lokalt viestin puolestani?",
+        a: "Ei. Lokalt kirjoittaa luonnoksen ja avaa sen omassa sähköpostiohjelmassasi. Luet, muokkaat ja painat lähetä itse. Lokalt ei koskaan lähetä mitään puolestasi.",
+      },
+      {
+        q: "Onko Lokalt Helsingin kaupungin virallinen palvelu?",
+        a: "Ei. Lokalt on riippumaton työkalu, ei Helsingin kaupungin virallinen kanava. Se käyttää kaupungin omaa julkista päätöksentekodataa osoitteesta paatokset.hel.fi ja ohjaa sinut oikeaan paikkaan.",
+      },
+      {
+        q: "Tallentaako Lokalt kirjoittamani tai seuraako se minua?",
+        a: "Ei. Tiliä ei ole, eikä kirjoittamaasi tallenneta. Kun suljet sivun, teksti on poissa.",
+      },
+      {
+        q: "Millä kielillä Lokalt toimii?",
+        a: "Suomeksi, ruotsiksi ja englanniksi, joten voit kuvailla asiasi sillä kielellä, joka tuntuu sinulle luontevimmalta.",
+      },
+      {
+        q: "Voiko Lokalt auttaa henkilökohtaisessa asiassa, esimerkiksi terveyteen tai etuuksiin liittyvässä?",
+        a: "Kyllä, mutta eri tavalla. Jos kirjoittamasi koskee omaa terveyttäsi, hoitoasi tai etuuksiasi, Lokalt tunnistaa sen ja ohjaa sinut oikealle viralliselle, lakisääteiselle väylälle sen sijaan, että kirjoittaisi sähköpostin poliitikolle tai lautakunnalle.",
+      },
+      {
+        q: "Kuinka tarkka Lokalt on, ja voinko luottaa vastaukseen?",
+        a: "Lokalt käyttää tekoälyä asiasi yhdistämiseen oikeaan yhteystietoon, ja tekoäly voi erehtyä. Jokaisessa vastauksessa on linkki lähteeseen osoitteessa paatokset.hel.fi, joten voit tarkistaa sen itse ennen kuin lähetät mitään.",
+      },
+    ],
   },
   en: {
     navPaths: "Four paths",
@@ -305,6 +401,50 @@ const COPY: Record<Lang, Copy> = {
     footerData: "Open data from paatokset.hel.fi",
     aboutLink: "About the service",
     langLabel: "Language",
+    faqHeading: "Common questions",
+    faqUpdated: "Updated 12 September 2026",
+    faq: [
+      {
+        q: "What is Lokalt?",
+        a: "Lokalt is a free tool that figures out who at the City of Helsinki is responsible for a problem or idea, and drafts a message you can send yourself. You describe the issue in your own words, and Lokalt tells you the right department, board, or contact, and writes a draft you can edit before sending.",
+      },
+      {
+        q: "How does Lokalt work?",
+        a: "You write what's wrong in a sentence or two, like you would explain it to a friend. Lokalt works out whether it's a maintenance issue, a policy question, a legal or personal matter, or a new idea, then shows you who's responsible and drafts a message. You read it, edit it if you want, and send it yourself from your own email.",
+      },
+      {
+        q: "Who do I contact in Helsinki about a broken streetlight, a noise complaint, a fallen tree, or a parking fine?",
+        a: "It depends on the issue, which is exactly the problem Lokalt solves. Broken streetlights, potholes, graffiti, and fallen trees go through the city's regular fault-report service. A parking fine has its own appeal process and a deadline. A noise complaint about a neighbor or a building site goes to a different part of the city than noise from traffic. Describe what's wrong on Lokalt and it tells you exactly where it goes, with a draft message ready if one is needed.",
+      },
+      {
+        q: "Is Lokalt free to use?",
+        a: "Yes. It's free, and you don't need to create an account.",
+      },
+      {
+        q: "Does Lokalt send the message for me?",
+        a: "No. Lokalt drafts the message and opens it in your own email program. You read it, edit it, and press send yourself. Lokalt never sends anything on your behalf.",
+      },
+      {
+        q: "Is Lokalt an official City of Helsinki service?",
+        a: "No. Lokalt is an independent tool, not an official channel of the City of Helsinki. It uses the city's own published decision-making data, from paatokset.hel.fi, to point you to the right place.",
+      },
+      {
+        q: "Does Lokalt store what I write, or track me?",
+        a: "No. There's no account and nothing you write is saved. Once you close the page, it's gone.",
+      },
+      {
+        q: "What languages does Lokalt work in?",
+        a: "Finnish, Swedish, and English, so you can describe your concern in whichever one you're most comfortable with.",
+      },
+      {
+        q: "Can Lokalt help with something personal, like a health or benefits issue?",
+        a: "Yes, but differently. If what you write touches your own health, care, or benefits, Lokalt recognizes that and points you to the correct official, statutory process instead of drafting an email to a politician or board.",
+      },
+      {
+        q: "How accurate is Lokalt, and can I trust the answer?",
+        a: "Lokalt uses AI to match your concern to the right contact, and AI can get things wrong. Every answer links to its source on paatokset.hel.fi, so you can check it yourself before you send anything.",
+      },
+    ],
   },
 };
 
@@ -343,8 +483,27 @@ export default function LandingClient() {
   const [lang, setLang] = useState<Lang>("sv");
   const c = COPY[lang];
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: lang,
+    mainEntity: c.faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    })),
+  };
+
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* Header */}
       <header className="flex items-center justify-between gap-6 border-b border-line px-6 py-5 sm:px-10">
         <Image src={logo} alt="Lokalt" priority className="h-7 w-auto" />
@@ -475,6 +634,25 @@ export default function LandingClient() {
                 <div className="text-[15px] font-semibold">{limit.title}</div>
                 <p className="text-sm leading-relaxed text-ink/75">{limit.desc}</p>
               </div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section id="faq" className="scroll-mt-4 pb-16">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <p className="text-[13px] font-semibold uppercase tracking-wider text-petrol">{c.faqHeading}</p>
+            <span className="text-xs text-ink/55">{c.faqUpdated}</span>
+          </div>
+          <hr className="my-3 border-line" />
+          <div className="flex flex-col divide-y divide-line">
+            {c.faq.map((item) => (
+              <details key={item.q} className="group py-4">
+                <summary className="cursor-pointer list-none text-[15px] font-semibold text-ink marker:content-none">
+                  {item.q}
+                </summary>
+                <p className="mt-2 text-sm leading-relaxed text-ink/75">{item.a}</p>
+              </details>
             ))}
           </div>
         </section>
