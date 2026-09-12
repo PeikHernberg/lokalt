@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description:
     "Ett oberoende verktyg som hjälper Helsingforsbor att hitta vilket organ som beslutar om en fråga och skriva ett mejl. Oberoende tjänst, inte officiell.",
   manifest: "/site.webmanifest",
+  verification: {
+    google: "hzN4rhbOuVsKML5haMPMydEAOW0ipBSNLvTzExafa48",
+  },
 };
 
 export const viewport: Viewport = {
