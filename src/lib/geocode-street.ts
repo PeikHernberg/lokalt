@@ -47,15 +47,65 @@ function stripHouseNumber(input: string): string {
   return input.replace(/\s+\d.*$/, "").trim();
 }
 
-export async function geocodeStreetName(
-  streetName: string
+// Finnish and Swedish street-name suffixes, used to guess a street the
+// resident already named in their free-text question — so the location
+// step can pre-fill itself instead of asking them to type the same street
+// again. A capitalized match only (street names are proper nouns), and only
+// the first one found: good enough for a pre-fill the resident can still
+// edit or override, not a claim of certainty.
+const STREET_NAME_SUFFIXES = [
+  "katu", "kuja", "tie", "polku", "väylä", "aukio", "puistikko", // Finnish
+  "gatan", "gränd", "vägen", "stigen", "torget", "planen", // Swedish
+];
+
+export function guessStreetNameFromText(text: string): string | null {
+  const words = text.match(/\p{L}+/gu) ?? [];
+  for (const word of words) {
+    if (!/^\p{Lu}/u.test(word)) continue;
+    const lower = word.toLowerCase();
+    if (STREET_NAME_SUFFIXES.some((suffix) => lower.endsWith(suffix) && word.length > suffix.length + 1)) {
+      return word;
+    }
+  }
+  return null;
+}
+
+const NIMISTO_LAYER = "avoindata:Helsinki_nimisto";
+
+type NimistoFeature = { properties: { nimi?: string | null } };
+type NimistoResponse = { features: NimistoFeature[] };
+
+// The maintenance-area layer (YLRE) only carries Finnish street names, so a
+// Swedish name typed or auto-filled from the resident's question (e.g.
+// "Fredriksgatan") matches nothing there even though the street exists.
+// Helsinki's official bilingual name register lets us look up the Finnish
+// name and retry — this is a real per-street register (nimi/nimi_sv), not a
+// mechanical suffix swap: "Georgsgatan" maps to "Yrjönkatu", not
+// "Georginkatu". Verified live 2026-09-13.
+async function translateSwedishToFinnishStreetName(base: string, swedishName: string): Promise<string | null> {
+  const params = new URLSearchParams({
+    service: "WFS",
+    version: "2.0.0",
+    request: "GetFeature",
+    typeNames: NIMISTO_LAYER,
+    outputFormat: "application/json",
+    count: "5",
+    cql_filter: `nimi_sv ILIKE '%${swedishName}%'`,
+  });
+
+  const res = await fetch(`${base}?${params.toString()}`, {
+    signal: AbortSignal.timeout(5000),
+  });
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as NimistoResponse;
+  return data.features.find((f) => f.properties?.nimi)?.properties.nimi ?? null;
+}
+
+async function searchMaintenanceAreasByName(
+  base: string,
+  safeName: string
 ): Promise<{ lat: number; lon: number; matchedName: string } | null> {
-  const base = process.env.HEL_WFS_BASE_URL;
-  if (!base) throw new Error("HEL_WFS_BASE_URL saknas");
-
-  const safeName = sanitizeForCql(stripHouseNumber(streetName));
-  if (!safeName) return null;
-
   const params = new URLSearchParams({
     service: "WFS",
     version: "2.0.0",
@@ -88,4 +138,22 @@ export async function geocodeStreetName(
   const matchedName = data.features.find((f) => f.properties?.alueen_nimi)?.properties.alueen_nimi ?? safeName;
 
   return { lat, lon, matchedName };
+}
+
+export async function geocodeStreetName(
+  streetName: string
+): Promise<{ lat: number; lon: number; matchedName: string } | null> {
+  const base = process.env.HEL_WFS_BASE_URL;
+  if (!base) throw new Error("HEL_WFS_BASE_URL saknas");
+
+  const safeName = sanitizeForCql(stripHouseNumber(streetName));
+  if (!safeName) return null;
+
+  const direct = await searchMaintenanceAreasByName(base, safeName);
+  if (direct) return direct;
+
+  const finnishName = await translateSwedishToFinnishStreetName(base, safeName);
+  if (!finnishName) return null;
+
+  return searchMaintenanceAreasByName(base, sanitizeForCql(finnishName));
 }

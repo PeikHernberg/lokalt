@@ -45,7 +45,6 @@ interface Draft {
 }
 
 const FELANMALAN_URL = "https://palautteet.hel.fi/";
-const FELANMALAN_SEARCH_URL = "https://palautteet.hel.fi/hae-palautteita";
 const OMASTADI_URL = "https://omastadi.hel.fi/";
 const KUNTALAISALOITE_URL = "https://www.kuntalaisaloite.fi/";
 
@@ -213,14 +212,6 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
       </header>
 
       <main className="mx-auto max-w-2xl px-5 pb-24">
-        {/* 0. LOCATION + 1. AREA RESPONSIBILITY */}
-        <section className="pt-10">
-          <LocationPicker t={t} onSelect={setLocation} />
-          {location && <Responsibility location={location} t={t} />}
-          {location && <NearbyReports location={location} lang={lang} t={t} query={nearbyQuery} />}
-          <Decisions lang={lang} t={t} />
-        </section>
-
         {/* 1. ASK */}
         <section className="pt-10">
           <p className="text-[15px] leading-relaxed text-neutral-700">{t.tagline}</p>
@@ -251,7 +242,7 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
           <p className="mt-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p>
         )}
 
-        {/* 2. RESULT */}
+        {/* 3. RESULT — where to go, who to write to */}
         {classification && (
           <section className="mt-10">
             {/* statutory — and anything flagged sensitive, regardless of track */}
@@ -282,15 +273,7 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
                 <h2 className="text-base font-semibold text-petrol">{t.operationalHeading}</h2>
                 <p className="mt-2 text-[15px] text-neutral-700">{t.operationalExplain}</p>
                 <p className="mt-3 text-[15px] text-neutral-700">{t.operationalCheckExisting}</p>
-                <div className="mt-4 flex flex-wrap gap-3">
-                  <a
-                    href={FELANMALAN_SEARCH_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block rounded-lg border border-petrol px-5 py-3 font-medium text-petrol transition hover:bg-petrol/5"
-                  >
-                    {t.operationalCheckExistingButton}
-                  </a>
+                <div className="mt-4">
                   <a
                     href={FELANMALAN_URL}
                     target="_blank"
@@ -308,10 +291,26 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
               </div>
             )}
 
-            {/* policy — a single committee/body, same card as before */}
+            {/* operational — point to the exact spot to see who maintains it
+                and whether it's already been reported nearby. Only relevant
+                here: the policy/agenda tracks route on the question's text
+                alone, with no location involved. */}
+            {showOperational && (
+              <div className="mt-4">
+                <LocationPicker t={t} onSelect={setLocation} questionText={nearbyQuery} />
+                {location && <Responsibility location={location} t={t} />}
+                {location && <NearbyReports location={location} lang={lang} t={t} query={nearbyQuery} />}
+              </div>
+            )}
+
+            {/* policy — related decisions, then a single committee/body.
+                Decisions only make sense here: the other tracks aren't
+                headed to a committee, so "related decisions" has nothing to
+                anchor to. */}
             {showPolicy && (
               <>
-                <h2 className="text-lg font-medium">{t.resultHeading}</h2>
+                <Decisions query={nearbyQuery} lang={lang} t={t} />
+                <h2 className="mt-8 text-lg font-medium">{t.resultHeading}</h2>
                 {classification.confidence === "low" && (
                   <p className="mt-1 text-sm text-neutral-600">{t.policyLowConfidenceNote}</p>
                 )}
@@ -373,7 +372,48 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
           </section>
         )}
 
-        {/* 3. DRAFT */}
+        {/* 4. WHAT ELSE CAN I DO — track-specific follow-up tips. Skipped
+            for "unclear" (nothing routed yet) and "statutory" (avoids
+            inventing personal-case channels we have no data for). */}
+        {classification && !showStatutory && !showUnclear && (
+          <section className="mt-10 rounded-xl border border-dashed border-line bg-paper p-5">
+            <h2 className="text-base font-semibold text-petrol">{t.whatElseHeading}</h2>
+
+            {(showOperational || showPolicy) && (
+              <>
+                <p className="mt-2 text-[15px] text-neutral-700">
+                  {showOperational ? t.whatElseOperational : t.whatElsePolicy}
+                </p>
+                <ul className="mt-3 space-y-2 text-[15px]">
+                  <li>
+                    <a
+                      href={OMASTADI_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-petrol underline underline-offset-2"
+                    >
+                      {t.agendaOmaStadi}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href={KUNTALAISALOITE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-petrol underline underline-offset-2"
+                    >
+                      {t.agendaInitiative}
+                    </a>
+                  </li>
+                </ul>
+              </>
+            )}
+
+            {showAgenda && <p className="mt-2 text-[15px] text-neutral-700">{t.whatElseAgenda}</p>}
+          </section>
+        )}
+
+        {/* 5. DRAFT */}
         {draft && (
           <section id="draft" className="mt-12 scroll-mt-6">
             <h2 className="text-lg font-medium">

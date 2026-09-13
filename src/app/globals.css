@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 @theme {
   --color-petrol: #0c4a5e;
@@ -100,4 +101,11 @@ body {
   color: var(--color-petrol);
   border-radius: 4px;
   font-weight: 500;
+}
+
+/* Mutes the standard OSM tiles on LocationMap so they read as a calm
+   background rather than competing with the responsibility-area colours
+   drawn on top of them. */
+.map-tiles-muted {
+  filter: grayscale(55%) brightness(1.08) contrast(0.9) saturate(0.7);
 }

@@ -48,6 +48,99 @@ type WfsResponse = {
   features: WfsFeature[];
 };
 
+// Geometry as returned by the WFS in GeoJSON form (EPSG:4326, [lon, lat]
+// pairs) — kept minimal and local rather than shared with geocode-street.ts,
+// matching that file's own copy.
+export type AreaGeometry =
+  | { type: "Polygon"; coordinates: number[][][] }
+  | { type: "MultiPolygon"; coordinates: number[][][][] };
+
+export type AreaShape = {
+  party: ResponsibleParty;
+  geometry: AreaGeometry;
+};
+
+type WfsBoundsFeature = { geometry: AreaGeometry; properties: WfsFeature["properties"] };
+type WfsBoundsResponse = { numberReturned: number; features: WfsBoundsFeature[] };
+
+// Capped well below what a single screenful at street-level zoom returns
+// (a few hundred, per live testing) — a defensive ceiling against an
+// oversized bbox slipping past the route's own size check.
+const MAX_BOUNDS_FEATURES = 1000;
+
+// Rounded to the same ~11m precision as the point cache's lat/lon, joined
+// into one key — the maintenance-area boundaries this covers change rarely
+// enough that, like the point cache below, entries are never expired.
+function boundsCacheKey(bounds: { west: number; south: number; east: number; north: number }): string {
+  return [
+    roundCoord(bounds.west),
+    roundCoord(bounds.south),
+    roundCoord(bounds.east),
+    roundCoord(bounds.north),
+  ].join(",");
+}
+
+export async function lookupAreaShapesInBounds(bounds: {
+  west: number;
+  south: number;
+  east: number;
+  north: number;
+}): Promise<AreaShape[]> {
+  const cacheKey = boundsCacheKey(bounds);
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      const { data } = await supabase
+        .from("area_responsibility_bounds_cache")
+        .select("response")
+        .eq("cache_key", cacheKey)
+        .maybeSingle();
+      if (data) return data.response as AreaShape[];
+    } catch {
+      // Cachen är en optimering. Om den inte svarar går vi vidare till WFS direkt.
+    }
+  }
+
+  const base = process.env.HEL_WFS_BASE_URL;
+  if (!base) throw new Error("HEL_WFS_BASE_URL saknas");
+
+  const params = new URLSearchParams({
+    service: "WFS",
+    version: "2.0.0",
+    request: "GetFeature",
+    typeNames: WFS_LAYER,
+    outputFormat: "application/json",
+    srsName: "EPSG:4326",
+    count: String(MAX_BOUNDS_FEATURES),
+    // BBOX(propertyName, minX, minY, maxX, maxY, [SRS]) — CQL's BBOX takes
+    // plain minx/miny/maxx/maxy, sidestepping the WFS bbox parameter's
+    // axis-order ambiguity for EPSG:4326 (see the point-lookup comment
+    // above for the same gotcha with INTERSECTS).
+    cql_filter: `BBOX(geom,${bounds.west},${bounds.south},${bounds.east},${bounds.north},'EPSG:4326')`,
+  });
+
+  const res = await fetch(`${base}?${params.toString()}`, {
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) throw new Error(`WFS svarade ${res.status}`);
+
+  const data = (await res.json()) as WfsBoundsResponse;
+  const shapes = data.features.map((f) => ({
+    party: normalizeParty(f.properties.talvikunnossapito),
+    geometry: f.geometry,
+  }));
+
+  if (supabase) {
+    try {
+      await supabase.from("area_responsibility_bounds_cache").upsert({ cache_key: cacheKey, response: shapes });
+    } catch {
+      // Cacheskrivning är en optimering, inte ett krav för att svara användaren.
+    }
+  }
+
+  return shapes;
+}
+
 async function fetchFeatureAt(lat: number, lon: number): Promise<WfsFeature | null> {
   const base = process.env.HEL_WFS_BASE_URL;
   if (!base) throw new Error("HEL_WFS_BASE_URL saknas");

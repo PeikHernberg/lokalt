@@ -45,7 +45,6 @@ export interface Strings {
   operationalExplain: string;
   operationalButton: string;
   operationalCheckExisting: string;
-  operationalCheckExistingButton: string;
   operationalLowConfidenceNote: string;
 
   // Policy track (uncertain wording reused from result heading above)
@@ -65,8 +64,28 @@ export interface Strings {
   agendaDraftHeading: string;
   agendaDraftIntro: string;
 
-  // Location picker (step 0)
+  // "What else can I do?" — track-specific follow-up tips, shown after the
+  // routing result. Skipped for "unclear" (nothing routed yet) and
+  // "statutory" (avoids inventing personal-case channels we don't have data
+  // for; see CLAUDE.md's contact-data invariant).
+  whatElseHeading: string;
+  whatElseOperational: string;
+  whatElsePolicy: string;
+  whatElseAgenda: string;
+
+  // Location picker
   locationHeading: string;
+  locationAutoFilledHint: string;
+  locationMapHint: string;
+  locationMapActivateHint: string;
+  locationMapZoomHint: string;
+  locationMapLoadingAreas: string;
+  legendKaupunki: string;
+  legendKiinteisto: string;
+  legendHkl: string;
+  legendValtio: string;
+  legendLiikunta: string;
+  legendIngen: string;
   locationGeoButton: string;
   locationGeoError: string;
   locationStreetLabel: string;
@@ -88,17 +107,14 @@ export interface Strings {
   partyLabelValtio: string;
   partyLabelLiikunta: string;
 
-  // Decisions (step 2)
+  // Decisions — shown only for the policy track
   decisionsHeading: string;
-  decisionsSearchLabel: string;
-  decisionsSearchPlaceholder: string;
-  decisionsSearchButton: string;
   decisionsLoading: string;
-  decisionsUpcomingHeading: string;
+  decisionsStatusUpcoming: string;
+  decisionsStatusDecided: string;
   decisionsUpcomingHint: string;
-  decisionsUpcomingEmpty: string;
-  decisionsDecidedHeading: string;
-  decisionsDecidedEmpty: string;
+  decisionsEmpty: string;
+  decisionsShowMore: string;
   decisionsSourceLabel: string;
 
   // Nearby reports (step 4, MVP slice)
@@ -164,7 +180,6 @@ const sv: Strings = {
   operationalButton: "Gör en felanmälan på palautteet.hel.fi",
   operationalCheckExisting:
     "Innan du anmäler: sök nedan om felet redan är anmält, så slipper du göra en dubblettanmälan.",
-  operationalCheckExistingButton: "Sök bland befintliga felanmälningar",
   operationalLowConfidenceNote:
     "Om du istället vill att staden ska besluta annorlunda, till exempel bygga något nytt, ändra en regel eller finansiera något, är det en annan väg. Beskriv i så fall vad du vill att staden ska besluta, så hittar vi rätt nämnd.",
 
@@ -186,7 +201,25 @@ const sv: Strings = {
   agendaDraftIntro:
     "Redigera fritt. Fyll i det som står inom [ ]. Klistra sedan in texten där du vill lämna in den.",
 
-  locationHeading: "Var gäller det?",
+  whatElseHeading: "Vad kan jag mer göra?",
+  whatElseOperational:
+    "Om problemet är återkommande, eller du tycker att staden borde göra något annorlunda i området:",
+  whatElsePolicy: "Utöver att skriva till nämnden ovan kan du också:",
+  whatElseAgenda:
+    "Du kan också be en fullmäktigeledamot lyfta frågan direkt i stadsfullmäktige, utöver de vägar som redan nämnts ovan.",
+
+  locationHeading: "Visa senaste felanmälningar i ett visst område",
+  locationAutoFilledHint: "Ifyllt utifrån din fråga — ändra gärna om det inte stämmer.",
+  locationMapHint: "Tryck på kartan för att peka ut exakt plats.",
+  locationMapActivateHint: "Tryck för att kunna dra och zooma kartan",
+  locationMapZoomHint: "Zooma in för att se vem som ansvarar för olika områden.",
+  locationMapLoadingAreas: "Laddar ansvarsområden …",
+  legendKaupunki: "Staden",
+  legendKiinteisto: "Fastighetsägaren",
+  legendHkl: "HKL",
+  legendValtio: "Staten",
+  legendLiikunta: "Idrottsservicen",
+  legendIngen: "Inte fastställt",
   locationGeoButton: "Använd min plats",
   locationGeoError: "Kunde inte hämta din plats. Skriv en gatuadress i stället.",
   locationStreetLabel: "Eller skriv en gatuadress",
@@ -208,16 +241,13 @@ const sv: Strings = {
   partyLabelValtio: "statens",
   partyLabelLiikunta: "idrottsservicens",
 
-  decisionsHeading: "Beslut och pågående behandling",
-  decisionsSearchLabel: "Sök på ett ämne, en gata eller ett område",
-  decisionsSearchPlaceholder: "T.ex. Hämeentie eller cykelväg",
-  decisionsSearchButton: "Sök",
+  decisionsHeading: "Relaterade beslut",
   decisionsLoading: "Söker i beslutsindexet …",
-  decisionsUpcomingHeading: "Behandlas just nu",
+  decisionsStatusUpcoming: "Behandlas snart",
+  decisionsStatusDecided: "Beslutat",
   decisionsUpcomingHint: "Det går att påverka innan mötet.",
-  decisionsUpcomingEmpty: "Inget kommande möte hittades om det här.",
-  decisionsDecidedHeading: "Redan beslutat",
-  decisionsDecidedEmpty: "Inget tidigare beslut hittades om det här.",
+  decisionsEmpty: "Vi hittade inga beslut som verkar relatera till din fråga.",
+  decisionsShowMore: "Visa fler",
   decisionsSourceLabel: "Källa: paatokset.hel.fi",
 
   nearbyHeading: "Tidigare anmälningar i närheten",
@@ -282,7 +312,6 @@ const fi: Strings = {
   operationalButton: "Tee palaute osoitteessa palautteet.hel.fi",
   operationalCheckExisting:
     "Ennen kuin ilmoitat: tarkista alta, onko vika jo ilmoitettu, näin vältät päällekkäisen ilmoituksen.",
-  operationalCheckExistingButton: "Hae aiempia palautteita",
   operationalLowConfidenceNote:
     "Jos haluat sen sijaan, että kaupunki päättää jostain toisin, esimerkiksi rakentaa uutta, muuttaa sääntöä tai rahoittaa jotain, kyse on eri polusta. Kuvaile silloin, mitä haluat kaupungin päättävän, niin löydämme oikean lautakunnan.",
 
@@ -304,7 +333,24 @@ const fi: Strings = {
   agendaDraftIntro:
     "Muokkaa vapaasti. Täytä [ ]-kohdat. Liitä teksti sitten sinne, minne haluat sen jättää.",
 
-  locationHeading: "Missä asia koskee?",
+  whatElseHeading: "Mitä muuta voin tehdä?",
+  whatElseOperational: "Jos ongelma toistuu tai mielestäsi kaupungin pitäisi toimia alueella toisin:",
+  whatElsePolicy: "Yllä olevan lautakunnalle kirjoittamisen lisäksi voit myös:",
+  whatElseAgenda:
+    "Voit myös pyytää valtuutettua ottamaan asian suoraan esille kaupunginvaltuustossa, edellä mainittujen keinojen lisäksi.",
+
+  locationHeading: "Näytä viimeisimmät vikailmoitukset tietyllä alueella",
+  locationAutoFilledHint: "Täytetty kysymyksesi perusteella — muokkaa, jos tämä ei pidä paikkaansa.",
+  locationMapHint: "Napauta karttaa osoittaaksesi tarkan paikan.",
+  locationMapActivateHint: "Napauta, jotta voit vetää ja zoomata karttaa",
+  locationMapZoomHint: "Lähennä nähdäksesi kuka vastaa eri alueista.",
+  locationMapLoadingAreas: "Ladataan vastuualueita …",
+  legendKaupunki: "Kaupunki",
+  legendKiinteisto: "Kiinteistön omistaja",
+  legendHkl: "HKL",
+  legendValtio: "Valtio",
+  legendLiikunta: "Liikuntapalvelut",
+  legendIngen: "Ei määritelty",
   locationGeoButton: "Käytä sijaintiani",
   locationGeoError: "Sijaintia ei saatu. Kirjoita katuosoite sen sijaan.",
   locationStreetLabel: "Tai kirjoita katuosoite",
@@ -325,16 +371,13 @@ const fi: Strings = {
   partyLabelValtio: "valtio",
   partyLabelLiikunta: "liikuntapalvelut",
 
-  decisionsHeading: "Päätökset ja käynnissä oleva käsittely",
-  decisionsSearchLabel: "Hae aiheella, kadulla tai alueella",
-  decisionsSearchPlaceholder: "Esim. Hämeentie tai pyörätie",
-  decisionsSearchButton: "Hae",
+  decisionsHeading: "Liittyvät päätökset",
   decisionsLoading: "Haetaan päätösindeksistä …",
-  decisionsUpcomingHeading: "Käsitellään parhaillaan",
+  decisionsStatusUpcoming: "Käsitellään pian",
+  decisionsStatusDecided: "Päätetty",
   decisionsUpcomingHint: "Asiaan voi vielä vaikuttaa ennen kokousta.",
-  decisionsUpcomingEmpty: "Tästä ei löytynyt tulevaa kokousta.",
-  decisionsDecidedHeading: "Jo päätetty",
-  decisionsDecidedEmpty: "Tästä ei löytynyt aiempaa päätöstä.",
+  decisionsEmpty: "Emme löytäneet kysymykseesi liittyviä päätöksiä.",
+  decisionsShowMore: "Näytä lisää",
   decisionsSourceLabel: "Lähde: paatokset.hel.fi",
 
   nearbyHeading: "Aiemmat ilmoitukset lähistöllä",
@@ -399,7 +442,6 @@ const en: Strings = {
   operationalButton: "Report it at palautteet.hel.fi",
   operationalCheckExisting:
     "Before you report it: search below to check if it's already been reported, so you avoid filing a duplicate.",
-  operationalCheckExistingButton: "Search existing fault reports",
   operationalLowConfidenceNote:
     "If instead you want the city to decide something differently, such as building something new, changing a rule, or funding something, that's a different path. Describe what you want the city to decide, and we'll find the right committee.",
 
@@ -421,7 +463,24 @@ const en: Strings = {
   agendaDraftIntro:
     "Edit freely. Fill in anything shown in [ ]. Then paste the text wherever you want to submit it.",
 
-  locationHeading: "Where does this concern?",
+  whatElseHeading: "What else can I do?",
+  whatElseOperational: "If the problem keeps recurring, or you think the city should handle the area differently:",
+  whatElsePolicy: "Besides writing to the committee above, you can also:",
+  whatElseAgenda:
+    "You can also ask a city councillor to raise the matter directly in the city council, in addition to the routes above.",
+
+  locationHeading: "Show recent fault reports in a specific area",
+  locationAutoFilledHint: "Filled in from your question — feel free to change it if that's not right.",
+  locationMapHint: "Tap the map to point to the exact spot.",
+  locationMapActivateHint: "Tap to drag and zoom the map",
+  locationMapZoomHint: "Zoom in to see who's responsible for different areas.",
+  locationMapLoadingAreas: "Loading responsibility areas …",
+  legendKaupunki: "The city",
+  legendKiinteisto: "Property owner",
+  legendHkl: "HKL",
+  legendValtio: "The state",
+  legendLiikunta: "Sports services",
+  legendIngen: "Not determined",
   locationGeoButton: "Use my location",
   locationGeoError: "Couldn't get your location. Type a street address instead.",
   locationStreetLabel: "Or type a street address",
@@ -442,16 +501,13 @@ const en: Strings = {
   partyLabelValtio: "the state's",
   partyLabelLiikunta: "the sports services'",
 
-  decisionsHeading: "Decisions and ongoing handling",
-  decisionsSearchLabel: "Search by topic, street, or area",
-  decisionsSearchPlaceholder: "E.g. Hämeentie or bike path",
-  decisionsSearchButton: "Search",
+  decisionsHeading: "Related decisions",
   decisionsLoading: "Searching the decisions index …",
-  decisionsUpcomingHeading: "Being handled right now",
+  decisionsStatusUpcoming: "Coming up soon",
+  decisionsStatusDecided: "Decided",
   decisionsUpcomingHint: "It's still possible to weigh in before the meeting.",
-  decisionsUpcomingEmpty: "No upcoming meeting found about this.",
-  decisionsDecidedHeading: "Already decided",
-  decisionsDecidedEmpty: "No earlier decision found about this.",
+  decisionsEmpty: "We couldn't find any decisions that seem related to your question.",
+  decisionsShowMore: "Show more",
   decisionsSourceLabel: "Source: paatokset.hel.fi",
 
   nearbyHeading: "Earlier reports nearby",

@@ -7,7 +7,8 @@ import type { NextConfig } from "next";
 // and the inline JSON-LD structured-data blocks (om/page.tsx, FaqJsonLd,
 // OrganizationJsonLd). The browser only ever talks to our own origin —
 // Supabase and the city's APIs are only ever called server-side — so
-// connect-src 'self' is enough.
+// connect-src 'self' is enough. img-src additionally allows the OpenStreetMap
+// tile subdomains for the LocationMap; marker icons are bundled locally.
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
@@ -15,7 +16,7 @@ const securityHeaders = [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data:",
+      "img-src 'self' data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org",
       "font-src 'self'",
       "connect-src 'self'",
       "frame-ancestors 'none'",
