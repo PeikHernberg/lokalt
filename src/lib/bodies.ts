@@ -18,16 +18,25 @@ export interface Body {
   name_sv: string;
   name_fi: string;
   name_en: string;
+  // Identity fields generated from paatokset_policymakers. See
+  // scripts/generate-bodies.mjs and lokalt-kontext/claude-kontext/02-byggordning.md.
+  sector: string | null;
+  body_type: string | null;
+  hierarchy: string[];
+  routable: boolean;
+  parent_id: string | null;
+  source_url_fi: string;
+  source_url_sv: string;
+  source_url_en: string;
+  registry_email: string;
+  // Hand-authored, only ever populated for routable bodies — the live index
+  // carries no remit text, plain-language topics, or contact details.
   remit_sv: string;
   remit_fi: string;
   remit_en: string;
   topics_sv: string[];
   topics_fi: string[];
   topics_en: string[];
-  source_url_fi: string;
-  source_url_sv: string;
-  source_url_en: string;
-  registry_email: string;
   members: Member[];
 }
 
@@ -44,8 +53,13 @@ const data = bodiesData as BodiesFile;
 
 export const BODIES: Body[] = data.bodies;
 
+// The bodies a resident's everyday concern should ever be routed to. Never
+// expose a non-routable body to the classifier or the UI — some of them
+// (e.g. yksilöasioiden jaosto) must never receive resident free text.
+export const ROUTABLE_BODIES: Body[] = BODIES.filter((b) => b.routable);
+
 export function getBody(id: string): Body | undefined {
-  return BODIES.find((b) => b.id === id);
+  return ROUTABLE_BODIES.find((b) => b.id === id);
 }
 
 // Language-aware helpers so the UI never has to branch on language itself.
@@ -69,10 +83,10 @@ export function memberRole(member: Member, lang: Lang): string {
  * The compact list we hand to the routing model. It contains ONLY id, name,
  * remit and topics — never member names or contact details. This keeps the
  * model's job to "pick an id from this list" and means it can never invent or
- * corrupt a person or an email address.
+ * corrupt a person or an email address. Only routable bodies are offered.
  */
 export function bodiesForPrompt(lang: Lang): string {
-  return BODIES.map((b) => {
+  return ROUTABLE_BODIES.map((b) => {
     const name = bodyName(b, lang);
     const remit = bodyRemit(b, lang);
     const topics = (lang === "sv" ? b.topics_sv : lang === "en" ? b.topics_en : b.topics_fi).join(", ");

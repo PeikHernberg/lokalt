@@ -15,6 +15,10 @@ import {
 } from "@/lib/bodies";
 import { strings } from "@/lib/i18n";
 import { LOCALES, isLocale } from "@/lib/site-config";
+import { LocationPicker, type Location } from "@/components/LocationPicker";
+import { Responsibility } from "@/components/Responsibility";
+import { Decisions } from "@/components/Decisions";
+import { NearbyReports } from "@/components/NearbyReports";
 
 type Track = "operational" | "policy" | "statutory" | "agenda" | "unclear";
 
@@ -56,7 +60,10 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
   const lang: Lang = locale;
   const t = strings(lang);
 
+  const [location, setLocation] = useState<Location | null>(null);
+
   const [question, setQuestion] = useState("");
+  const [nearbyQuery, setNearbyQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [classification, setClassification] = useState<ClassifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -70,6 +77,7 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
     if (!question.trim()) return;
     setError(null);
     setDraft(null);
+    setNearbyQuery(question);
 
     // A bare topic word ("spårvagn") is not a matter we can route. Catch it
     // here rather than spending a model call on it, and let the model handle
@@ -167,6 +175,7 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
     setDraft(null);
     setClassification(null);
     setQuestion("");
+    setNearbyQuery("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -203,6 +212,14 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
       </header>
 
       <main className="mx-auto max-w-2xl px-5 pb-24">
+        {/* 0. LOCATION + 1. AREA RESPONSIBILITY */}
+        <section className="pt-10">
+          <LocationPicker t={t} onSelect={setLocation} />
+          {location && <Responsibility location={location} t={t} />}
+          {location && <NearbyReports location={location} lang={lang} t={t} query={nearbyQuery} />}
+          <Decisions lang={lang} t={t} />
+        </section>
+
         {/* 1. ASK */}
         <section className="pt-10">
           <p className="text-[15px] leading-relaxed text-neutral-700">{t.tagline}</p>

@@ -64,6 +64,52 @@ export interface Strings {
   agendaDraftButton: string;
   agendaDraftHeading: string;
   agendaDraftIntro: string;
+
+  // Location picker (step 0)
+  locationHeading: string;
+  locationGeoButton: string;
+  locationGeoError: string;
+  locationStreetLabel: string;
+  locationStreetPlaceholder: string;
+  locationStreetButton: string;
+  locationSelectedLabel: string;
+
+  // Area responsibility (step 1)
+  responsibilityHeading: string;
+  responsibilityLoading: string;
+  responsibilityMaintenanceLevelLabel: string;
+  responsibilityCityText: string;
+  responsibilityOtherText: string;
+  responsibilityNotFoundText: string;
+  partyLabelKiinteisto: string;
+  partyLabelHkl: string;
+  partyLabelValtio: string;
+  partyLabelLiikunta: string;
+
+  // Decisions (step 2)
+  decisionsHeading: string;
+  decisionsSearchLabel: string;
+  decisionsSearchPlaceholder: string;
+  decisionsSearchButton: string;
+  decisionsLoading: string;
+  decisionsUpcomingHeading: string;
+  decisionsUpcomingHint: string;
+  decisionsUpcomingEmpty: string;
+  decisionsDecidedHeading: string;
+  decisionsDecidedEmpty: string;
+  decisionsSourceLabel: string;
+
+  // Nearby reports (step 4, MVP slice)
+  nearbyHeading: string;
+  nearbyHint: string;
+  nearbyVerifiedHint: string;
+  nearbyUnverifiedHint: string;
+  nearbyLoading: string;
+  nearbyEmpty: string;
+  nearbyWideNote: string;
+  nearbyDistance: string;
+  nearbyCityReplyLabel: string;
+  nearbySourceLabel: string;
 }
 
 const sv: Strings = {
@@ -137,6 +183,49 @@ const sv: Strings = {
   agendaDraftHeading: "Din starttext",
   agendaDraftIntro:
     "Redigera fritt. Fyll i det som står inom [ ]. Klistra sedan in texten där du vill lämna in den.",
+
+  locationHeading: "Var gäller det?",
+  locationGeoButton: "Använd min plats",
+  locationGeoError: "Kunde inte hämta din plats. Skriv en gatuadress i stället.",
+  locationStreetLabel: "Eller skriv en gatuadress",
+  locationStreetPlaceholder: "T.ex. Hämeentie",
+  locationStreetButton: "Sök",
+  locationSelectedLabel: "Vald plats",
+
+  responsibilityHeading: "Vem ansvarar för platsen",
+  responsibilityLoading: "Slår upp ansvar …",
+  responsibilityMaintenanceLevelLabel: "Servicenivå",
+  responsibilityCityText: "Det här är Helsingfors stads ansvar.",
+  responsibilityOtherText: "Det här är {party} ansvar, inte stadens.",
+  responsibilityNotFoundText:
+    "Vi kunde inte avgöra vem som ansvarar för just den här punkten.",
+  partyLabelKiinteisto: "fastighetsägarens",
+  partyLabelHkl: "trafikaffärsverkets (HKL)",
+  partyLabelValtio: "statens",
+  partyLabelLiikunta: "idrottsservicens",
+
+  decisionsHeading: "Beslut och pågående behandling",
+  decisionsSearchLabel: "Sök på ett ämne, en gata eller ett område",
+  decisionsSearchPlaceholder: "T.ex. Hämeentie eller cykelväg",
+  decisionsSearchButton: "Sök",
+  decisionsLoading: "Söker i beslutsindexet …",
+  decisionsUpcomingHeading: "Behandlas just nu",
+  decisionsUpcomingHint: "Det går att påverka innan mötet.",
+  decisionsUpcomingEmpty: "Inget kommande möte hittades om det här.",
+  decisionsDecidedHeading: "Redan beslutat",
+  decisionsDecidedEmpty: "Inget tidigare beslut hittades om det här.",
+  decisionsSourceLabel: "Källa: paatokset.hel.fi",
+
+  nearbyHeading: "Tidigare anmälningar i närheten",
+  nearbyHint: "Visar publicerade felanmälningar från de senaste tolv månaderna. Det är bara ungefär en åttondel av allt som anmäls till staden.",
+  nearbyVerifiedHint: "Dessa verkar handla om samma sak. Kontrollera själv innan du anmäler på nytt.",
+  nearbyUnverifiedHint: "Vi kunde inte jämföra dessa mot din text just nu, så de är bara rankade efter avstånd och likhet.",
+  nearbyLoading: "Söker bland tidigare anmälningar …",
+  nearbyEmpty: "Vi hittade ingen publicerad anmälan om det här inom tolv månader här.",
+  nearbyWideNote: "Få träffar nära platsen, visar därför även anmälningar lite längre bort.",
+  nearbyDistance: "{distance} m bort",
+  nearbyCityReplyLabel: "Stadens svar",
+  nearbySourceLabel: "Källa: palautteet.hel.fi",
 };
 
 const fi: Strings = {
@@ -210,6 +299,48 @@ const fi: Strings = {
   agendaDraftHeading: "Aloitustekstisi",
   agendaDraftIntro:
     "Muokkaa vapaasti. Täytä [ ]-kohdat. Liitä teksti sitten sinne, minne haluat sen jättää.",
+
+  locationHeading: "Missä asia koskee?",
+  locationGeoButton: "Käytä sijaintiani",
+  locationGeoError: "Sijaintia ei saatu. Kirjoita katuosoite sen sijaan.",
+  locationStreetLabel: "Tai kirjoita katuosoite",
+  locationStreetPlaceholder: "Esim. Hämeentie",
+  locationStreetButton: "Hae",
+  locationSelectedLabel: "Valittu sijainti",
+
+  responsibilityHeading: "Kuka vastaa paikasta",
+  responsibilityLoading: "Haetaan vastuutietoa …",
+  responsibilityMaintenanceLevelLabel: "Ylläpidon taso",
+  responsibilityCityText: "Tästä vastaa Helsingin kaupunki.",
+  responsibilityOtherText: "Tästä vastaa {party}, ei kaupunki.",
+  responsibilityNotFoundText: "Emme pystyneet määrittämään, kuka vastaa juuri tästä kohdasta.",
+  partyLabelKiinteisto: "kiinteistön omistaja",
+  partyLabelHkl: "liikenneliikelaitos (HKL)",
+  partyLabelValtio: "valtio",
+  partyLabelLiikunta: "liikuntapalvelut",
+
+  decisionsHeading: "Päätökset ja käynnissä oleva käsittely",
+  decisionsSearchLabel: "Hae aiheella, kadulla tai alueella",
+  decisionsSearchPlaceholder: "Esim. Hämeentie tai pyörätie",
+  decisionsSearchButton: "Hae",
+  decisionsLoading: "Haetaan päätösindeksistä …",
+  decisionsUpcomingHeading: "Käsitellään parhaillaan",
+  decisionsUpcomingHint: "Asiaan voi vielä vaikuttaa ennen kokousta.",
+  decisionsUpcomingEmpty: "Tästä ei löytynyt tulevaa kokousta.",
+  decisionsDecidedHeading: "Jo päätetty",
+  decisionsDecidedEmpty: "Tästä ei löytynyt aiempaa päätöstä.",
+  decisionsSourceLabel: "Lähde: paatokset.hel.fi",
+
+  nearbyHeading: "Aiemmat ilmoitukset lähistöllä",
+  nearbyHint: "Näyttää julkaistut palautteet viimeisen 12 kuukauden ajalta. Tämä on vain noin kahdeksasosa kaikesta kaupungille tehdystä palautteesta.",
+  nearbyVerifiedHint: "Nämä vaikuttavat koskevan samaa asiaa. Tarkista silti itse ennen kuin ilmoitat uudelleen.",
+  nearbyUnverifiedHint: "Emme voineet vertailla näitä tekstiisi juuri nyt, joten ne on järjestetty vain etäisyyden ja samankaltaisuuden perusteella.",
+  nearbyLoading: "Haetaan aiempia ilmoituksia …",
+  nearbyEmpty: "Emme löytäneet julkaistua palautetta tästä 12 kuukauden ajalta.",
+  nearbyWideNote: "Vähän osumia lähistöltä, näytämme siksi myös hieman kauempana olevia palautteita.",
+  nearbyDistance: "{distance} m päässä",
+  nearbyCityReplyLabel: "Kaupungin vastaus",
+  nearbySourceLabel: "Lähde: palautteet.hel.fi",
 };
 
 const en: Strings = {
@@ -283,6 +414,48 @@ const en: Strings = {
   agendaDraftHeading: "Your starting text",
   agendaDraftIntro:
     "Edit freely. Fill in anything shown in [ ]. Then paste the text wherever you want to submit it.",
+
+  locationHeading: "Where does this concern?",
+  locationGeoButton: "Use my location",
+  locationGeoError: "Couldn't get your location. Type a street address instead.",
+  locationStreetLabel: "Or type a street address",
+  locationStreetPlaceholder: "E.g. Hämeentie",
+  locationStreetButton: "Search",
+  locationSelectedLabel: "Selected location",
+
+  responsibilityHeading: "Who's responsible for this spot",
+  responsibilityLoading: "Looking up responsibility …",
+  responsibilityMaintenanceLevelLabel: "Service level",
+  responsibilityCityText: "This is the City of Helsinki's responsibility.",
+  responsibilityOtherText: "This is {party} responsibility, not the city's.",
+  responsibilityNotFoundText: "We couldn't determine who's responsible for this exact spot.",
+  partyLabelKiinteisto: "the property owner's",
+  partyLabelHkl: "the transport authority's (HKL)",
+  partyLabelValtio: "the state's",
+  partyLabelLiikunta: "the sports services'",
+
+  decisionsHeading: "Decisions and ongoing handling",
+  decisionsSearchLabel: "Search by topic, street, or area",
+  decisionsSearchPlaceholder: "E.g. Hämeentie or bike path",
+  decisionsSearchButton: "Search",
+  decisionsLoading: "Searching the decisions index …",
+  decisionsUpcomingHeading: "Being handled right now",
+  decisionsUpcomingHint: "It's still possible to weigh in before the meeting.",
+  decisionsUpcomingEmpty: "No upcoming meeting found about this.",
+  decisionsDecidedHeading: "Already decided",
+  decisionsDecidedEmpty: "No earlier decision found about this.",
+  decisionsSourceLabel: "Source: paatokset.hel.fi",
+
+  nearbyHeading: "Earlier reports nearby",
+  nearbyHint: "Shows published fault reports from the last 12 months. This is only about an eighth of everything reported to the city.",
+  nearbyVerifiedHint: "These look like they're about the same thing. Check for yourself before reporting again.",
+  nearbyUnverifiedHint: "We couldn't compare these against your text right now, so they're only ranked by distance and similarity.",
+  nearbyLoading: "Searching earlier reports …",
+  nearbyEmpty: "We found no published report about this within the last 12 months here.",
+  nearbyWideNote: "Few matches close by, so we're also showing reports a bit further away.",
+  nearbyDistance: "{distance} m away",
+  nearbyCityReplyLabel: "City's reply",
+  nearbySourceLabel: "Source: palautteet.hel.fi",
 };
 
 export function strings(lang: Lang): Strings {

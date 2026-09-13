@@ -60,8 +60,8 @@ ${bodiesForPrompt(lang)}`;
     if (result.track !== "policy") {
       result.body_id = null;
     } else if (result.body_id) {
-      const { BODIES } = await import("@/lib/bodies");
-      const knownIds = new Set(BODIES.map((b) => b.id));
+      const { ROUTABLE_BODIES } = await import("@/lib/bodies");
+      const knownIds = new Set(ROUTABLE_BODIES.map((b) => b.id));
       if (!knownIds.has(result.body_id)) {
         result.body_id = null;
       }
