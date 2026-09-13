@@ -26,6 +26,12 @@ next-env.d.ts
 /documents/
 /incubator/
 /kickoff/
+/clients/
 /Lokalt-business-model.md
 /lokalt-funding-frame.md
 /NOTES-politician-data.md
+/CLAUDE(project).md
+/hel_palaute_12m.json
+
+# local Claude Code permission overrides
+.claude/settings.local.json
