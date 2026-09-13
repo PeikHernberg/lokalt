@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Strings } from "@/lib/i18n";
 import type { Lang } from "@/lib/bodies";
 import type { DecisionHit, DecisionsResult } from "@/lib/decisions";
+import { fetchWithTimeout } from "@/lib/fetch-with-timeout";
 
 function formatDate(iso: string | null, lang: Lang): string | null {
   if (!iso) return null;
@@ -44,7 +45,7 @@ export function Decisions({ lang, t }: { lang: Lang; t: Strings }) {
     if (!query.trim()) return;
     setLoading(true);
     try {
-      const res = await fetch("/api/decisions", {
+      const res = await fetchWithTimeout("/api/decisions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query, lang, limit: 10 }),
@@ -72,6 +73,7 @@ export function Decisions({ lang, t }: { lang: Lang; t: Strings }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t.decisionsSearchPlaceholder}
+            maxLength={200}
             className="w-full rounded-lg border border-line bg-white px-4 py-2 text-base outline-none focus:border-petrol"
           />
           <button

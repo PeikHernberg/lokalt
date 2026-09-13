@@ -5,6 +5,7 @@ import type { Strings } from "@/lib/i18n";
 import type { Lang } from "@/lib/bodies";
 import type { NearbyReport, NearbyReportsResult } from "@/lib/nearby-reports";
 import type { Location } from "@/components/LocationPicker";
+import { fetchWithTimeout } from "@/lib/fetch-with-timeout";
 
 function formatDate(iso: string | null, lang: Lang): string | null {
   if (!iso) return null;
@@ -56,7 +57,7 @@ export function NearbyReports({
     let cancelled = false;
     setLoading(true);
     setResult(null);
-    fetch("/api/nearby-reports", {
+    fetchWithTimeout("/api/nearby-reports", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat: location.lat, lon: location.lon, query }),

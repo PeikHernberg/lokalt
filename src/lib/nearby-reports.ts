@@ -91,11 +91,12 @@ async function verifyMatches(query: string, candidates: Candidate[]): Promise<Se
   const client = getClient();
   const items = candidates.map((c) => ({ id: c.service_request_id, description: c.description }));
 
-  const message = await client.messages.create({
-    model: VERIFY_MODEL,
-    max_tokens: 1024,
-    thinking: { type: "disabled" },
-    system: `You compare a Helsinki resident's new fault report against previously reported candidates near the same spot, to catch likely duplicates before the resident submits a new one.
+  const message = await client.messages.create(
+    {
+      model: VERIFY_MODEL,
+      max_tokens: 1024,
+      thinking: { type: "disabled" },
+      system: `You compare a Helsinki resident's new fault report against previously reported candidates near the same spot, to catch likely duplicates before the resident submits a new one.
 
 For each candidate, judge whether it describes the SAME underlying problem as the resident's text — not just shared words. Two different potholes on the same street are "annat", not "samma". Label each candidate exactly "samma", "kanske", or "annat".
 
@@ -104,13 +105,18 @@ The worst possible mistake is a false "samma" or "kanske": it can make a residen
 Descriptions are almost always in Finnish; the resident's text may be in Swedish, Finnish, or English — compare by meaning, not language.
 
 Return ONLY a JSON array, no prose, no markdown fences: [{"id": "<id>", "label": "samma" | "kanske" | "annat"}]`,
-    messages: [
-      {
-        role: "user",
-        content: `Resident's new report:\n"""${query}"""\n\nCandidates:\n${JSON.stringify(items)}`,
-      },
-    ],
-  });
+      messages: [
+        {
+          role: "user",
+          content: `Resident's new report:\n"""${query}"""\n\nCandidates:\n${JSON.stringify(items)}`,
+        },
+      ],
+    },
+    // Without an explicit timeout the SDK defaults to 10 minutes, which
+    // would leave findNearbyReports awaiting forever instead of falling
+    // back to the unverified step-A ranking (see the catch below).
+    { timeout: 25_000 },
+  );
 
   const text = message.content.find((b) => b.type === "text")?.text ?? "[]";
   const cleaned = text.trim().replace(/^```[a-zA-Z]*\s*/, "").replace(/```\s*$/, "");

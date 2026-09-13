@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Strings } from "@/lib/i18n";
+import { fetchWithTimeout } from "@/lib/fetch-with-timeout";
 
 export type Location = { lat: number; lon: number; label: string | null };
 
@@ -44,7 +45,7 @@ export function LocationPicker({
     setError(null);
     setSearching(true);
     try {
-      const res = await fetch("/api/geocode-street", {
+      const res = await fetchWithTimeout("/api/geocode-street", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ streetName: street }),
@@ -87,6 +88,7 @@ export function LocationPicker({
             value={street}
             onChange={(e) => setStreet(e.target.value)}
             placeholder={t.locationStreetPlaceholder}
+            maxLength={200}
             className="w-full rounded-lg border border-line bg-white px-4 py-2 text-base outline-none focus:border-petrol"
           />
           <button

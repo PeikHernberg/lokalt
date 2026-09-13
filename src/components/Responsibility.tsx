@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { Strings } from "@/lib/i18n";
 import type { AreaResponsibility, ResponsibleParty } from "@/lib/area-responsibility";
 import type { Location } from "@/components/LocationPicker";
+import { fetchWithTimeout } from "@/lib/fetch-with-timeout";
 
 function partyLabel(t: Strings, party: ResponsibleParty): string {
   switch (party) {
@@ -28,7 +29,7 @@ export function Responsibility({ location, t }: { location: Location; t: Strings
     let cancelled = false;
     setLoading(true);
     setResult(null);
-    fetch("/api/area-responsibility", {
+    fetchWithTimeout("/api/area-responsibility", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat: location.lat, lon: location.lon }),

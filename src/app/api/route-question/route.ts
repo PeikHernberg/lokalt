@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { getClient, MODEL, firstText, parseJsonLoose } from "@/lib/anthropic";
 import { CLASSIFY_SYSTEM } from "@/lib/classify-prompt";
 import { bodiesForPrompt, type Lang } from "@/lib/bodies";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
+
+// Longest resident text we accept: enough for any real concern, small enough
+// that a scripted caller can't inflate token costs with megabyte payloads.
+const MAX_QUESTION_LENGTH = 2000;
 
 export type Track = "operational" | "policy" | "statutory" | "agenda" | "unclear";
 
@@ -17,6 +22,10 @@ interface ClassifyResult {
 const VALID_TRACKS: Track[] = ["operational", "policy", "statutory", "agenda", "unclear"];
 
 export async function POST(req: NextRequest) {
+  if (!checkRateLimit(req)) {
+    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   let question: string;
   let lang: Lang;
   try {
@@ -30,6 +39,9 @@ export async function POST(req: NextRequest) {
   if (!question) {
     return NextResponse.json({ error: "empty_question" }, { status: 400 });
   }
+  if (question.length > MAX_QUESTION_LENGTH) {
+    return NextResponse.json({ error: "question_too_long" }, { status: 400 });
+  }
 
   const userContent = `Resident's text (language: ${lang}):
 """
@@ -41,13 +53,20 @@ ${bodiesForPrompt(lang)}`;
 
   try {
     const client = getClient();
-    const message = await client.messages.create({
-      model: MODEL,
-      max_tokens: 512,
-      thinking: { type: "disabled" },
-      system: CLASSIFY_SYSTEM,
-      messages: [{ role: "user", content: userContent }],
-    });
+    const message = await client.messages.create(
+      {
+        model: MODEL,
+        max_tokens: 512,
+        thinking: { type: "disabled" },
+        system: CLASSIFY_SYSTEM,
+        messages: [{ role: "user", content: userContent }],
+      },
+      // Without this the SDK's default 10-minute timeout means a slow or
+      // hung upstream call leaves the resident staring at "Söker rätt organ …"
+      // for ages before anything gives up. Fail fast so the UI can show an
+      // error instead.
+      { timeout: 25_000 },
+    );
 
     const result = parseJsonLoose<ClassifyResult>(firstText(message));
 

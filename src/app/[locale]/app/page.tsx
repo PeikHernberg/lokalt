@@ -19,6 +19,7 @@ import { LocationPicker, type Location } from "@/components/LocationPicker";
 import { Responsibility } from "@/components/Responsibility";
 import { Decisions } from "@/components/Decisions";
 import { NearbyReports } from "@/components/NearbyReports";
+import { fetchWithTimeout } from "@/lib/fetch-with-timeout";
 
 type Track = "operational" | "policy" | "statutory" | "agenda" | "unclear";
 
@@ -91,7 +92,7 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
     setLoading(true);
     setClassification(null);
     try {
-      const res = await fetch("/api/route-question", {
+      const res = await fetchWithTimeout("/api/route-question", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, lang }),
@@ -111,7 +112,7 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
     setDraft(null);
     setCopied(false);
     try {
-      const res = await fetch("/api/draft", {
+      const res = await fetchWithTimeout("/api/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -140,7 +141,7 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
     setDraft(null);
     setCopied(false);
     try {
-      const res = await fetch("/api/draft", {
+      const res = await fetchWithTimeout("/api/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, lang, mode: "agenda" }),
@@ -231,6 +232,7 @@ export default function Home({ params }: { params: Promise<{ locale: string }> }
               id="q"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
+              maxLength={2000}
               placeholder={t.askPlaceholder}
               rows={3}
               className="mt-3 w-full resize-y rounded-lg border border-line bg-white px-4 py-3 text-base outline-none focus:border-petrol"
