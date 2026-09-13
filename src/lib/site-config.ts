@@ -7,15 +7,15 @@ export const DEFAULT_LOCALE: Locale = "fi";
 
 // Single source of truth for the site's "last updated" date, used both for
 // JSON-LD dateModified and the visible "Updated" line on /om and in the FAQ.
-export const SITE_LAST_UPDATED = "2026-09-12";
+export const SITE_LAST_UPDATED = "2026-09-13";
 
 // Same date, in the locale's own display format — kept in sync with
 // SITE_LAST_UPDATED by hand, and reused verbatim wherever the page already
 // shows this string (the FAQ heading on the home page and the /om page).
 export const SITE_LAST_UPDATED_LABEL: Record<Locale, string> = {
-  sv: "Uppdaterad 12 september 2026",
-  fi: "Päivitetty 12. syyskuuta 2026",
-  en: "Updated 12 September 2026",
+  sv: "Uppdaterad 13 september 2026",
+  fi: "Päivitetty 13. syyskuuta 2026",
+  en: "Updated 13 September 2026",
 };
 
 export function isLocale(value: string): value is Locale {

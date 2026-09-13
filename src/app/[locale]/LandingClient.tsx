@@ -174,7 +174,7 @@ const COPY: Record<Lang, Copy> = {
       },
       {
         q: "Sparar Lokalt det jag skriver, eller följer det mig?",
-        a: "Nej. Det finns inget konto och inget av det du skriver sparas. När du stänger sidan är det borta.",
+        a: "Vi sparar inte vem du är. Det finns inget konto, ingen inloggning och ingen spårning av dig som person. Det du skriver skickas till vår AI för att hitta rätt organ och skapa ett utkast. För att kunna svara snabbare mellanlagrar vi sökningar i beslutsregistret en kort tid innan de raderas automatiskt.",
       },
       {
         q: "På vilka språk fungerar Lokalt?",
@@ -301,7 +301,7 @@ const COPY: Record<Lang, Copy> = {
       },
       {
         q: "Tallentaako Lokalt kirjoittamani tai seuraako se minua?",
-        a: "Ei. Tiliä ei ole, eikä kirjoittamaasi tallenneta. Kun suljet sivun, teksti on poissa.",
+        a: "Emme tallenna tietoa siitä, kuka olet. Palvelussa ei ole tiliä eikä kirjautumista, emmekä seuraa sinua. Kirjoittamasi teksti lähetetään tekoälyllemme oikean toimielimen löytämistä ja luonnoksen laatimista varten. Nopeuttaaksemme vastauksia tallennamme päätösrekisteriin tehdyt haut välimuistiin lyhyeksi aikaa, minkä jälkeen ne poistetaan automaattisesti.",
       },
       {
         q: "Millä kielillä Lokalt toimii?",
@@ -428,7 +428,7 @@ const COPY: Record<Lang, Copy> = {
       },
       {
         q: "Does Lokalt store what I write, or track me?",
-        a: "No. There's no account and nothing you write is saved. Once you close the page, it's gone.",
+        a: "We don't store who you are — there's no account, no login, and no tracking of you as a person. What you write is sent to our AI to find the right body and create a draft. To answer faster, we briefly cache searches of the decisions register before they're automatically deleted.",
       },
       {
         q: "What languages does Lokalt work in?",

@@ -81,8 +81,11 @@ function Body({ locale }: { locale: Locale }) {
           ifylld. Du läser, redigerar och skickar själv.
         </p>
         <p>
-          Ingen inloggning, inga konton, ingen spårning och inga cookies. Det du skriver
-          skickas till vår server bara för att hitta rätt organ och skapa ett utkast.
+          Ingen inloggning, inga konton och inga cookies. Vi sparar inte vem du är. Det
+          du skriver skickas till vår server och vår AI enbart för att hitta rätt organ
+          och skapa ett utkast. För att kunna svara snabbare mellanlagrar vi sökningar i
+          beslutsregistret en kort tid, utan koppling till dig, innan de raderas
+          automatiskt.
         </p>
       </>
     );
@@ -112,9 +115,11 @@ function Body({ locale }: { locale: Locale }) {
           valmiiksi täytetyllä tekstillä. Luet, muokkaat ja lähetät sen itse.
         </p>
         <p>
-          Ei kirjautumista, ei tilejä, ei seurantaa, ei evästeitä. Kirjoittamasi teksti
-          lähetetään palvelimellemme vain oikean toimielimen löytämistä ja luonnoksen
-          laatimista varten.
+          Ei kirjautumista, ei tilejä, ei evästeitä. Emme tallenna tietoa siitä, kuka
+          olet. Kirjoittamasi teksti lähetetään palvelimellemme ja tekoälyllemme vain
+          oikean toimielimen löytämistä ja luonnoksen laatimista varten. Nopeuttaaksemme
+          vastauksia tallennamme päätösrekisteriin tehdyt haut välimuistiin lyhyeksi
+          aikaa ilman yhteyttä sinuun, minkä jälkeen ne poistetaan automaattisesti.
         </p>
       </>
     );
@@ -143,8 +148,10 @@ function Body({ locale }: { locale: Locale }) {
         the text filled in. You read it, edit it, and send it yourself.
       </p>
       <p>
-        No login, no accounts, no tracking, and no cookies. What you write is sent to
-        our server only to find the right body and create a draft.
+        No login, no accounts, and no cookies. We don&apos;t store who you are. What you
+        write is sent to our server and our AI only to find the right body and create a
+        draft. To answer faster, we briefly cache searches of the decisions register,
+        with no link to you, before they&apos;re automatically deleted.
       </p>
     </>
   );

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { getSupabase } from "@/lib/supabase";
 import type { Lang } from "@/lib/bodies";
 
@@ -15,7 +16,17 @@ export type DecisionsResult = {
 };
 
 const CACHE_TTL_MINUTES = 10;
+// Rows past this age are deleted rather than just ignored, so the cache
+// never accumulates residents' search text indefinitely (see CLAUDE.md /
+// privacy copy: we only "briefly" cache, not forever).
+const CACHE_RETENTION_MINUTES = 60;
 const DECISIONS_URL_BASE = "https://paatokset.hel.fi";
+
+// The cache key is derived from what the resident typed. Hash it rather
+// than storing the query text in plain, queryable form.
+function hashCacheKey(input: string): string {
+  return createHash("sha256").update(input).digest("hex");
+}
 
 // paatokset_decisions has both a Finnish and Swedish document per issue in
 // practice. English users see Finnish results; there is no English index.
@@ -87,7 +98,9 @@ export async function searchDecisions(
   lang: Lang,
   limit: number
 ): Promise<DecisionsResult> {
-  const cacheKey = `${decisionLanguage(lang)}:${query.trim().toLowerCase()}:${limit}`;
+  const cacheKey = hashCacheKey(
+    `${decisionLanguage(lang)}:${query.trim().toLowerCase()}:${limit}`
+  );
 
   const supabase = getSupabase();
   if (supabase) {
@@ -101,6 +114,10 @@ export async function searchDecisions(
         const ageMinutes = (Date.now() - new Date(data.fetched_at).getTime()) / 60000;
         if (ageMinutes < CACHE_TTL_MINUTES) return data.response as DecisionsResult;
       }
+      // Opportunistic purge of everything past retention, not just this
+      // row — keeps the table from growing unbounded without a cron job.
+      const cutoff = new Date(Date.now() - CACHE_RETENTION_MINUTES * 60000).toISOString();
+      await supabase.from("decisions_cache").delete().lt("fetched_at", cutoff);
     } catch {
       // Cachen är en optimering. Fortsätt mot indexet direkt om den inte svarar.
     }
