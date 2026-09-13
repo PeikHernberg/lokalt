@@ -5,7 +5,7 @@ type Geometry =
   | { type: "Polygon"; coordinates: Ring[] }
   | { type: "MultiPolygon"; coordinates: Ring[][] };
 
-type WfsFeature = { geometry: Geometry };
+type WfsFeature = { geometry: Geometry; properties: { alueen_nimi?: string | null } };
 type WfsResponse = { numberReturned: number; features: WfsFeature[] };
 
 function outerRing(geometry: Geometry): Ring | null {
@@ -39,13 +39,21 @@ function sanitizeForCql(input: string): string {
   return input.replace(/'/g, "''").replace(/[%_]/g, "");
 }
 
+// The WFS layer's alueen_nimi field holds only bare street names — no house
+// numbers, no apartment letters — so "Unioninkatu 6B 32" matches nothing
+// even though "Unioninkatu" alone matches fine. Strip everything from the
+// first digit onward before searching. Verified live 2026-09-13.
+function stripHouseNumber(input: string): string {
+  return input.replace(/\s+\d.*$/, "").trim();
+}
+
 export async function geocodeStreetName(
   streetName: string
 ): Promise<{ lat: number; lon: number; matchedName: string } | null> {
   const base = process.env.HEL_WFS_BASE_URL;
   if (!base) throw new Error("HEL_WFS_BASE_URL saknas");
 
-  const safeName = sanitizeForCql(streetName.trim());
+  const safeName = sanitizeForCql(stripHouseNumber(streetName));
   if (!safeName) return null;
 
   const params = new URLSearchParams({
@@ -75,5 +83,9 @@ export async function geocodeStreetName(
   const lon = median(centroids.map((c) => c[0]));
   const lat = median(centroids.map((c) => c[1]));
 
-  return { lat, lon, matchedName: streetName.trim() };
+  // Show what the source actually matched (its real spelling/casing), not a
+  // blind echo of the user's input — the two can differ.
+  const matchedName = data.features.find((f) => f.properties?.alueen_nimi)?.properties.alueen_nimi ?? safeName;
+
+  return { lat, lon, matchedName };
 }

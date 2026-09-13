@@ -51,14 +51,14 @@ export function LocationPicker({
       });
       const data = await res.json();
       if (!data.found) {
-        setError(t.locationGeoError);
+        setError(t.locationStreetNotFoundError);
         return;
       }
       const location: Location = { lat: data.lat, lon: data.lon, label: data.matchedName };
       setSelected(location);
       onSelect(location);
     } catch {
-      setError(t.locationGeoError);
+      setError(t.locationStreetNotFoundError);
     } finally {
       setSearching(false);
     }
@@ -80,6 +80,7 @@ export function LocationPicker({
         <label htmlFor="street" className="block text-sm font-medium">
           {t.locationStreetLabel}
         </label>
+        <p className="mt-1 text-xs text-neutral-500">{t.locationStreetHint}</p>
         <div className="mt-2 flex gap-2">
           <input
             id="street"

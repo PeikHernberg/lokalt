@@ -70,7 +70,9 @@ export interface Strings {
   locationGeoButton: string;
   locationGeoError: string;
   locationStreetLabel: string;
+  locationStreetHint: string;
   locationStreetPlaceholder: string;
+  locationStreetNotFoundError: string;
   locationStreetButton: string;
   locationSelectedLabel: string;
 
@@ -188,7 +190,9 @@ const sv: Strings = {
   locationGeoButton: "Använd min plats",
   locationGeoError: "Kunde inte hämta din plats. Skriv en gatuadress i stället.",
   locationStreetLabel: "Eller skriv en gatuadress",
-  locationStreetPlaceholder: "T.ex. Hämeentie",
+  locationStreetHint: "Skriv bara gatans namn, utan husnummer, på finska (t.ex. Unioninkatu, inte Unionsgatan).",
+  locationStreetPlaceholder: "T.ex. Unioninkatu",
+  locationStreetNotFoundError: "Vi hittade ingen gata med det namnet. Prova gatans finska namn, utan husnummer.",
   locationStreetButton: "Sök",
   locationSelectedLabel: "Vald plats",
 
@@ -304,7 +308,9 @@ const fi: Strings = {
   locationGeoButton: "Käytä sijaintiani",
   locationGeoError: "Sijaintia ei saatu. Kirjoita katuosoite sen sijaan.",
   locationStreetLabel: "Tai kirjoita katuosoite",
-  locationStreetPlaceholder: "Esim. Hämeentie",
+  locationStreetHint: "Kirjoita vain kadun nimi, ilman talon numeroa (esim. Unioninkatu).",
+  locationStreetPlaceholder: "Esim. Unioninkatu",
+  locationStreetNotFoundError: "Emme löytäneet kyseistä katua. Kirjoita vain kadun nimi, ilman talon numeroa.",
   locationStreetButton: "Hae",
   locationSelectedLabel: "Valittu sijainti",
 
@@ -419,7 +425,9 @@ const en: Strings = {
   locationGeoButton: "Use my location",
   locationGeoError: "Couldn't get your location. Type a street address instead.",
   locationStreetLabel: "Or type a street address",
-  locationStreetPlaceholder: "E.g. Hämeentie",
+  locationStreetHint: "Type just the street name, no house number, in Finnish (e.g. Unioninkatu, not Union Street).",
+  locationStreetPlaceholder: "E.g. Unioninkatu",
+  locationStreetNotFoundError: "We couldn't find that street. Try its Finnish name, without a house number.",
   locationStreetButton: "Search",
   locationSelectedLabel: "Selected location",
 
