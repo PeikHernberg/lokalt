@@ -1,0 +1,19 @@
+# Lokalt
+
+Lokalt is a free, independent tool that helps Helsinki residents figure out
+which city body is responsible for a problem or idea, and drafts a message
+they can send themselves. It is not an official service of the City of
+Helsinki. There are no accounts and no user data is stored; Lokalt never
+sends email on a user's behalf.
+
+Residents describe their concern in their own words, in Finnish, Swedish, or
+English. Lokalt classifies the concern and routes it: things that are broken
+go to the city's existing fault-report channel, personal or legal matters go
+to the right statutory channel, brand-new ideas go to citizen-participation
+channels, and policy questions (where a city body should decide something
+differently) get a real contact and a short draft email.
+
+- Finnish: https://www.helppolokal.org/fi
+- Swedish: https://www.helppolokal.org/sv
+- English: https://www.helppolokal.org/en
+- About: https://www.helppolokal.org/fi/om

@@ -1,11 +1,9 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import logo from "../../public/lokalt-logo.png";
+import { LOCALES, type Locale } from "@/lib/site-config";
+import FaqJsonLd from "@/components/FaqJsonLd";
+import OrganizationJsonLd from "@/components/OrganizationJsonLd";
 
-type Lang = "sv" | "fi" | "en";
+type Lang = Locale;
 
 interface Track {
   title: string;
@@ -479,54 +477,35 @@ function PrimaryButton({
   );
 }
 
-export default function LandingClient() {
-  const [lang, setLang] = useState<Lang>("sv");
+export default function LandingClient({ lang }: { lang: Lang }) {
   const c = COPY[lang];
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    inLanguage: lang,
-    mainEntity: c.faq.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.a,
-      },
-    })),
-  };
 
   return (
     <div className="min-h-screen">
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      <OrganizationJsonLd lang={lang} />
+      <FaqJsonLd lang={lang} faq={c.faq} />
       {/* Header */}
       <header className="flex items-center justify-between gap-6 border-b border-line px-6 py-5 sm:px-10">
-        <Image src={logo} alt="Lokalt" priority className="h-7 w-auto" />
+        <span className="text-lg font-semibold tracking-tight text-petrol">Lokalt</span>
         <div className="flex items-center gap-5">
           <a href="#vagar" className="hidden text-sm text-ink/80 hover:text-petrol sm:inline">
             {c.navPaths}
           </a>
           <div className="flex items-center gap-1 text-sm" role="group" aria-label={c.langLabel}>
-            {(["sv", "fi", "en"] as Lang[]).map((l) => (
-              <button
+            {LOCALES.map((l) => (
+              <Link
                 key={l}
-                type="button"
-                onClick={() => setLang(l)}
+                href={`/${l}`}
                 className={`rounded px-2 py-1 font-medium transition ${
                   lang === l ? "bg-petrol text-white" : "text-ink/55"
                 }`}
-                aria-pressed={lang === l}
+                aria-current={lang === l ? "true" : undefined}
               >
                 {l.toUpperCase()}
-              </button>
+              </Link>
             ))}
           </div>
-          <PrimaryButton href="/app" className="px-4 py-2 text-sm">
+          <PrimaryButton href={`/${lang}/app`} className="px-4 py-2 text-sm">
             {c.cta}
           </PrimaryButton>
         </div>
@@ -542,7 +521,7 @@ export default function LandingClient() {
           </h1>
           <p className="max-w-xl text-lg leading-relaxed text-ink/75">{c.heroParagraph}</p>
           <div className="flex flex-wrap items-center gap-4">
-            <PrimaryButton href="/app" className="px-9 py-4 text-base">
+            <PrimaryButton href={`/${lang}/app`} className="px-9 py-4 text-base">
               {c.cta}
             </PrimaryButton>
             <span className="text-sm text-ink/55">{c.free}</span>
@@ -663,7 +642,7 @@ export default function LandingClient() {
             <h3 className="text-2xl font-semibold text-ink">{c.ctaHeading}</h3>
             <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink/75">{c.ctaParagraph}</p>
           </div>
-          <PrimaryButton href="/app" className="whitespace-nowrap px-6 py-3.5 text-[15px]">
+          <PrimaryButton href={`/${lang}/app`} className="whitespace-nowrap px-6 py-3.5 text-[15px]">
             {c.cta}
           </PrimaryButton>
         </section>
@@ -673,7 +652,7 @@ export default function LandingClient() {
       <footer className="border-t border-line px-6 py-5 sm:px-10">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 text-xs text-ink/55">
           <span>{c.footerData}</span>
-          <Link href="/om" className="text-petrol underline underline-offset-2">
+          <Link href={`/${lang}/om`} className="text-petrol underline underline-offset-2">
             {c.aboutLink}
           </Link>
         </div>

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import {
   getBody,
   bodyName,
@@ -13,6 +14,7 @@ import {
   type Member,
 } from "@/lib/bodies";
 import { strings } from "@/lib/i18n";
+import { LOCALES, isLocale } from "@/lib/site-config";
 
 type Track = "operational" | "policy" | "statutory" | "agenda" | "unclear";
 
@@ -48,8 +50,10 @@ function mailtoHref(email: string, subject: string, body: string): string {
   )}&body=${encodeURIComponent(body)}`;
 }
 
-export default function Home() {
-  const [lang, setLang] = useState<Lang>("sv");
+export default function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = use(params);
+  if (!isLocale(locale)) notFound();
+  const lang: Lang = locale;
   const t = strings(lang);
 
   const [question, setQuestion] = useState("");
@@ -184,27 +188,16 @@ export default function Home() {
         <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-4">
           <span className="text-lg font-semibold tracking-tight text-petrol">Lokalt</span>
           <div className="flex items-center gap-1 text-sm" role="group" aria-label={t.langLabel}>
-            <button
-              onClick={() => setLang("sv")}
-              className={`rounded px-2 py-1 ${lang === "sv" ? "bg-petrol text-white" : "text-neutral-600"}`}
-              aria-pressed={lang === "sv"}
-            >
-              SV
-            </button>
-            <button
-              onClick={() => setLang("fi")}
-              className={`rounded px-2 py-1 ${lang === "fi" ? "bg-petrol text-white" : "text-neutral-600"}`}
-              aria-pressed={lang === "fi"}
-            >
-              FI
-            </button>
-            <button
-              onClick={() => setLang("en")}
-              className={`rounded px-2 py-1 ${lang === "en" ? "bg-petrol text-white" : "text-neutral-600"}`}
-              aria-pressed={lang === "en"}
-            >
-              EN
-            </button>
+            {LOCALES.map((l) => (
+              <Link
+                key={l}
+                href={`/${l}/app`}
+                className={`rounded px-2 py-1 ${lang === l ? "bg-petrol text-white" : "text-neutral-600"}`}
+                aria-current={lang === l ? "true" : undefined}
+              >
+                {l.toUpperCase()}
+              </Link>
+            ))}
           </div>
         </div>
       </header>
@@ -428,7 +421,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-line">
         <div className="mx-auto max-w-2xl px-5 py-6 text-sm text-neutral-600">
-          <Link href="/om" className="text-petrol underline underline-offset-4">
+          <Link href={`/${lang}/om`} className="text-petrol underline underline-offset-4">
             {t.aboutLink}
           </Link>
           <p className="mt-2 text-xs leading-relaxed text-neutral-500">{t.footerDisclaimer}</p>
