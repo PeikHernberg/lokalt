@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { geocodeStreetName } from "@/lib/geocode-street";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { readJsonBody } from "@/lib/read-json-body";
 
 export const runtime = "nodejs";
 
 const MAX_STREET_NAME_LENGTH = 200;
 
 export async function POST(req: NextRequest) {
-  if (!checkRateLimit(req)) {
+  if (!checkRateLimit(req, "lookup")) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
-  const body = await req.json().catch(() => null);
+  const body = await readJsonBody(req);
   const streetName = typeof body?.streetName === "string" ? body.streetName : "";
 
   if (!streetName.trim()) {

@@ -72,6 +72,18 @@ ANTHROPIC_API_KEY=sk-ant-...your key here...
 
 `.env.local` is git-ignored, so your key is never committed.
 
+If you also want the city-data lookups (nearby reports, decisions, who
+maintains this street), fill in the Supabase lines in the same file. There are
+two Supabase keys and the difference matters:
+
+| Line in `.env.local` | What it does | How careful to be |
+| --- | --- | --- |
+| `SUPABASE_ANON_KEY` | Lets the site **read** its saved lookups. | Supabase treats this one as public. The database is set up so that this key cannot change anything — only read. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Lets the site **save** lookups so it doesn't ask the city's servers the same question twice. | This one can do anything to the database. Keep it in `.env.local` and in your hosting provider's settings, and nowhere else — never in the code, never in a screenshot. |
+
+You can leave `SUPABASE_SERVICE_ROLE_KEY` empty. The site still works; it just
+re-asks the city's servers more often instead of reusing its own saved answers.
+
 ### 3. Install and start
 
 ```bash
@@ -90,13 +102,23 @@ That's it. Type a problem, pick a body, and Lokalt drafts the email.
 1. Push this project to a GitHub repository.
 2. Go to https://vercel.com and sign in with GitHub.
 3. Click **Add New → Project**, pick this repository, and click **Import**.
-4. Before deploying, open **Environment Variables** and add one:
-   - **Name:** `ANTHROPIC_API_KEY`
-   - **Value:** your `sk-ant-...` key
+4. Before deploying, open **Environment Variables** and add the same lines you
+   have in `.env.local` — at minimum `ANTHROPIC_API_KEY`, plus the Supabase and
+   `HEL_*` lines if you want the city-data lookups.
 5. Click **Deploy**. After a minute you get a public URL.
 
-If you change the key later: Vercel → your project → **Settings → Environment
+If you change a key later: Vercel → your project → **Settings → Environment
 Variables**, then redeploy.
+
+Two things to get right when you put it online:
+
+- None of these names start with `NEXT_PUBLIC_`, and none of them should.
+  That prefix is Next.js's way of saying "send this to the browser", which for
+  any of these keys would publish it.
+- `TRUSTED_PROXY_HOPS` should stay at `1` on Vercel (and on most hosts). It
+  tells the app how many servers sit between it and the visitor, which is how
+  it works out who is calling and enforces its per-visitor limits. Only change
+  it if you put something extra, like Cloudflare, in front of Vercel.
 
 ---
 

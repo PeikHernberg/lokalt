@@ -68,7 +68,13 @@ async function classifyBatch(client, items) {
 }
 
 async function main() {
-  const supabase = createClient(loadEnv("SUPABASE_URL"), loadEnv("SUPABASE_ANON_KEY"));
+  // Writes category columns back onto feedback_reports. The anon key is
+  // read-only against every table by design, so this maintenance script uses
+  // the service-role key — which is why it only ever runs locally, from
+  // .env.local, and never from anything the browser can reach.
+  const supabase = createClient(loadEnv("SUPABASE_URL"), loadEnv("SUPABASE_SERVICE_ROLE_KEY"), {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
   const anthropic = new Anthropic({ apiKey: loadEnv("ANTHROPIC_API_KEY") });
 
   let totalClassified = 0;

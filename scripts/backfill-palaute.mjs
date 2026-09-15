@@ -30,6 +30,11 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
 }
 
 const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/ingest-palaute`;
+// The Edge Function is the only writer to feedback_reports. A valid anon JWT
+// is enough to reach any Edge Function, and the anon key is public by design,
+// so the function also requires a shared secret. Set INGEST_SECRET here to the
+// same value configured on the function (Supabase -> Edge Functions -> Secrets).
+const INGEST_SECRET = process.env.INGEST_SECRET ?? "";
 const DAYS = Number(process.argv[2]) || 365;
 const DELAY_MS = 150;
 
@@ -43,6 +48,7 @@ async function ingestDay(dateStr) {
     headers: {
       Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
       "Content-Type": "application/json",
+      ...(INGEST_SECRET ? { "x-ingest-secret": INGEST_SECRET } : {}),
     },
     body: JSON.stringify({ mode: "day", date: dateStr }),
   });

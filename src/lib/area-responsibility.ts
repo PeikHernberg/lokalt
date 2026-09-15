@@ -1,4 +1,4 @@
-import { getSupabase } from "@/lib/supabase";
+import { getSupabase, getSupabaseWriter } from "@/lib/supabase";
 
 export type ResponsibleParty =
   | "kaupunki"
@@ -130,9 +130,10 @@ export async function lookupAreaShapesInBounds(bounds: {
     geometry: f.geometry,
   }));
 
-  if (supabase) {
+  const writer = getSupabaseWriter();
+  if (writer) {
     try {
-      await supabase.from("area_responsibility_bounds_cache").upsert({ cache_key: cacheKey, response: shapes });
+      await writer.from("area_responsibility_bounds_cache").upsert({ cache_key: cacheKey, response: shapes });
     } catch {
       // Cacheskrivning är en optimering, inte ett krav för att svara användaren.
     }
@@ -202,9 +203,10 @@ export async function lookupAreaResponsibility(
       }
     : { found: false, party: null, maintenanceLevel: null, areaName: null, areaType: null };
 
-  if (supabase) {
+  const writer = getSupabaseWriter();
+  if (writer) {
     try {
-      await supabase.from("area_responsibility_cache").upsert({
+      await writer.from("area_responsibility_cache").upsert({
         lat_rounded: latRounded,
         lon_rounded: lonRounded,
         response: result,

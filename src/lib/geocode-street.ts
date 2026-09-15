@@ -32,11 +32,23 @@ function median(values: number[]): number {
   return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
 }
 
-// Sanitize a user-typed street name for use inside a CQL string literal:
-// escape single quotes and strip characters CQL doesn't expect in a plain
-// ILIKE pattern, so user input can never break out of the literal.
+// Longest street name worth sending upstream. Helsinki's longest is well
+// under this; anything longer is not a street name.
+const MAX_CQL_NAME_LENGTH = 80;
+
+// A street name typed by a resident ends up inside a CQL string literal in a
+// query we send to the city's WFS. Rather than escape the characters that
+// would break out of that literal, keep only the characters a street name is
+// actually made of — letters (any alphabet, so Finnish and Swedish spellings
+// survive), spaces and hyphens. Quotes, wildcards, parentheses and everything
+// else CQL gives meaning to are dropped before the query is built, so there
+// is nothing left to escape.
 function sanitizeForCql(input: string): string {
-  return input.replace(/'/g, "''").replace(/[%_]/g, "");
+  return input
+    .replace(/[^\p{L}\s-]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, MAX_CQL_NAME_LENGTH);
 }
 
 // The WFS layer's alueen_nimi field holds only bare street names — no house

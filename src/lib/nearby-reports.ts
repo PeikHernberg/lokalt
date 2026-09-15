@@ -78,7 +78,9 @@ function toReport(c: Candidate): NearbyReport {
     statusNotes: c.status_notes ? stripHtml(c.status_notes) : null,
     requestedAt: c.requested_at,
     distanceMeters: Math.round(c.distance_meters),
-    publishedUrl: `${PUBLISHED_BASE}/${c.service_request_id}`,
+    // Encoded, not interpolated raw: the id comes from the ingested corpus,
+    // and nothing from there should be able to reshape the link.
+    publishedUrl: `${PUBLISHED_BASE}/${encodeURIComponent(c.service_request_id)}`,
   };
 }
 

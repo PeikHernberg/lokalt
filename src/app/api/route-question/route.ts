@@ -3,6 +3,7 @@ import { getClient, MODEL, firstText, parseJsonLoose } from "@/lib/anthropic";
 import { CLASSIFY_SYSTEM } from "@/lib/classify-prompt";
 import { bodiesForPrompt, type Lang } from "@/lib/bodies";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { readJsonBody } from "@/lib/read-json-body";
 
 export const runtime = "nodejs";
 
@@ -22,19 +23,16 @@ interface ClassifyResult {
 const VALID_TRACKS: Track[] = ["operational", "policy", "statutory", "agenda", "unclear"];
 
 export async function POST(req: NextRequest) {
-  if (!checkRateLimit(req)) {
+  if (!checkRateLimit(req, "model")) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
-  let question: string;
-  let lang: Lang;
-  try {
-    const body = await req.json();
-    question = String(body.question ?? "").trim();
-    lang = body.lang === "fi" ? "fi" : body.lang === "en" ? "en" : "sv";
-  } catch {
+  const body = await readJsonBody(req);
+  if (!body) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
+  const question = String(body.question ?? "").trim();
+  const lang: Lang = body.lang === "fi" ? "fi" : body.lang === "en" ? "en" : "sv";
 
   if (!question) {
     return NextResponse.json({ error: "empty_question" }, { status: 400 });

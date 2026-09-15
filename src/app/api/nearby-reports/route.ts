@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findNearbyReports } from "@/lib/nearby-reports";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { readJsonBody } from "@/lib/read-json-body";
 
 export const runtime = "nodejs";
 
@@ -10,11 +11,11 @@ const HELSINKI_BOUNDS = { minLat: 59, maxLat: 61, minLon: 23, maxLon: 26 };
 const MAX_QUERY_LENGTH = 2000;
 
 export async function POST(req: NextRequest) {
-  if (!checkRateLimit(req)) {
+  if (!checkRateLimit(req, "model")) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
-  const body = await req.json().catch(() => null);
+  const body = await readJsonBody(req);
   const lat = Number(body?.lat);
   const lon = Number(body?.lon);
   const query = typeof body?.query === "string" ? body.query : "";

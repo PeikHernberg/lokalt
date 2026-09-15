@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getClient, MODEL, firstText, parseJsonLoose } from "@/lib/anthropic";
 import type { Lang } from "@/lib/bodies";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { readJsonBody } from "@/lib/read-json-body";
 
 export const runtime = "nodejs";
 
@@ -49,27 +50,20 @@ Return ONLY valid JSON, no prose and no markdown fences, in exactly this shape:
 { "subject": "...", "body": "..." }`;
 
 export async function POST(req: NextRequest) {
-  if (!checkRateLimit(req)) {
+  if (!checkRateLimit(req, "model")) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
-  let question = "";
-  let lang: Lang = "sv";
-  let bodyName = "";
-  let recipientName = "";
-  let recipientRole = "";
-  let mode: DraftMode = "policy";
-  try {
-    const b = await req.json();
-    question = String(b.question ?? "").trim();
-    lang = b.lang === "fi" ? "fi" : b.lang === "en" ? "en" : "sv";
-    bodyName = String(b.bodyName ?? "").trim();
-    recipientName = String(b.recipientName ?? "").trim();
-    recipientRole = String(b.recipientRole ?? "").trim();
-    mode = b.mode === "agenda" ? "agenda" : "policy";
-  } catch {
+  const b = await readJsonBody(req);
+  if (!b) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
+  const question = String(b.question ?? "").trim();
+  const lang: Lang = b.lang === "fi" ? "fi" : b.lang === "en" ? "en" : "sv";
+  const bodyName = String(b.bodyName ?? "").trim();
+  const recipientName = String(b.recipientName ?? "").trim();
+  const recipientRole = String(b.recipientRole ?? "").trim();
+  const mode: DraftMode = b.mode === "agenda" ? "agenda" : "policy";
 
   if (!question) {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });

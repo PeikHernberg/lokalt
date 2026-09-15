@@ -2,19 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { searchDecisions } from "@/lib/decisions";
 import { isLocale } from "@/lib/site-config";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { readJsonBody } from "@/lib/read-json-body";
 
 export const runtime = "nodejs";
 
 const MAX_QUERY_LENGTH = 200;
 
 export async function POST(req: NextRequest) {
-  if (!checkRateLimit(req)) {
+  if (!checkRateLimit(req, "lookup")) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
-  const body = await req.json().catch(() => null);
+  const body = await readJsonBody(req);
   const query = typeof body?.query === "string" ? body.query.trim() : "";
-  const lang = body?.lang;
+  const lang = typeof body?.lang === "string" ? body.lang : "";
   const limit = Number(body?.limit) || 10;
 
   if (!query || !isLocale(lang)) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { lookupAreaShapesInBounds } from "@/lib/area-responsibility";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { readJsonBody } from "@/lib/read-json-body";
 
 export const runtime = "nodejs";
 
@@ -14,11 +15,11 @@ const HELSINKI_BOUNDS = { minLat: 59, maxLat: 61, minLon: 23, maxLon: 26 };
 const MAX_BOUNDS_DEGREES = 0.05;
 
 export async function POST(req: NextRequest) {
-  if (!checkRateLimit(req)) {
+  if (!checkRateLimit(req, "lookup")) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
-  const body = await req.json().catch(() => null);
+  const body = await readJsonBody(req);
   const west = Number(body?.west);
   const south = Number(body?.south);
   const east = Number(body?.east);

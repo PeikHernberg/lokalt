@@ -25,7 +25,7 @@ npm run backfill:palaute   # one-off: ingest N days of Open311 history into feed
 npm run classify:palaute   # one-off/recurring: tag untagged feedback_reports rows with the fixed taxonomy
 ```
 
-There is no test suite. Requires `ANTHROPIC_API_KEY` and `SUPABASE_URL`/`SUPABASE_ANON_KEY` in `.env.local` (copy from `.env.local.example`) to exercise the API routes locally.
+There is no test suite. Requires `ANTHROPIC_API_KEY` and `SUPABASE_URL`/`SUPABASE_ANON_KEY` in `.env.local` (copy from `.env.local.example`) to exercise the API routes locally. `SUPABASE_SERVICE_ROLE_KEY` is optional locally (without it the caches simply don't fill) and required by `npm run classify:palaute`.
 
 ## Architecture
 
@@ -41,6 +41,34 @@ There is no test suite. Requires `ANTHROPIC_API_KEY` and `SUPABASE_URL`/`SUPABAS
 **Shared Claude client**: [src/lib/anthropic.ts](src/lib/anthropic.ts) exports a single `MODEL` constant, a lazily-constructed client that reads `ANTHROPIC_API_KEY` server-side only, and `parseJsonLoose()` since both routes require the model to return raw JSON (defensively strips stray ``` fences).
 
 **i18n**: no library — [src/lib/i18n.ts](src/lib/i18n.ts) is a flat dictionary of Swedish/Finnish/English strings (`Lang` = `"sv" | "fi" | "en"`); Swedish is the default language throughout.
+
+## Database access model
+
+**The anon key is treated as public and is read-only.** `anon`/`authenticated`
+hold `SELECT` and nothing else, on only the four tables the site reads
+(`area_responsibility_cache`, `area_responsibility_bounds_cache`,
+`decisions_cache`, `feedback_reports`); `recent_reports_cache` and `ingest_log`
+have RLS on with no policy at all. Every write goes through the service-role
+key: [src/lib/supabase.ts](src/lib/supabase.ts) exports `getSupabase()` (reads,
+anon) and `getSupabaseWriter()` (writes, service role, returns `null` when
+`SUPABASE_SERVICE_ROLE_KEY` is unset). **Never widen the anon role to make a
+write work** — route the write through `getSupabaseWriter()` instead, and keep
+cache writes in the `try {} catch {}` no-op shape so a missing writer degrades
+to "no caching" rather than an error. The policies and grants live in
+[supabase/migrations/](supabase/migrations/); `default privileges` in `public`
+are revoked for both public roles, so **a newly created table starts with no
+anon access and needs an explicit `grant select` + policy**.
+
+The `ingest-palaute` Edge Function ([supabase/functions/ingest-palaute/](supabase/functions/ingest-palaute/))
+is the only writer to `feedback_reports`/`ingest_log`, writes with the
+service-role key, and gates on an `INGEST_SECRET` header when that secret is
+configured on the function — a valid anon JWT on its own reaches any Edge
+Function, so the write path needs a credential of its own.
+
+Residual, and not fixable from the `postgres` role: `spatial_ref_sys`,
+`st_estimatedextent` and the `postgis`/`pg_trgm` schema placement are all owned
+by `supabase_admin`, so the Supabase linter keeps reporting them. Writes to
+`spatial_ref_sys` from the API roles are blocked by a trigger instead.
 
 ## City-data lookups (Supabase-backed)
 
@@ -59,5 +87,7 @@ Beyond the two Claude calls above, `/app` also does live lookups against Helsink
 ## Conventions
 
 - Path alias `@/*` maps to `src/*` (see [tsconfig.json](tsconfig.json)).
-- Server routes run on `export const runtime = "nodejs"` and must keep `ANTHROPIC_API_KEY` server-side — never expose it to the client.
+- Server routes run on `export const runtime = "nodejs"` and must keep `ANTHROPIC_API_KEY` server-side — never expose it to the client. No secret gets a `NEXT_PUBLIC_` prefix.
+- Every public route starts with `checkRateLimit(req, cost)` and reads its body through `readJsonBody(req)` ([src/lib/read-json-body.ts](src/lib/read-json-body.ts), 32 KB cap) rather than `req.json()`. The `cost` tier is `"model"` for the routes that spend money on a Claude call (route-question, draft, nearby-reports) and `"lookup"` for the rest; [src/lib/rate-limit.ts](src/lib/rate-limit.ts) also enforces a site-wide ceiling, and derives the caller's IP from the *right* of `X-Forwarded-For` (`TRUSTED_PROXY_HOPS`) because the left-hand entries are caller-supplied.
+- Any URL that came off the network and gets rendered as a link passes through `safeExternalUrl()` ([src/lib/safe-url.ts](src/lib/safe-url.ts)) with an explicit host allowlist — upstream data decides the link target otherwise.
 - When editing the classify or draft system prompts, preserve the "hard rules" structure (JSON-only output, no invented contact details, bracketed placeholders for personal info) — these are safety constraints, not style choices.

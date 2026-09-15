@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
-import { getSupabase } from "@/lib/supabase";
+import { getSupabase, getSupabaseWriter } from "@/lib/supabase";
 import type { Lang } from "@/lib/bodies";
+import { safeExternalUrl } from "@/lib/safe-url";
 
 export type DecisionHit = {
   issueId: string | null;
@@ -21,6 +22,8 @@ const CACHE_TTL_MINUTES = 10;
 // privacy copy: we only "briefly" cache, not forever).
 const CACHE_RETENTION_MINUTES = 60;
 const DECISIONS_URL_BASE = "https://paatokset.hel.fi";
+// The only host a decision link may point at once assembled — see safe-url.ts.
+const DECISIONS_ALLOWED_HOSTS = ["paatokset.hel.fi"];
 
 // The cache key is derived from what the resident typed. Hash it rather
 // than storing the query text in plain, queryable form.
@@ -61,7 +64,26 @@ function toHit(raw: RawHit): DecisionHit {
     subject: unwrap(s.subject),
     organizationName: unwrap(s.organization_name),
     meetingDate: meetingEpoch ? new Date(meetingEpoch * 1000).toISOString() : null,
-    url: relativeUrl ? `${DECISIONS_URL_BASE}${relativeUrl}` : null,
+    // `decision_url` is meant to be a path, but the index is upstream data:
+    // a value beginning ".example.com/" would concatenate into the host
+    // "paatokset.hel.fi.example.com", so the assembled URL is re-checked
+    // rather than assumed.
+    url: relativeUrl
+      ? safeExternalUrl(`${DECISIONS_URL_BASE}${relativeUrl}`, DECISIONS_ALLOWED_HOSTS)
+      : null,
+  };
+}
+
+// Re-checks the links on a result that came back out of the cache. The cache
+// row is written by us and the database only lets the service-role key write
+// it, but a cached link is still a link we did not assemble in this request,
+// and re-running it through the same check costs nothing.
+function sanitizeCached(result: DecisionsResult): DecisionsResult {
+  const clean = (hits: DecisionHit[]): DecisionHit[] =>
+    hits.map((hit) => ({ ...hit, url: safeExternalUrl(hit.url, DECISIONS_ALLOWED_HOSTS) }));
+  return {
+    upcoming: clean(result.upcoming ?? []),
+    decided: clean(result.decided ?? []),
   };
 }
 
@@ -112,12 +134,18 @@ export async function searchDecisions(
         .maybeSingle();
       if (data) {
         const ageMinutes = (Date.now() - new Date(data.fetched_at).getTime()) / 60000;
-        if (ageMinutes < CACHE_TTL_MINUTES) return data.response as DecisionsResult;
+        if (ageMinutes < CACHE_TTL_MINUTES) {
+          return sanitizeCached(data.response as DecisionsResult);
+        }
       }
       // Opportunistic purge of everything past retention, not just this
       // row — keeps the table from growing unbounded without a cron job.
-      const cutoff = new Date(Date.now() - CACHE_RETENTION_MINUTES * 60000).toISOString();
-      await supabase.from("decisions_cache").delete().lt("fetched_at", cutoff);
+      // Deleting needs the writer: the anon role has no delete privilege.
+      const purger = getSupabaseWriter();
+      if (purger) {
+        const cutoff = new Date(Date.now() - CACHE_RETENTION_MINUTES * 60000).toISOString();
+        await purger.from("decisions_cache").delete().lt("fetched_at", cutoff);
+      }
     } catch {
       // Cachen är en optimering. Fortsätt mot indexet direkt om den inte svarar.
     }
@@ -162,9 +190,10 @@ export async function searchDecisions(
     decided: dedupe(decidedHits.map(toHit)),
   };
 
-  if (supabase) {
+  const writer = getSupabaseWriter();
+  if (writer) {
     try {
-      await supabase.from("decisions_cache").upsert({ cache_key: cacheKey, response: result });
+      await writer.from("decisions_cache").upsert({ cache_key: cacheKey, response: result });
     } catch {
       // Cacheskrivning är en optimering, inte ett krav.
     }
